@@ -1,0 +1,28 @@
+# Atualiza o "ao vivo agora" da Comunidade BR (Twitch e YouTube, APIs
+# oficiais) chamando a rota protegida do site. Sem as chaves das plataformas
+# na Vercel, a rota só responde "skipped" e não faz nada.
+name: Comunidade ao vivo
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: comunidade
+  cancel-in-progress: false
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Atualiza
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          SITE: https://wowhelp.vercel.app
+        run: |
+          curl -sS --fail-with-body -X POST -H "Authorization: Bearer $CRON_SECRET" "$SITE/api/cron/community-sync"

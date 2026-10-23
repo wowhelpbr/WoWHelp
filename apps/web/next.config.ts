@@ -19,7 +19,8 @@ const contentSecurityPolicy = [
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
   "style-src 'self' 'unsafe-inline'",
   // Imagens do catálogo vêm do Storage do Supabase (cópia própria das imagens oficiais).
-  `img-src 'self' data: blob: ${supabaseOrigin}`.trim(),
+  // + fotos e miniaturas oficiais da Twitch e do YouTube (Comunidade BR).
+  `img-src 'self' data: blob: ${supabaseOrigin} https://static-cdn.jtvnw.net https://yt3.ggpht.com https://yt3.googleusercontent.com https://i.ytimg.com`.trim(),
   "font-src 'self'",
   `connect-src 'self' ${supabaseOrigin}`.trim(),
   "worker-src 'self'",
