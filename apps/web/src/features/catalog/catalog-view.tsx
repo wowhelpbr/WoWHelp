@@ -206,6 +206,7 @@ export async function CatalogView({ kind, searchParams }: { kind: CatalogKind; s
                 subtitle={[item.categoryName, item.sourceName ?? t('sourceUnknown')].filter(Boolean).join(' · ')}
                 imageUrl={item.imageUrl}
                 imageMode={IMAGE_MODE[kind]}
+                placeholder={kind}
                 badges={
                   item.faction || statusOf ? (
                     <>

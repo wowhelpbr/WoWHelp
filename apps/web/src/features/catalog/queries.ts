@@ -1,6 +1,6 @@
 import 'server-only';
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-import type { DataSource, Locale, StoredObservation } from '@wowhelp/shared';
+import { isPlaceholderName, type DataSource, type Locale, type StoredObservation } from '@wowhelp/shared';
 import { cacheLife, cacheTag } from 'next/cache';
 import { isSupabaseConfigured, supabasePublishableKey, supabaseUrl } from '@/lib/supabase/env';
 import { createClient } from '@/lib/supabase/server';
@@ -98,6 +98,8 @@ export async function getCatalog(kind: CatalogKind, locale: Locale): Promise<Cat
         row.collectible_translations.find((x) => x.locale === locale) ??
         row.collectible_translations.find((x) => x.locale === 'en-US');
       if (!tr) return null;
+      // Rascunho interno da Blizzard ("[PH] ..."): existe na API, mas ninguém consegue obter.
+      if (isPlaceholderName(row.collectible_translations.find((x) => x.locale === 'en-US')?.name)) return null;
       return {
         id: row.id,
         kind,

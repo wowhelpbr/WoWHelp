@@ -367,3 +367,11 @@ export function apiLocaleFor(region: BattlenetRegion, appLocale: 'en-US' | 'pt-B
       return 'zh_TW';
   }
 }
+
+/**
+ * Itens de rascunho interno da Blizzard ("[PH] Horse with Hat", "[DNT] ...",
+ * "[DND] Test Mount"). Existem na API mas não são obtíveis: ficam fora do catálogo.
+ */
+export function isPlaceholderName(name: string | null | undefined): boolean {
+  return typeof name === 'string' && /\[(PH|DNT|DND|NYI)\]/i.test(name);
+}
