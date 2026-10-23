@@ -30,7 +30,10 @@
     "disclaimer": "WoWHelp is a fan-made tool. It is not affiliated with or endorsed by Blizzard Entertainment. World of Warcraft and Blizzard Entertainment are trademarks or registered trademarks of Blizzard Entertainment, Inc.",
     "status": "Early preview. Features arrive in phases and each page says what is ready.",
     "install": "Install the app",
-    "credits": "Logo and illustrations by Elianai dos Santos (eliz00r)."
+    "credits": "Logo and illustrations by Elianai dos Santos (eliz00r).",
+    "privacy": "Privacy",
+    "terms": "Terms of use",
+    "legalNav": "Legal documents"
   },
   "Focus": {
     "gear": {
@@ -148,7 +151,8 @@
       "unknown": "Something went wrong on our side. Try again in a moment."
     },
     "confirmErrorTitle": "We couldn't confirm your e-mail",
-    "confirmErrorBody": "The link may have expired or was already used. Sign in, or create the account again to get a new link."
+    "confirmErrorBody": "The link may have expired or was already used. Sign in, or create the account again to get a new link.",
+    "signUpLegal": "By creating an account, you agree to the <terms>terms of use</terms> and the <privacy>privacy policy</privacy> (drafts under review)."
   },
   "Dashboard": {
     "metaTitle": "My goals",
@@ -298,13 +302,14 @@
     "save": "Save",
     "saved": "Saved",
     "privacyTitle": "Privacy and data",
-    "privacyBody": "WoWHelp stores your e-mail, your goals and your preferences. No analytics or advertising trackers are used. Data export and account deletion arrive before the public beta.",
+    "privacyBody": "WoWHelp keeps your email, preferences, goals and whatever you connect or import. We use no analytics or advertising trackers.",
     "installTitle": "Install the app",
     "installBody": "Add WoWHelp to your home screen to open it like an app.",
     "installButton": "Install WoWHelp",
     "installIos": "On iPhone or iPad: tap Share, then Add to Home Screen.",
     "installDone": "WoWHelp is installed on this device.",
-    "installUnsupported": "Your browser doesn't offer installation here. Try Chrome or Edge on desktop or Android, or Safari on iPhone."
+    "installUnsupported": "Your browser doesn't offer installation here. Try Chrome or Edge on desktop or Android, or Safari on iPhone.",
+    "privacyLink": "Read the privacy policy"
   },
   "Offline": {
     "metaTitle": "Offline",
@@ -469,7 +474,8 @@
       "not_configured": "Import isn't available in this environment yet.",
       "storage": "We couldn't save right now. Try again in a few minutes.",
       "read": "Your browser couldn't open the file. Try again.",
-      "wrong_extension": "Choose the addon .lua file (WoWHelpCompanion.lua)."
+      "wrong_extension": "Choose the addon .lua file (WoWHelpCompanion.lua).",
+      "rate_limited": "You imported 30 files in the last 24 hours. Try again tomorrow."
     },
     "historyTitle": "Previous imports",
     "historyEmpty": "No imports yet.",
@@ -485,5 +491,26 @@
     "deleting": "Deleting…",
     "privacy": "The file is read on our server without running anything and discarded right after. We keep only characters, collected mounts and a summary of each import, until you delete them here or delete your account.",
     "accountFolder": "YOUR_ACCOUNT"
+  },
+  "Account": {
+    "dataTitle": "Your data",
+    "dataBody": "Download a copy of everything WoWHelp keeps about you (profile, goals, planner, characters, collection and addon imports) as a JSON file.",
+    "export": "Download my data",
+    "deleteTitle": "Delete account",
+    "deleteBody": "Deletes the account and all of its data right away: goals, planner, Battle.net connections, characters, collection and addon imports. This cannot be undone.",
+    "deleteStart": "Delete my account",
+    "deleteLabel": "To confirm, type the account email",
+    "deleteConfirm": "Delete forever",
+    "deleteCancel": "Cancel",
+    "deleting": "Deleting…",
+    "errors": {
+      "mismatch": "The email you typed isn't this account's email.",
+      "failed": "We couldn't delete it right now. Try again in a few minutes.",
+      "not_configured": "Account deletion isn't available in this environment yet."
+    },
+    "deletedMetaTitle": "Account deleted",
+    "deletedTitle": "Your account was deleted",
+    "deletedBody": "We deleted your account and all of its data. Thanks for trying WoWHelp.",
+    "deletedHome": "Back to home"
   }
 }

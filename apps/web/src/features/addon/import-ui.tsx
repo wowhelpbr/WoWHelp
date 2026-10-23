@@ -71,7 +71,8 @@ export function AddonUploader() {
       return setState({ step: 'idle', error: 'read' });
     }
     startTransition(async () => {
-      const preview = await previewAddonImportAction(text);
+      // Falha de rede ou do servidor vira aviso no painel, não tela de erro.
+      const preview = await previewAddonImportAction(text).catch((): ImportPreview => ({ ok: false, code: 'storage' }));
       if (!preview.ok) {
         setState({ step: 'idle', error: preview.code });
         return;
@@ -100,7 +101,10 @@ export function AddonUploader() {
     if (state.step !== 'preview') return;
     const current = state;
     startTransition(async () => {
-      const result = await confirmAddonImportAction(current.text, [...categories]);
+      const result = await confirmAddonImportAction(current.text, [...categories]).catch((): ImportResult => ({
+        ok: false,
+        code: 'storage',
+      }));
       if (result.ok) setState({ step: 'done', characters: result.characters, mounts: result.mounts });
       else setState({ ...current, error: result.code });
     });

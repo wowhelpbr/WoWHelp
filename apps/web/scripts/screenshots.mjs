@@ -85,6 +85,11 @@ for (const [name, options] of Object.entries(viewports)) {
   await input.setInputFiles({ name: 'WoWHelpCompanion.lua', mimeType: 'text/plain', buffer: Buffer.from(sample) });
   await page.getByText('Confira antes de importar').waitFor();
   await shot('import-pt-br');
+  await page.goto(`${base}/pt-br/settings`);
+  await page.getByRole('button', { name: 'Excluir minha conta' }).click();
+  await shot('settings-pt-br');
+  await page.goto(`${base}/pt-br/privacy`);
+  await shot('privacy-pt-br');
   await context.close();
 }
 

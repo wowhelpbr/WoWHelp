@@ -5,10 +5,11 @@ import { AccountSidebar } from '@/components/layout/account-sidebar';
 import { Container } from '@/components/ui/container';
 import { Panel } from '@/components/ui/panel';
 import { InstallApp } from '@/components/pwa/install-app';
+import { AccountData } from '@/features/account/account-data';
 import { getCurrentUser } from '@/features/auth/session';
 import { getMyProfile } from '@/features/profile/queries';
 import { SettingsForm } from '@/features/profile/settings-form';
-import { redirect } from '@/i18n/navigation';
+import { Link, redirect } from '@/i18n/navigation';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Settings');
@@ -29,9 +30,6 @@ export default async function SettingsPage() {
           <p className="mb-3 text-sm text-muted-foreground">{t('installBody')}</p>
           <InstallApp />
         </Panel>
-        <Panel title={t('privacyTitle')} titleId="privacy">
-          <p className="text-sm text-muted-foreground">{t('privacyBody')}</p>
-        </Panel>
       </Container>
     </div>
   );
@@ -41,10 +39,23 @@ async function AccountSettings() {
   const locale = await getLocale();
   const user = await getCurrentUser();
   if (!user) redirect({ href: '/login?next=/settings', locale });
-  const profile = await getMyProfile();
+  const [profile, t] = await Promise.all([getMyProfile(), getTranslations('Settings')]);
   return (
-    <div className="frame p-4 sm:p-5">
-      <SettingsForm locale={profile?.locale ?? 'en-US'} region={profile?.preferredGameRegion ?? null} />
-    </div>
+    <>
+      <div className="frame p-4 sm:p-5">
+        <SettingsForm locale={profile?.locale ?? 'en-US'} region={profile?.preferredGameRegion ?? null} />
+      </div>
+      <Panel title={t('privacyTitle')} titleId="privacy">
+        <div className="flex flex-col gap-5">
+          <p className="text-sm text-muted-foreground">
+            {t('privacyBody')}{' '}
+            <Link href="/privacy" className="text-foreground underline underline-offset-2 hover:text-primary">
+              {t('privacyLink')}
+            </Link>
+          </p>
+          <AccountData />
+        </div>
+      </Panel>
+    </>
   );
 }

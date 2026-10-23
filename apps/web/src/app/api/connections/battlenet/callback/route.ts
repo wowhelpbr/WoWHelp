@@ -5,6 +5,7 @@ import { syncFromAuthorization } from '@/features/battlenet/sync';
 import { LOCALE_PREFIX, routing } from '@/i18n/routing';
 import { callbackUrl } from '@/lib/blizzard/client';
 import { isAdminConfigured } from '@/lib/supabase/admin';
+import { logEvent } from '@/lib/log';
 import { getSiteUrl } from '@/lib/site-url';
 
 /**
@@ -40,6 +41,10 @@ export async function GET(request: NextRequest) {
     code,
     redirectUri: callbackUrl(getSiteUrl()),
   });
-  if (!result.ok) return back(result.code);
+  if (!result.ok) {
+    logEvent('battlenet_link_failed', { code: result.code });
+    return back(result.code);
+  }
+  logEvent('battlenet_link_succeeded', { mounts: result.mounts !== null });
   return back(result.mounts === null ? 'connected_partial' : 'connected');
 }

@@ -5,11 +5,13 @@ import { readAddonSnapshot, type AddonReadResult, type AddonSnapshot } from '@wo
 import { refresh } from 'next/cache';
 import { z } from 'zod';
 import { getCurrentUser } from '@/features/auth/session';
+import { logEvent } from '@/lib/log';
 import { createAdminClient, isAdminConfigured } from '@/lib/supabase/admin';
 import { createClient } from '@/lib/supabase/server';
 
 // Limite do texto recebido (o arquivo real do Companion tem poucos KB).
 const MAX_CHARS = 512 * 1024;
+const MAX_IMPORTS_PER_DAY = 30;
 
 export type ImportPreview =
   | {
@@ -21,7 +23,7 @@ export type ImportPreview =
       mountsCount: number | null;
       alreadyImported: boolean;
     }
-  | { ok: false; code: Extract<AddonReadResult, { ok: false }>['code'] | 'unauthenticated' | 'empty' };
+  | { ok: false; code: Extract<AddonReadResult, { ok: false }>['code'] | 'unauthenticated' | 'empty' | 'storage' };
 
 const hash = (text: string) => createHash('sha256').update(text, 'utf8').digest('hex');
 
@@ -55,7 +57,10 @@ export async function previewAddonImportAction(text: string): Promise<ImportPrev
 
 export type ImportResult =
   | { ok: true; characters: number; mounts: number | null }
-  | { ok: false; code: 'unauthenticated' | 'invalid' | 'duplicate' | 'no_region' | 'not_configured' | 'storage' };
+  | {
+      ok: false;
+      code: 'unauthenticated' | 'invalid' | 'duplicate' | 'no_region' | 'not_configured' | 'storage' | 'rate_limited';
+    };
 
 const categoriesSchema = z
   .array(z.enum(['characters', 'mounts']))
@@ -67,6 +72,13 @@ const categoriesSchema = z
  * grava o histórico e só as categorias escolhidas, sempre com o user_id da sessão.
  */
 export async function confirmAddonImportAction(text: string, categoriesInput: string[]): Promise<ImportResult> {
+  const result = await confirmImport(text, categoriesInput);
+  if (result.ok) logEvent('addon_import_succeeded', { characters: result.characters, mounts: result.mounts });
+  else logEvent('addon_import_failed', { code: result.code });
+  return result;
+}
+
+async function confirmImport(text: string, categoriesInput: string[]): Promise<ImportResult> {
   const user = await getCurrentUser();
   if (!user) return { ok: false, code: 'unauthenticated' };
   if (!isAdminConfigured()) return { ok: false, code: 'not_configured' };
@@ -82,6 +94,14 @@ export async function confirmAddonImportAction(text: string, categoriesInput: st
 
   const admin = createAdminClient();
   const now = new Date().toISOString();
+  // Limite contra abuso: cada importação regrava até milhares de linhas.
+  const { count: recent, error: countError } = await admin
+    .from('addon_imports')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+    .gt('imported_at', new Date(Date.now() - 24 * 3600 * 1000).toISOString());
+  if (countError) return { ok: false, code: 'storage' };
+  if ((recent ?? 0) >= MAX_IMPORTS_PER_DAY) return { ok: false, code: 'rate_limited' };
   const { error: importError } = await admin.from('addon_imports').insert({
     user_id: user.id,
     schema_version: 1,

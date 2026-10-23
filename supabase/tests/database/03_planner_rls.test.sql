@@ -4,6 +4,11 @@ create extension if not exists pgtap with schema extensions;
 
 select plan(8);
 
+-- Começa do zero (tudo volta no rollback do fim): o teste não depende do que
+-- já existe no banco local, como contas e catálogo criados pelos testes E2E.
+delete from auth.users;
+delete from public.collectibles;
+
 insert into auth.users (id, email, aud, role) values
   ('11111111-1111-4111-8111-111111111111', 'a@test.local', 'authenticated', 'authenticated'),
   ('22222222-2222-4222-8222-222222222222', 'b@test.local', 'authenticated', 'authenticated');

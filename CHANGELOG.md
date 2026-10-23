@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.6.0 (prévia, sem divulgação) | 24/10/2026
+
+Fase 6 (preparação do beta).
+
+- Política de privacidade e termos de uso (rascunhos em revisão jurídica), com links no rodapé e no cadastro.
+- Configurações: baixar meus dados (JSON) e excluir conta com confirmação pelo e-mail.
+- Auditoria de RLS (pgTAP) e correção do aviso de segurança do Supabase sobre a função rls_auto_enable.
+- Limite de 30 importações do addon por dia; eventos de produto nos logs sem dados pessoais.
+- Documentos de resposta a incidentes, backup e rollback, plano de beta e checklist legal.
+- Testes: 82 unitários do domínio, 29 do site, 63 de banco, 70 E2E.
+
 ## 0.5.0 (prévia, sem divulgação) | 24/10/2026
 
 Fases 2 a 5.

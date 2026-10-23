@@ -30,7 +30,10 @@
     "disclaimer": "O WoWHelp é uma ferramenta feita por fãs. Não é afiliado nem endossado pela Blizzard Entertainment. World of Warcraft e Blizzard Entertainment são marcas comerciais ou registradas da Blizzard Entertainment, Inc.",
     "status": "Versão inicial. Os recursos chegam por fases e cada página diz o que já está pronto.",
     "install": "Instalar o app",
-    "credits": "Logo e ilustrações de Elianai dos Santos (eliz00r)."
+    "credits": "Logo e ilustrações de Elianai dos Santos (eliz00r).",
+    "privacy": "Privacidade",
+    "terms": "Termos de uso",
+    "legalNav": "Documentos legais"
   },
   "Focus": {
     "gear": {
@@ -148,7 +151,8 @@
       "unknown": "Algo deu errado do nosso lado. Tente de novo daqui a pouco."
     },
     "confirmErrorTitle": "Não conseguimos confirmar seu e-mail",
-    "confirmErrorBody": "O link pode ter expirado ou já ter sido usado. Entre na sua conta ou crie de novo para receber outro link."
+    "confirmErrorBody": "O link pode ter expirado ou já ter sido usado. Entre na sua conta ou crie de novo para receber outro link.",
+    "signUpLegal": "Ao criar a conta, você concorda com os <terms>termos de uso</terms> e a <privacy>política de privacidade</privacy> (rascunhos em revisão)."
   },
   "Dashboard": {
     "metaTitle": "Meus objetivos",
@@ -298,13 +302,14 @@
     "save": "Salvar",
     "saved": "Salvo",
     "privacyTitle": "Privacidade e dados",
-    "privacyBody": "O WoWHelp guarda seu e-mail, seus objetivos e suas preferências. Não usamos rastreadores de analytics nem de publicidade. Exportar dados e excluir a conta chegam antes do beta público.",
+    "privacyBody": "O WoWHelp guarda seu e-mail, suas preferências, seus objetivos e o que você conectar ou importar. Não usamos rastreadores de analytics nem de publicidade.",
     "installTitle": "Instalar o app",
     "installBody": "Adicione o WoWHelp à tela inicial para abrir como um aplicativo.",
     "installButton": "Instalar o WoWHelp",
     "installIos": "No iPhone ou iPad: toque em Compartilhar e depois em Adicionar à Tela de Início.",
     "installDone": "O WoWHelp já está instalado neste aparelho.",
-    "installUnsupported": "Seu navegador não oferece instalação aqui. Tente o Chrome ou o Edge no computador ou no Android, ou o Safari no iPhone."
+    "installUnsupported": "Seu navegador não oferece instalação aqui. Tente o Chrome ou o Edge no computador ou no Android, ou o Safari no iPhone.",
+    "privacyLink": "Ler a política de privacidade"
   },
   "Offline": {
     "metaTitle": "Sem conexão",
@@ -469,7 +474,8 @@
       "not_configured": "A importação ainda não está disponível neste ambiente.",
       "storage": "Não conseguimos salvar agora. Tente de novo em alguns minutos.",
       "read": "O navegador não conseguiu abrir o arquivo. Tente de novo.",
-      "wrong_extension": "Escolha o arquivo .lua do addon (WoWHelpCompanion.lua)."
+      "wrong_extension": "Escolha o arquivo .lua do addon (WoWHelpCompanion.lua).",
+      "rate_limited": "Você já importou 30 arquivos nas últimas 24 horas. Tente de novo amanhã."
     },
     "historyTitle": "Importações anteriores",
     "historyEmpty": "Nenhuma importação ainda.",
@@ -485,5 +491,26 @@
     "deleting": "Apagando…",
     "privacy": "O arquivo é lido no servidor sem executar nada e descartado logo depois. Guardamos só personagens, montarias coletadas e um resumo de cada importação, até você apagar aqui ou excluir a conta.",
     "accountFolder": "SUA_CONTA"
+  },
+  "Account": {
+    "dataTitle": "Seus dados",
+    "dataBody": "Baixe uma cópia de tudo o que o WoWHelp guarda sobre você (perfil, objetivos, planejador, personagens, coleção e importações do addon), em um arquivo JSON.",
+    "export": "Baixar meus dados",
+    "deleteTitle": "Excluir conta",
+    "deleteBody": "Apaga a conta e todos os dados dela na hora: objetivos, planejador, conexões com a Battle.net, personagens, coleção e importações do addon. Não tem como desfazer.",
+    "deleteStart": "Excluir minha conta",
+    "deleteLabel": "Para confirmar, digite o e-mail da conta",
+    "deleteConfirm": "Excluir para sempre",
+    "deleteCancel": "Cancelar",
+    "deleting": "Excluindo…",
+    "errors": {
+      "mismatch": "O e-mail digitado não é o desta conta.",
+      "failed": "Não foi possível excluir agora. Tente de novo em alguns minutos.",
+      "not_configured": "A exclusão de conta ainda não está disponível neste ambiente."
+    },
+    "deletedMetaTitle": "Conta excluída",
+    "deletedTitle": "Sua conta foi excluída",
+    "deletedBody": "Apagamos sua conta e todos os dados dela. Obrigado por testar o WoWHelp.",
+    "deletedHome": "Voltar ao início"
   }
 }

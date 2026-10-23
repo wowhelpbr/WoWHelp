@@ -10,7 +10,10 @@ Atualizado na madrugada de 24/10/2026. Tarefas de até ~4 horas, com resultado v
 - [x] Variáveis na Vercel (Supabase e Battle.net)
 - [x] Cadastro, painel e objetivo salvo testados em https://wowhelp.vercel.app
 - [!] SMTP próprio (ex.: Resend) para ligar a confirmação de e-mail antes do beta público
-- [ ] Apagar as contas de teste `qa-noturno-*@wowhelp.test` (via exclusão de conta da Fase 6)
+- [x] Apagar as contas de teste `qa-noturno-*@wowhelp.test`
+- [!] Escolher backup: Supabase Pro (cópia diária) ou cópia manual semanal (docs/operacao/backup-e-rollback.md)
+- [ ] Proteção contra senha vazada (Supabase, plano pago)
+- [ ] Alerta automático de erro do site (hoje só logs na Vercel)
 
 ## Fase 2: Battle.net
 
@@ -44,6 +47,9 @@ Atualizado na madrugada de 24/10/2026. Tarefas de até ~4 horas, com resultado v
 
 ## Fase 6: Beta
 
-- [ ] Política de privacidade e termos (rascunho para revisão jurídica)
-- [ ] Exportar meus dados e excluir conta
-- [!] Revisão jurídica, decisão sobre o nome, grupo de beta
+- [x] Política de privacidade e termos (rascunho no ar, checklist para revisão em docs/fase-6/checklist-legal.md)
+- [x] Exportar meus dados e excluir conta (testados de ponta a ponta)
+- [x] Auditoria de RLS e advisors do Supabase
+- [x] Resposta a incidentes, backup e rollback, plano de beta (docs/operacao e docs/fase-6)
+- [!] Revisão jurídica, decisão sobre o nome, grupo do alpha
+- [ ] Teste em iPhone/Safari real

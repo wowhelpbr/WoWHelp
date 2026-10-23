@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { Container } from '@/components/ui/container';
 import { LogoMark } from '@/components/brand/logo';
+import { Link } from '@/i18n/navigation';
 
 export function SiteFooter() {
   const t = useTranslations('Footer');
@@ -12,6 +13,20 @@ export function SiteFooter() {
           <p>{t('status')}</p>
           <p>{t('disclaimer')}</p>
           <p>{t('credits')}</p>
+          <nav aria-label={t('legalNav')}>
+            <ul className="flex flex-wrap gap-x-4 gap-y-1">
+              <li>
+                <Link href="/privacy" className="underline underline-offset-2 hover:text-foreground">
+                  {t('privacy')}
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="underline underline-offset-2 hover:text-foreground">
+                  {t('terms')}
+                </Link>
+              </li>
+            </ul>
+          </nav>
         </div>
       </Container>
     </footer>

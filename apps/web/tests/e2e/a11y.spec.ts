@@ -10,6 +10,8 @@ const pages = [
   '/pt-br/login',
   '/en/signup?focus=mounts',
   '/en/offline',
+  '/pt-br/privacy',
+  '/en/terms',
   '/en/nao-existe',
 ];
 
