@@ -23,7 +23,7 @@ export type ImportPreview =
       mountsCount: number | null;
       alreadyImported: boolean;
     }
-  | { ok: false; code: Extract<AddonReadResult, { ok: false }>['code'] | 'unauthenticated' | 'empty' };
+  | { ok: false; code: Extract<AddonReadResult, { ok: false }>['code'] | 'unauthenticated' | 'empty' | 'storage' };
 
 const hash = (text: string) => createHash('sha256').update(text, 'utf8').digest('hex');
 
