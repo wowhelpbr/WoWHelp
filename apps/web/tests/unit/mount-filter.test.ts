@@ -15,6 +15,7 @@ const m = (externalId: string, name: string, extra: Partial<MountEntry> = {}): M
   hiddenUntilCollected: false,
   fetchedAt: null,
   lastReviewedAt: null,
+  imageUrl: null,
   ...extra,
 });
 

@@ -114,7 +114,8 @@ port = 55424
 # sender_name = "Admin"
 
 [storage]
-enabled = false
+# Ligado para as imagens do catálogo (bucket catalog-media, criado na migration).
+enabled = true
 # The maximum file size allowed (e.g. "5MB", "500KB").
 file_size_limit = "50MiB"
 

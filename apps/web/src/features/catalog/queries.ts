@@ -17,6 +17,8 @@ export interface MountEntry {
   hiddenUntilCollected: boolean;
   fetchedAt: string | null;
   lastReviewedAt: string | null;
+  /** Cópia própria da imagem oficial (Storage), ou null se ainda não existe. */
+  imageUrl: string | null;
 }
 
 export type CatalogResult = { status: 'ok'; mounts: MountEntry[] } | { status: 'not_configured' } | { status: 'error' };
@@ -30,8 +32,17 @@ type Row = {
   hidden_until_collected: boolean;
   fetched_at: string | null;
   last_reviewed_at: string | null;
+  media_path: string | null;
+  media_fetched_at: string | null;
   collectible_translations: { locale: string; name: string; summary: string | null; source_name: string | null }[];
 };
+
+/** URL pública do bucket; o ?v= troca quando a imagem é renovada (o arquivo fica em cache por 1 dia). */
+function mediaUrl(path: string | null, fetchedAt: string | null): string | null {
+  if (!path) return null;
+  const v = fetchedAt ? `?v=${Date.parse(fetchedAt).toString(36)}` : '';
+  return `${supabaseUrl}/storage/v1/object/public/catalog-media/${path}${v}`;
+}
 
 const anon = () =>
   createSupabaseClient(supabaseUrl, supabasePublishableKey, {
@@ -54,7 +65,7 @@ export async function getCatalogMounts(locale: Locale): Promise<CatalogResult> {
     const { data, error } = await anon()
       .from('collectibles')
       .select(
-        'id, external_item_id, source, source_type, faction, hidden_until_collected, fetched_at, last_reviewed_at, collectible_translations(locale, name, summary, source_name)',
+        'id, external_item_id, source, source_type, faction, hidden_until_collected, fetched_at, last_reviewed_at, media_path, media_fetched_at, collectible_translations(locale, name, summary, source_name)',
       )
       .eq('kind', 'mount')
       .order('external_item_id')
@@ -83,6 +94,7 @@ export async function getCatalogMounts(locale: Locale): Promise<CatalogResult> {
         hiddenUntilCollected: row.hidden_until_collected,
         fetchedAt: row.fetched_at,
         lastReviewedAt: row.last_reviewed_at,
+        imageUrl: mediaUrl(row.media_path, row.media_fetched_at),
       };
     })
     .filter((m): m is MountEntry => m !== null)
