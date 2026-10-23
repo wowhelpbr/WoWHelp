@@ -285,7 +285,11 @@
     "notFound": "This mount is not in the catalog.",
     "close": "Close",
     "dropChance": "Drop chance",
-    "dropChanceUnknown": "Unknown: no reviewed source yet"
+    "dropChanceUnknown": "Unknown: no reviewed source yet",
+    "reviewedOn": "Reviewed on {date}",
+    "where": "Where",
+    "whereUnknown": "No reviewed location yet",
+    "sourcePrefix": "Source:"
   },
   "Settings": {
     "metaTitle": "Settings",
@@ -515,5 +519,65 @@
     "deletedTitle": "Your account was deleted",
     "deletedBody": "We deleted your account and all of its data. Thanks for trying WoWHelp.",
     "deletedHome": "Back to home"
+  },
+  "Admin": {
+    "metaTitle": "Curation",
+    "eyebrow": "Curators only",
+    "title": "Curation",
+    "intro": "Fill in what Blizzard's API doesn't have. Nothing shows on the site before you publish, and drop chance needs a source.",
+    "mountsTitle": "Mounts",
+    "mountsBody": "Drop chance, where to get it, step by step and source.",
+    "communityTitle": "Brazilian community",
+    "communitySoon": "Brazilian WoW creators. Coming in the next step.",
+    "backToAdmin": "Back to curation",
+    "backToMounts": "Back to mounts",
+    "mountsCount": "{approved} published, {drafts} drafts, out of {total} mounts",
+    "search": "Search by name or number",
+    "filter": "Status",
+    "filterAll": "All",
+    "apply": "Filter",
+    "noSource": "source not given",
+    "refine": "Showing 80 of {count}. Refine the search.",
+    "editTitle": "Edit curation",
+    "viewPublic": "See it as the public does",
+    "settingsLink": "Open curation",
+    "settingsTitle": "Curation",
+    "settingsBody": "Your account is a curator: you publish drop chance, location and steps for mounts.",
+    "guide": {
+      "statusApproved": "Published",
+      "statusDraft": "Draft",
+      "statusNone": "Not curated",
+      "chanceTitle": "Drop chance",
+      "dropChance": "Chance (%)",
+      "dropChanceHint": "E.g. 1 or 0.5. Leave empty if unknown.",
+      "notePt": "Note (Portuguese)",
+      "noteEn": "Note (English)",
+      "noteHint": "E.g. per boss, per character, once a week.",
+      "sourceTitle": "Source",
+      "sourceUrl": "Source link",
+      "sourceHint": "Required when there is a drop chance. Prefer an official source.",
+      "sourceLabel": "Source name",
+      "whereTitle": "Where and how",
+      "locationPt": "Where (Portuguese)",
+      "locationEn": "Where (English)",
+      "howPt": "Step by step (Portuguese)",
+      "howEn": "Step by step (English)",
+      "encounter": "Adventure Guide boss (ID)",
+      "encounterHint": "Optional. Used later to count your attempts through Battle.net.",
+      "approve": "Publish",
+      "saveDraft": "Save draft",
+      "unpublish": "Unpublish",
+      "saved": {
+        "approve": "Published. It now shows on the site.",
+        "draft": "Draft saved. It doesn't show on the site yet.",
+        "unpublish": "Unpublished. It left the site and became a draft."
+      },
+      "errors": {
+        "forbidden": "Your account is not a curator.",
+        "invalid": "Check the fields: chance between 0 and 100, link starting with https:// and numeric ID.",
+        "chance_needs_source": "Drop chance needs the source link.",
+        "storage": "We couldn't save right now. Try again."
+      }
+    }
   }
 }

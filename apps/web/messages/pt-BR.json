@@ -285,7 +285,11 @@
     "notFound": "Esta montaria não está no catálogo.",
     "close": "Fechar",
     "dropChance": "Chance de drop",
-    "dropChanceUnknown": "Desconhecida: ainda sem fonte revisada"
+    "dropChanceUnknown": "Desconhecida: ainda sem fonte revisada",
+    "reviewedOn": "Revisado em {date}",
+    "where": "Onde",
+    "whereUnknown": "Ainda sem local revisado",
+    "sourcePrefix": "Fonte:"
   },
   "Settings": {
     "metaTitle": "Configurações",
@@ -515,5 +519,65 @@
     "deletedTitle": "Sua conta foi excluída",
     "deletedBody": "Apagamos sua conta e todos os dados dela. Obrigado por testar o WoWHelp.",
     "deletedHome": "Voltar ao início"
+  },
+  "Admin": {
+    "metaTitle": "Curadoria",
+    "eyebrow": "Só para curadores",
+    "title": "Curadoria",
+    "intro": "Aqui você completa o que a API da Blizzard não tem. Nada aparece no site antes de você publicar, e chance de drop só entra com fonte.",
+    "mountsTitle": "Montarias",
+    "mountsBody": "Chance de drop, onde conseguir, passo a passo e fonte.",
+    "communityTitle": "Comunidade BR",
+    "communitySoon": "Criadores brasileiros de WoW. Chega na próxima etapa.",
+    "backToAdmin": "Voltar à curadoria",
+    "backToMounts": "Voltar às montarias",
+    "mountsCount": "{approved} publicadas, {drafts} em rascunho, de {total} montarias",
+    "search": "Buscar por nome ou número",
+    "filter": "Situação",
+    "filterAll": "Todas",
+    "apply": "Filtrar",
+    "noSource": "origem não informada",
+    "refine": "Mostrando 80 de {count}. Refine a busca.",
+    "editTitle": "Editar curadoria",
+    "viewPublic": "Ver como o público vê",
+    "settingsLink": "Abrir a curadoria",
+    "settingsTitle": "Curadoria",
+    "settingsBody": "Sua conta é de curador: você publica chance de drop, local e passo a passo das montarias.",
+    "guide": {
+      "statusApproved": "Publicada",
+      "statusDraft": "Rascunho",
+      "statusNone": "Sem curadoria",
+      "chanceTitle": "Chance de drop",
+      "dropChance": "Chance (%)",
+      "dropChanceHint": "Ex.: 1 ou 0,5. Deixe vazio se não souber.",
+      "notePt": "Observação (português)",
+      "noteEn": "Observação (inglês)",
+      "noteHint": "Ex.: por chefe, por personagem, uma vez por semana.",
+      "sourceTitle": "Fonte",
+      "sourceUrl": "Link da fonte",
+      "sourceHint": "Obrigatória quando houver chance de drop. Prefira fonte oficial.",
+      "sourceLabel": "Nome da fonte",
+      "whereTitle": "Onde e como",
+      "locationPt": "Onde (português)",
+      "locationEn": "Onde (inglês)",
+      "howPt": "Passo a passo (português)",
+      "howEn": "Passo a passo (inglês)",
+      "encounter": "Chefe no Diário de Aventura (ID)",
+      "encounterHint": "Opcional. Usado depois para contar suas tentativas pela Battle.net.",
+      "approve": "Publicar",
+      "saveDraft": "Salvar rascunho",
+      "unpublish": "Despublicar",
+      "saved": {
+        "approve": "Publicado. Já aparece no site.",
+        "draft": "Rascunho salvo. Ainda não aparece no site.",
+        "unpublish": "Despublicado. Saiu do site e ficou como rascunho."
+      },
+      "errors": {
+        "forbidden": "Sua conta não é de curador.",
+        "invalid": "Confira os campos: chance entre 0 e 100, link começando com https:// e ID só com números.",
+        "chance_needs_source": "Chance de drop só entra com o link da fonte.",
+        "storage": "Não foi possível salvar agora. Tente de novo."
+      }
+    }
   }
 }
