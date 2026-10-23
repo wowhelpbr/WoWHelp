@@ -29,10 +29,16 @@ test.describe('páginas públicas', () => {
     await expect(page.getByText(/Collect mounts, Organize weekly tasks/)).toBeVisible();
   });
 
-  test('catálogo mostra o estado de revisão em vez de dados inventados', async ({ page }) => {
+  test('catálogo credita a Blizzard e nunca mostra dado inventado', async ({ page }) => {
     await page.goto('/pt-br/mounts');
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Catálogo de montarias');
-    await expect(page.getByText('As primeiras entradas estão em revisão')).toBeVisible();
+    await expect(page.getByText('fornecidos pela Blizzard Entertainment', { exact: false })).toBeVisible();
+    // Ou a lista oficial importada, ou o aviso de importação: nunca uma lista de exemplo.
+    await expect(
+      page
+        .getByText('O catálogo oficial está sendo importado')
+        .or(page.getByRole('link', { name: /Montaria de Teste/ }).first()),
+    ).toBeVisible();
   });
 
   test('páginas privadas mandam visitante para o login', async ({ page }) => {
