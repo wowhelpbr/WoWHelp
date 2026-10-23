@@ -99,18 +99,32 @@ export interface MyMountData {
 /** Observações de coleção do usuário logado (todas as fontes) e a última sincronização. */
 export async function getMyMountData(): Promise<MyMountData | null> {
   const supabase = await createClient();
-  const [rows, conns] = await Promise.all([
-    supabase.from('collection_states').select('external_item_id, status, source, observed_at').eq('kind', 'mount'),
-    supabase.from('game_connections').select('mounts_synced_at'),
-  ]);
-  if (rows.error || conns.error) return null;
+  const conns = await supabase.from('game_connections').select('mounts_synced_at');
+  if (conns.error) return null;
+
+  // Colecionadores passam de 1000 montarias; a API do Supabase devolve no
+  // máximo 1000 linhas por consulta. Sem paginar, o resto viraria "não obtida".
+  type Row = { external_item_id: string; status: string; source: string; observed_at: string };
+  const rows: Row[] = [];
+  for (let from = 0; from < 20_000; from += 1000) {
+    const page = await supabase
+      .from('collection_states')
+      .select('external_item_id, status, source, observed_at')
+      .eq('kind', 'mount')
+      .order('id')
+      .range(from, from + 999);
+    if (page.error) return null;
+    rows.push(...((page.data ?? []) as Row[]));
+    if ((page.data ?? []).length < 1000) break;
+  }
+
   const synced = (conns.data ?? [])
     .map((c) => c.mounts_synced_at as string | null)
     .filter((d): d is string => d !== null)
     .sort()
     .at(-1);
   return {
-    observations: (rows.data ?? []).map((r) => ({
+    observations: rows.map((r) => ({
       externalItemId: r.external_item_id,
       status: r.status as StoredObservation['status'],
       source: r.source as DataSource,

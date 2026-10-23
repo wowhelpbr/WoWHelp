@@ -28,12 +28,20 @@ export async function syncOfficialMounts(batchSize: number): Promise<CatalogSync
   const ids = normalizeMountIndex(await fetchGameData('us', '/mount/index', 'en_US'));
   if (ids.length === 0) throw new Error('índice de montarias vazio ou em formato inesperado');
 
-  const { data: existing, error } = await admin
-    .from('collectibles')
-    .select('external_item_id, fetched_at')
-    .eq('kind', 'mount')
-    .eq('source', 'blizzard_api');
-  if (error) throw error;
+  // A API do Supabase devolve no máximo 1000 linhas por consulta: lê em páginas.
+  const existing: { external_item_id: string; fetched_at: string | null }[] = [];
+  for (let from = 0; from < 20_000; from += 1000) {
+    const { data, error } = await admin
+      .from('collectibles')
+      .select('external_item_id, fetched_at')
+      .eq('kind', 'mount')
+      .eq('source', 'blizzard_api')
+      .order('external_item_id')
+      .range(from, from + 999);
+    if (error) throw error;
+    existing.push(...(data ?? []));
+    if (!data || data.length < 1000) break;
+  }
 
   const fresh = new Set(
     (existing ?? [])

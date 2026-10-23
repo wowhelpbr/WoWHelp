@@ -30,7 +30,17 @@ async function handle(request: NextRequest) {
     if (result.processed > 0) revalidateTag('catalog', { expire: 0 });
     return NextResponse.json(result);
   } catch (e) {
-    console.error('catalog-sync falhou', e instanceof Error ? e.message : 'erro');
+    // Só código e mensagem curta (erros do Supabase não são instâncias de Error); nunca segredos.
+    const info =
+      e instanceof Error
+        ? { message: e.message }
+        : typeof e === 'object' && e !== null
+          ? {
+              code: (e as { code?: unknown }).code,
+              message: String((e as { message?: unknown }).message ?? '').slice(0, 200),
+            }
+          : { message: 'desconhecido' };
+    console.error('catalog-sync falhou', JSON.stringify(info));
     return NextResponse.json({ error: 'sync_failed' }, { status: 502 });
   }
 }
