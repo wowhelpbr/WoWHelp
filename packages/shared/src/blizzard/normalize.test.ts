@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   apiLocaleFor,
   isOfficialRenderUrl,
+  normalizeCharacterEncounters,
   normalizeCreatureDisplayMedia,
   normalizeAccountMounts,
   normalizeMountDetail,
@@ -185,5 +186,77 @@ describe('mídia de modelo (creature-display)', () => {
     expect(
       normalizeCreatureDisplayMedia(media([{ key: 'zoom', value: local }]), (u) => u.startsWith('http://127.0.0.1:')),
     ).toBe(local);
+  });
+});
+
+describe('chefes mortos por personagem (encounters)', () => {
+  const sample = {
+    expansions: [
+      {
+        expansion: { id: 1, name: 'Test Expansion' },
+        instances: [
+          {
+            instance: { id: 10, name: 'Test Raid' },
+            modes: [
+              {
+                difficulty: { type: 'HEROIC', name: 'Heroic' },
+                status: { type: 'COMPLETE' },
+                progress: {
+                  completed_count: 2,
+                  total_count: 2,
+                  encounters: [
+                    {
+                      encounter: { id: 1234, name: 'Test Boss' },
+                      completed_count: 7,
+                      last_kill_timestamp: 1792742400000,
+                    },
+                    { encounter: { id: 1235, name: 'Other Boss' }, completed_count: 0 },
+                  ],
+                },
+              },
+              {
+                difficulty: { type: 'NORMAL', name: 'Normal' },
+                progress: { encounters: [{ encounter: { id: 1234 }, completed_count: 3 }] },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
+
+  it('separa chefe por dificuldade e lê a última morte', () => {
+    expect(normalizeCharacterEncounters(sample)).toEqual([
+      { encounterId: 1234, difficulty: 'HEROIC', completedCount: 7, lastKillAt: '2026-10-23T08:00:00.000Z' },
+      { encounterId: 1235, difficulty: 'HEROIC', completedCount: 0, lastKillAt: null },
+      { encounterId: 1234, difficulty: 'NORMAL', completedCount: 3, lastKillAt: null },
+    ]);
+  });
+
+  it('ignora entradas estranhas e formato inesperado', () => {
+    expect(normalizeCharacterEncounters(null)).toEqual([]);
+    expect(normalizeCharacterEncounters({ expansions: 'x' })).toEqual([]);
+    expect(
+      normalizeCharacterEncounters({
+        expansions: [
+          {
+            instances: [
+              {
+                modes: [
+                  {
+                    difficulty: { type: 'heroic; drop table' },
+                    progress: { encounters: [{ encounter: { id: 1 }, completed_count: 1 }] },
+                  },
+                  {
+                    difficulty: { type: 'MYTHIC' },
+                    progress: { encounters: [{ encounter: { id: -5 }, completed_count: 1 }] },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      }),
+    ).toEqual([]);
   });
 });

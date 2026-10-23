@@ -109,6 +109,53 @@ export function normalizeAccountMounts(json: Json): string[] | null {
   return [...ids];
 }
 
+export interface EncounterKill {
+  encounterId: number;
+  /** Ex.: MYTHIC, HEROIC, NORMAL, LFR, LEGACY_25_MAN_HEROIC. */
+  difficulty: string;
+  completedCount: number;
+  lastKillAt: string | null;
+}
+
+/**
+ * /profile/wow/character/{realm}/{name}/encounters/raids (ou /dungeons):
+ * expansions[].instances[].modes[].progress.encounters[] com completed_count
+ * acumulado por chefe e dificuldade. Formato inesperado vira lista vazia.
+ */
+export function normalizeCharacterEncounters(json: Json): EncounterKill[] {
+  if (!isObj(json) || !Array.isArray(json.expansions)) return [];
+  const out = new Map<string, EncounterKill>();
+  for (const expansion of json.expansions) {
+    if (!isObj(expansion) || !Array.isArray(expansion.instances)) continue;
+    for (const instance of expansion.instances) {
+      if (!isObj(instance) || !Array.isArray(instance.modes)) continue;
+      for (const mode of instance.modes) {
+        if (!isObj(mode) || !isObj(mode.difficulty) || !isObj(mode.progress)) continue;
+        const difficulty = str(mode.difficulty.type, 40);
+        if (!difficulty || !/^[A-Z0-9_]{2,40}$/.test(difficulty)) continue;
+        const encounters = Array.isArray(mode.progress.encounters) ? mode.progress.encounters : [];
+        for (const e of encounters) {
+          if (!isObj(e) || !isObj(e.encounter)) continue;
+          const encounterId = int(e.encounter.id);
+          const count = int(e.completed_count);
+          if (!encounterId || encounterId <= 0 || count === null || count < 0) continue;
+          const ts = int(e.last_kill_timestamp);
+          const lastKillAt = ts && ts > 1_072_915_200_000 && ts < 4_102_444_800_000 ? new Date(ts).toISOString() : null;
+          const key = `${encounterId}:${difficulty}`;
+          const prev = out.get(key);
+          out.set(key, {
+            encounterId,
+            difficulty,
+            completedCount: Math.min((prev?.completedCount ?? 0) + count, 1_000_000),
+            lastKillAt: [prev?.lastKillAt, lastKillAt].filter(Boolean).sort().at(-1) ?? null,
+          });
+        }
+      }
+    }
+  }
+  return [...out.values()];
+}
+
 /** /data/wow/mount/index → lista de IDs. */
 export function normalizeMountIndex(json: Json): string[] {
   if (!isObj(json) || !Array.isArray(json.mounts)) return [];
