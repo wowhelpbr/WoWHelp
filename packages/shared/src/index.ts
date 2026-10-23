@@ -7,3 +7,5 @@ export * from './domain/mount-status';
 export * from './domain/resets';
 export * from './addon/saved-variables';
 export * from './addon/snapshot';
+export * from './domain/community';
+export * from './domain/live';
