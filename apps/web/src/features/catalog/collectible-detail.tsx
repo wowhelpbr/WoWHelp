@@ -74,7 +74,7 @@ export async function CollectibleDetail({
 
   return (
     <article aria-labelledby={titleId} className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-8">
-      <TiltStage imageUrl={item.imageUrl} imageMode={IMAGE_MODE[kind]} />
+      <TiltStage imageUrl={item.imageUrl} imageMode={IMAGE_MODE[kind]} placeholder={kind} />
 
       <div className="flex flex-col gap-5">
         <header className="flex flex-col gap-3">

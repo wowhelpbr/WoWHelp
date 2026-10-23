@@ -44,7 +44,7 @@ async function Edit({ kind, params }: { kind: CatalogKind; params: IdParams }) {
       </Link>
       <div className="grid gap-8 xl:grid-cols-[22rem_minmax(0,1fr)]">
         <aside className="flex flex-col gap-3">
-          <TiltStage imageUrl={mount.imageUrl} imageMode={IMAGE_MODE[kind]} />
+          <TiltStage imageUrl={mount.imageUrl} imageMode={IMAGE_MODE[kind]} placeholder={kind} />
           <h1 className="text-3xl text-foreground">{mount.name}</h1>
           <p className="text-sm text-muted-foreground">
             #{mount.externalId} · {mount.sourceName ?? t('noSource')}

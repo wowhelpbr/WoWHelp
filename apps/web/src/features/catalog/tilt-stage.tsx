@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useRef, type PointerEvent } from 'react';
+import { Gift, PawPrint } from 'lucide-react';
 import { MountGlyph } from '@/components/brand/mount-glyph';
 import { cn } from '@/lib/cn';
 
@@ -11,10 +12,13 @@ const MAX_TILT = 7;
 export function TiltStage({
   imageUrl,
   imageMode = 'render',
+  placeholder = 'mount',
   className,
 }: {
   imageUrl: string | null;
   imageMode?: 'render' | 'icon';
+  /** Ícone mostrado enquanto não há imagem. */
+  placeholder?: 'mount' | 'pet' | 'toy';
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -62,9 +66,16 @@ export function TiltStage({
         />
       ) : (
         <div className="tilt-art absolute inset-0 grid place-items-center">
-          <MountGlyph aria-hidden className="size-24 text-unknown/60" />
+          <PlaceholderIcon kind={placeholder} className="size-24 text-unknown/60" />
         </div>
       )}
     </div>
   );
+}
+
+const PLACEHOLDER = { mount: MountGlyph, pet: PawPrint, toy: Gift } as const;
+
+function PlaceholderIcon({ kind, className }: { kind: keyof typeof PLACEHOLDER; className: string }) {
+  const Icon = PLACEHOLDER[kind];
+  return <Icon aria-hidden className={className} />;
 }

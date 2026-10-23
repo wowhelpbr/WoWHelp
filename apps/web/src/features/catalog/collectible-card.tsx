@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useRef, type PointerEvent, type ReactNode } from 'react';
+import { Gift, PawPrint } from 'lucide-react';
 import { MountGlyph } from '@/components/brand/mount-glyph';
 import { Link } from '@/i18n/navigation';
 
@@ -14,6 +15,7 @@ export function CollectibleCard({
   subtitle,
   imageUrl,
   imageMode = 'render',
+  placeholder = 'mount',
   badges,
 }: {
   href: string;
@@ -22,6 +24,8 @@ export function CollectibleCard({
   imageUrl: string | null;
   /** icon = ícone pequeno do jogo (brinquedos), mostrado em tamanho fixo. */
   imageMode?: 'render' | 'icon';
+  /** Ícone mostrado enquanto não há imagem. */
+  placeholder?: 'mount' | 'pet' | 'toy';
   badges?: ReactNode;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
@@ -71,7 +75,7 @@ export function CollectibleCard({
           />
         ) : (
           <span className="tilt-art absolute inset-0 grid place-items-center">
-            <MountGlyph aria-hidden className="size-16 text-unknown/60" />
+            <PlaceholderIcon kind={placeholder} className="size-16 text-unknown/60" />
           </span>
         )}
       </span>
@@ -82,4 +86,11 @@ export function CollectibleCard({
       </span>
     </Link>
   );
+}
+
+const PLACEHOLDER = { mount: MountGlyph, pet: PawPrint, toy: Gift } as const;
+
+function PlaceholderIcon({ kind, className }: { kind: keyof typeof PLACEHOLDER; className: string }) {
+  const Icon = PLACEHOLDER[kind];
+  return <Icon aria-hidden className={className} />;
 }
