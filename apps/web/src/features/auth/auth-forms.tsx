@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useActionState, type ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Field } from '@/components/ui/field';
+import { Link } from '@/i18n/navigation';
 import { signInAction, signUpAction, type AuthFormState } from './actions';
 
 const initial: AuthFormState = { status: 'idle' };
@@ -114,6 +115,20 @@ export function SignUpForm({ extraFields }: { extraFields?: ReactNode }) {
       <Button type="submit" disabled={pending}>
         {pending ? t('pending') : t('submitSignUp')}
       </Button>
+      <p className="text-xs text-muted-foreground">
+        {t.rich('signUpLegal', {
+          terms: (chunks) => (
+            <Link href="/terms" className="text-foreground underline underline-offset-2 hover:text-primary">
+              {chunks}
+            </Link>
+          ),
+          privacy: (chunks) => (
+            <Link href="/privacy" className="text-foreground underline underline-offset-2 hover:text-primary">
+              {chunks}
+            </Link>
+          ),
+        })}
+      </p>
     </form>
   );
 }
