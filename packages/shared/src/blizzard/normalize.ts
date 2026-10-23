@@ -1,0 +1,171 @@
+// Conversão das respostas da API da Blizzard para o domínio do WoWHelp.
+//
+// A Blizzard não publica o formato das respostas (docs/fase-0, A1 e A5). Os
+// formatos abaixo seguem os exemplos públicos da comunidade e são lidos de modo
+// defensivo: campo ausente ou estranho é ignorado, nunca inventado. Ao primeiro
+// teste com conta real, conferir e ajustar (TBD registrado no relatório da Fase 0).
+
+export const BATTLENET_REGIONS = ['us', 'eu', 'kr', 'tw'] as const;
+export type BattlenetRegion = (typeof BATTLENET_REGIONS)[number];
+
+type Json = unknown;
+
+const isObj = (v: Json): v is Record<string, Json> => typeof v === 'object' && v !== null && !Array.isArray(v);
+const str = (v: Json, max = 128): string | null =>
+  typeof v === 'string' && v.trim().length > 0 ? v.trim().slice(0, max) : null;
+const int = (v: Json): number | null => (typeof v === 'number' && Number.isInteger(v) ? v : null);
+const idString = (v: Json): string | null => {
+  if (typeof v === 'number' && Number.isInteger(v) && v >= 0) return String(v);
+  if (typeof v === 'string' && /^\d{1,20}$/.test(v)) return v;
+  return null;
+};
+
+/** Texto que pode vir pronto (com ?locale=) ou como mapa de idiomas (sem locale). */
+export function localized(v: Json, locale: string): string | null {
+  if (typeof v === 'string') return str(v, 512);
+  if (isObj(v)) return str(v[locale], 512) ?? str(v.en_US, 512) ?? null;
+  return null;
+}
+
+export interface BattlenetUser {
+  accountId: string;
+  battletag: string | null;
+}
+
+/** Só o idioma pedido, sem cair para o inglês (para saber se a tradução existe). */
+function exact(v: Json, locale: string): string | null {
+  if (typeof v === 'string') return locale === 'en_US' ? str(v, 512) : null;
+  return isObj(v) ? str(v[locale], 512) : null;
+}
+
+/** /userinfo devolve "o ID da conta e a BattleTag" (campos exatos: TBD). */
+export function normalizeUserInfo(json: Json): BattlenetUser | null {
+  if (!isObj(json)) return null;
+  const accountId = idString(json.id) ?? idString(json.sub) ?? str(json.sub, 64);
+  if (!accountId) return null;
+  return { accountId, battletag: str(json.battletag, 64) };
+}
+
+export interface CharacterSummary {
+  externalId: string | null;
+  name: string;
+  realmSlug: string;
+  realmName: string | null;
+  level: number | null;
+  classId: number | null;
+  className: string | null;
+  raceId: number | null;
+  raceName: string | null;
+  faction: 'ALLIANCE' | 'HORDE' | 'NEUTRAL' | null;
+}
+
+const FACTIONS = new Set(['ALLIANCE', 'HORDE', 'NEUTRAL']);
+
+/** /profile/user/wow → personagens de todas as contas WoW do Battle.net. */
+export function normalizeProfileCharacters(json: Json, locale: string): CharacterSummary[] {
+  if (!isObj(json) || !Array.isArray(json.wow_accounts)) return [];
+  const out: CharacterSummary[] = [];
+  for (const account of json.wow_accounts) {
+    if (!isObj(account) || !Array.isArray(account.characters)) continue;
+    for (const c of account.characters) {
+      if (!isObj(c)) continue;
+      const name = localized(c.name, locale);
+      const realm = isObj(c.realm) ? c.realm : null;
+      const realmSlug = realm ? str(realm.slug, 64) : null;
+      if (!name || !realmSlug || !/^[a-z0-9-]+$/.test(realmSlug)) continue;
+      const cls = isObj(c.playable_class) ? c.playable_class : null;
+      const race = isObj(c.playable_race) ? c.playable_race : null;
+      const factionType = isObj(c.faction) ? str(c.faction.type, 16) : null;
+      const level = int(c.level);
+      out.push({
+        externalId: idString(c.id),
+        name: name.slice(0, 48),
+        realmSlug,
+        realmName: realm ? localized(realm.name, locale) : null,
+        level: level !== null && level >= 1 && level <= 200 ? level : null,
+        classId: cls ? int(cls.id) : null,
+        className: cls ? localized(cls.name, locale) : null,
+        raceId: race ? int(race.id) : null,
+        raceName: race ? localized(race.name, locale) : null,
+        faction: factionType && FACTIONS.has(factionType) ? (factionType as CharacterSummary['faction']) : null,
+      });
+    }
+  }
+  return out;
+}
+
+/**
+ * /profile/user/wow/collections/mounts → IDs de montaria que a conta tem.
+ * Formato inesperado devolve null ("não sei"), nunca lista vazia ("não tem nada").
+ */
+export function normalizeAccountMounts(json: Json): string[] | null {
+  if (!isObj(json) || !Array.isArray(json.mounts)) return null;
+  const ids = new Set<string>();
+  for (const entry of json.mounts) {
+    if (!isObj(entry)) continue;
+    const id = isObj(entry.mount) ? idString(entry.mount.id) : null;
+    if (id) ids.add(id);
+  }
+  return [...ids];
+}
+
+/** /data/wow/mount/index → lista de IDs. */
+export function normalizeMountIndex(json: Json): string[] {
+  if (!isObj(json) || !Array.isArray(json.mounts)) return [];
+  const ids = new Set<string>();
+  for (const m of json.mounts) {
+    const id = isObj(m) ? idString(m.id) : null;
+    if (id) ids.add(id);
+  }
+  return [...ids];
+}
+
+export interface MountDetail {
+  id: string;
+  names: { 'en-US': string | null; 'pt-BR': string | null };
+  descriptions: { 'en-US': string | null; 'pt-BR': string | null };
+  sourceType: string | null;
+  sourceNames: { 'en-US': string | null; 'pt-BR': string | null };
+  faction: 'ALLIANCE' | 'HORDE' | null;
+  hiddenUntilCollected: boolean;
+  creatureDisplayId: number | null;
+}
+
+/** /data/wow/mount/{id} pedido sem locale (todos os idiomas numa resposta só). */
+export function normalizeMountDetail(json: Json): MountDetail | null {
+  if (!isObj(json)) return null;
+  const id = idString(json.id);
+  const en = localized(json.name, 'en_US');
+  if (!id || !en) return null;
+  const src = isObj(json.source) ? json.source : null;
+  const sourceType = src ? str(src.type, 32) : null;
+  const factionType = isObj(json.faction) ? str(json.faction.type, 16) : null;
+  const display = Array.isArray(json.creature_displays) ? json.creature_displays.find(isObj) : undefined;
+  return {
+    id,
+    names: { 'en-US': en, 'pt-BR': exact(json.name, 'pt_BR') },
+    descriptions: { 'en-US': exact(json.description, 'en_US'), 'pt-BR': exact(json.description, 'pt_BR') },
+    sourceType: sourceType && /^[A-Z_]+$/.test(sourceType) ? sourceType : null,
+    sourceNames: {
+      'en-US': src ? exact(src.name, 'en_US') : null,
+      'pt-BR': src ? exact(src.name, 'pt_BR') : null,
+    },
+    faction: factionType === 'ALLIANCE' || factionType === 'HORDE' ? factionType : null,
+    hiddenUntilCollected: json.should_exclude_if_uncollected === true,
+    creatureDisplayId: display ? int(display.id) : null,
+  };
+}
+
+/** Idioma a pedir à API conforme a região (cada host aceita só alguns). */
+export function apiLocaleFor(region: BattlenetRegion, appLocale: 'en-US' | 'pt-BR'): string {
+  switch (region) {
+    case 'us':
+      return appLocale === 'pt-BR' ? 'pt_BR' : 'en_US';
+    case 'eu':
+      return 'en_GB';
+    case 'kr':
+      return 'ko_KR';
+    case 'tw':
+      return 'zh_TW';
+  }
+}

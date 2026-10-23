@@ -164,7 +164,6 @@
     "focusSaved": "Saved",
     "focusCancel": "Cancel",
     "charactersTitle": "Characters",
-    "charactersBody": "No characters linked. Battle.net linking arrives in phase 2 and the addon import in phase 5. Until then, your goals work without them.",
     "sourcesTitle": "Data sources",
     "sourceManual": "Your goals and checklists",
     "sourceBattlenet": "Battle.net",
@@ -174,7 +173,12 @@
     "statsLabel": "Your progress",
     "statActive": "Active goals",
     "statSteps": "Steps done",
-    "statCompleted": "Completed goals"
+    "statCompleted": "Completed goals",
+    "charactersEmpty": "No characters linked yet. Connect Battle.net to bring them in.",
+    "charactersSeeAll": "See all characters",
+    "charactersConnect": "Connect Battle.net",
+    "notConnected": "Not connected",
+    "charactersMore": "{count, plural, one {+# more character} other {+# more characters}}"
   },
   "Goals": {
     "title": "Goals",
@@ -269,5 +273,44 @@
     "title": "Something went wrong",
     "body": "The page failed to load. Try again, and if it keeps happening, come back later.",
     "retry": "Try again"
+  },
+  "Characters": {
+    "metaTitle": "Characters",
+    "title": "Characters",
+    "intro": "Link your Battle.net account to bring in your characters and your mount collection. WoWHelp reads only what you authorize and never sees your password.",
+    "attribution": "Data provided by Blizzard Entertainment.",
+    "retention": "Data from Battle.net is deleted automatically if it is not refreshed within 30 days, and right away when you disconnect.",
+    "regionLabel": "Game region",
+    "connect": "Connect Battle.net",
+    "reconnect": "Sync again",
+    "disconnect": "Disconnect",
+    "disconnectConfirm": "Disconnect this region and delete the characters and collection that came from Battle.net? Your goals stay.",
+    "consent": "You will be sent to Battle.net to approve access to your World of Warcraft characters and collections. Syncing again asks for approval again, because WoWHelp does not keep your Battle.net access.",
+    "notConfigured": "Battle.net linking is not available in this environment yet.",
+    "connectedAs": "Connected as {battletag}",
+    "connectedNoTag": "Connected",
+    "lastSync": "Last sync {when}",
+    "mountsCount": "{count, plural, =0 {No mounts found in the collection} one {# mount collected} other {# mounts collected}}",
+    "mountsUnknown": "Mount collection unknown",
+    "empty": "No characters yet. Connect Battle.net to bring them in.",
+    "emptyRegion": "No characters found in this region.",
+    "level": "Level {level}",
+    "source": {
+      "blizzard_api": "Battle.net",
+      "addon_import": "Companion addon"
+    },
+    "results": {
+      "connected": "Battle.net connected. Characters and mounts are up to date.",
+      "connected_partial": "Characters synced, but the mount collection could not be read. It shows as unknown until the next sync.",
+      "denied": "You declined the authorization on Battle.net. Nothing was changed.",
+      "expired": "The connection took too long. Start again.",
+      "invalid_state": "The connection could not be verified. Start again from this page.",
+      "session": "Your WoWHelp session changed during the connection. Sign in and try again.",
+      "token": "Battle.net did not accept the authorization. Try again in a moment.",
+      "profile": "Battle.net did not return your characters. Try again later.",
+      "storage": "We could not save the data. Try again.",
+      "not_configured": "Battle.net linking is not available in this environment yet.",
+      "invalid_region": "Choose a valid region."
+    }
   }
 }

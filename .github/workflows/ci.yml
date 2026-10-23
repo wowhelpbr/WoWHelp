@@ -53,11 +53,13 @@ jobs:
         run: supabase test db
       - name: Variáveis do Supabase local para o app
         run: |
-          eval "$(supabase status -o env | grep -E '^(API_URL|PUBLISHABLE_KEY)=')"
+          eval "$(supabase status -o env | grep -E '^(API_URL|PUBLISHABLE_KEY|SECRET_KEY)=')"
           {
             echo "NEXT_PUBLIC_SUPABASE_URL=$API_URL"
             echo "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=$PUBLISHABLE_KEY"
             echo "NEXT_PUBLIC_SITE_URL=http://localhost:3100"
+            # Chave padrão do Supabase LOCAL (não é a de produção).
+            echo "SUPABASE_SECRET_KEY=$SECRET_KEY"
           } > apps/web/.env.local
       - run: npm run build
       - run: npx playwright install --with-deps chromium

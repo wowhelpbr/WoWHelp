@@ -1,12 +1,14 @@
-import { nextOpenStep, pickNextActions, goalProgress } from '@wowhelp/shared';
+import { getFreshness, goalProgress, nextOpenStep, pickNextActions } from '@wowhelp/shared';
 import type { Metadata } from 'next';
 import { getFormatter, getLocale, getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 import { AccountSidebar } from '@/components/layout/account-sidebar';
+import { ButtonLink } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { DataStateBadge, StateNotice } from '@/components/ui/data-state';
 import { Panel } from '@/components/ui/panel';
 import { getCurrentUser } from '@/features/auth/session';
+import { getMyBattlenetData } from '@/features/battlenet/queries';
 import { GoalComposer } from '@/features/goals/goal-composer';
 import { GoalList } from '@/features/goals/goal-list';
 import { getMyGoals } from '@/features/goals/queries';
@@ -38,15 +40,25 @@ async function Dashboard() {
   const user = await getCurrentUser();
   if (!user) redirect({ href: '/login?next=/dashboard', locale });
 
-  const [goalsResult, profile, t, tg, format] = await Promise.all([
+  const [goalsResult, profile, bnet, t, tg, format] = await Promise.all([
     getMyGoals(),
     getMyProfile(),
+    getMyBattlenetData(),
     getTranslations('Dashboard'),
     getTranslations('Goals'),
     getFormatter(),
   ]);
   const ta = await getTranslations('Availability');
   const now = new Date();
+  const characters = bnet?.characters ?? [];
+  const lastBattlenetSync =
+    bnet?.connections
+      .map((c) => c.charactersSyncedAt)
+      .filter((d): d is string => d !== null)
+      .sort()
+      .at(-1) ?? null;
+  // Mais de 7 dias sem sincronizar: avisa como "desatualizado" (apagado aos 30).
+  const freshness = getFreshness(lastBattlenetSync, now, 24 * 7);
 
   const goals = goalsResult.status === 'ok' ? goalsResult.goals : [];
   const nextActions = pickNextActions(goals);
@@ -131,9 +143,38 @@ async function Dashboard() {
           </Panel>
 
           <Panel title={t('charactersTitle')} titleId="characters">
-            <StateNotice state="not_available" title={ta('planned', { phase: 2 })}>
-              {t('charactersBody')}
-            </StateNotice>
+            {characters.length === 0 ? (
+              <StateNotice
+                state="empty"
+                title={t('charactersEmpty')}
+                action={
+                  <ButtonLink href="/characters" variant="secondary" size="sm" className="self-start">
+                    {t('charactersConnect')}
+                  </ButtonLink>
+                }
+              />
+            ) : (
+              <div className="flex flex-col gap-3">
+                <ul className="flex flex-col gap-2">
+                  {characters.slice(0, 4).map((c) => (
+                    <li key={c.id} className="flex items-baseline justify-between gap-2 text-sm">
+                      <span className="font-semibold text-foreground">{c.name}</span>
+                      <span className="text-muted-foreground">
+                        {[c.level, c.className].filter(Boolean).join(' · ')}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                {characters.length > 4 && (
+                  <p className="text-xs text-muted-foreground">
+                    {t('charactersMore', { count: characters.length - 4 })}
+                  </p>
+                )}
+                <ButtonLink href="/characters" variant="ghost" size="sm" className="self-start">
+                  {t('charactersSeeAll')}
+                </ButtonLink>
+              </div>
+            )}
           </Panel>
 
           <Panel title={t('sourcesTitle')} titleId="sources">
@@ -151,7 +192,14 @@ async function Dashboard() {
               </li>
               <li className="flex flex-wrap items-center justify-between gap-2">
                 <span className="text-foreground">{t('sourceBattlenet')}</span>
-                <DataStateBadge state="not_available" label={ta('planned', { phase: 2 })} />
+                {lastBattlenetSync ? (
+                  <DataStateBadge
+                    state={freshness === 'stale' ? 'stale' : 'ok'}
+                    label={t('lastUpdated', { when: format.relativeTime(new Date(lastBattlenetSync), now) })}
+                  />
+                ) : (
+                  <DataStateBadge state="empty" label={t('notConnected')} />
+                )}
               </li>
               <li className="flex flex-wrap items-center justify-between gap-2">
                 <span className="text-foreground">{t('sourceAddon')}</span>
