@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "0.1.0",
+  "product": "WoWHelp",
+  "enums": {
+    "collectionStatus": [
+      "collected",
+      "not_collected",
+      "unknown"
+    ],
+    "goalStatus": [
+      "active",
+      "completed",
+      "paused"
+    ],
+    "dataSource": [
+      "blizzard_api",
+      "addon_import",
+      "manual",
+      "editorial"
+    ],
+    "contentReview": [
+      "draft",
+      "needs_review",
+      "approved",
+      "retired"
+    ]
+  },
+  "models": {
+    "Character": {
+      "id": "UUID",
+      "ownerId": "UUID",
+      "region": "enum NA|EU|KR|TW|CN where available",
+      "realmSlug": "string",
+      "externalCharacterId": "nullable string",
+      "displayName": "string",
+      "lastSyncedAt": "ISO UTC nullable"
+    },
+    "CollectionSnapshot": {
+      "characterId": "UUID nullable",
+      "collectibleId": "string",
+      "status": "enum collectionStatus",
+      "source": "enum dataSource",
+      "observedAt": "ISO UTC",
+      "fieldsAvailable": [
+        "string"
+      ]
+    },
+    "Goal": {
+      "id": "UUID",
+      "userId": "UUID",
+      "targetType": "string",
+      "targetId": "string",
+      "status": "enum goalStatus",
+      "steps": [
+        {
+          "id": "string",
+          "done": "boolean"
+        }
+      ]
+    },
+    "AddonImport": {
+      "schemaVersion": "integer",
+      "addonVersion": "string",
+      "observedAt": "ISO UTC",
+      "region": "string|null",
+      "characters": [
+        {
+          "realm": "string",
+          "name": "string",
+          "dataAvailable": [
+            "string"
+          ],
+          "collections": {}
+        }
+      ]
+    }
+  },
+  "publicApiPlan": [
+    {
+      "path": "/api/catalog/mounts",
+      "method": "GET",
+      "authorization": "optional"
+    },
+    {
+      "path": "/api/me/characters",
+      "method": "GET",
+      "authorization": "user"
+    },
+    {
+      "path": "/api/goals",
+      "method": "POST",
+      "authorization": "user"
+    },
+    {
+      "path": "/api/planner/generate",
+      "method": "POST",
+      "authorization": "user"
+    },
+    {
+      "path": "/api/addon/imports/validate",
+      "method": "POST",
+      "authorization": "user"
+    }
+  ],
+  "warnings": [
+    "Contracts are proposed, not API implementation",
+    "Never trust userId from client payload",
+    "Addon Lua input must be parsed without executing Lua",
+    "Battle.net OAuth is a separate account linking flow"
+  ]
+}
