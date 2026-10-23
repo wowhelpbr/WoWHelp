@@ -72,6 +72,24 @@ describe('readAddonSnapshot', () => {
     expect(r.ok && r.snapshot.mounts).toBeNull();
   });
 
+  it('campos opcionais podem faltar (o addon omite o que o jogo não informou)', () => {
+    const minimal = `WoWHelpCompanionDB = {
+["schemaVersion"] = 1,
+["addonVersion"] = "0.1.0",
+["characters"] = {
+["Player-1234-0ABCDEF0"] = { ["name"] = "Testmage" },
+},
+}`;
+    const r = readAddonSnapshot(minimal);
+    expect(r).toMatchObject({
+      ok: true,
+      snapshot: { observedAt: null, weeklyResetAt: null, region: null, client: null, mounts: null },
+    });
+    expect(r.ok && r.snapshot.characters[0]).toMatchObject({ name: 'Testmage', observedAt: null, level: null });
+    const noReset = readAddonSnapshot(SAMPLE.replace('["weeklyResetAt"] = 1793113200,', ''));
+    expect(noReset.ok && noReset.snapshot.weeklyResetAt).toBeNull();
+  });
+
   it('versão de dados desconhecida é recusada', () => {
     const r = readAddonSnapshot(SAMPLE.replace('["schemaVersion"] = 1', '["schemaVersion"] = 9'));
     expect(r).toEqual({ ok: false, code: 'unsupported_version' });

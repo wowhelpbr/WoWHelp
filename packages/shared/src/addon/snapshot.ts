@@ -13,12 +13,12 @@ const epoch = z
   .max(4_102_444_800) // 2100-01-01
   .transform((s) => new Date(s * 1000).toISOString());
 
-const optionalEpoch = z.union([
-  epoch,
-  z.literal(0).transform(() => null),
-  z.null(),
-  z.undefined().transform(() => null),
-]);
+// .optional() é o que deixa a chave faltar: no Zod 4 um z.undefined() dentro
+// da união não basta, e o addon omite o campo quando o jogo não informa.
+const optionalEpoch = z
+  .union([epoch, z.literal(0).transform(() => null), z.null()])
+  .optional()
+  .transform((v) => v ?? null);
 const optionalText = (max: number) =>
   z
     .string()
