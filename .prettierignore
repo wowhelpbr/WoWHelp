@@ -1,0 +1,9 @@
+# Documentos e originais não são reformatados automaticamente.
+planning/
+docs/
+supabase/
+**/*.md
+**/.next/
+**/node_modules/
+package-lock.json
+apps/web/next-env.d.ts

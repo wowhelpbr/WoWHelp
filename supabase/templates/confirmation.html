@@ -1,0 +1,18 @@
+<!-- Confirmação de e-mail do WoWHelp. Usa token_hash (funciona mesmo se o link
+     for aberto em outro aparelho, diferente do fluxo PKCE com ?code=). -->
+<h2>Confirm your WoWHelp account</h2>
+<p>Click the link below to confirm your e-mail and start planning your sessions.</p>
+<p>
+  <a href="{{ .SiteURL }}/en/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/en/dashboard">
+    Confirm my e-mail
+  </a>
+</p>
+<hr />
+<h2>Confirme sua conta no WoWHelp</h2>
+<p>Clique no link abaixo para confirmar seu e-mail e começar a planejar suas sessões.</p>
+<p>
+  <a href="{{ .SiteURL }}/pt-br/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/pt-br/dashboard">
+    Confirmar meu e-mail
+  </a>
+</p>
+<p>If you did not create this account, ignore this message. / Se você não criou esta conta, ignore esta mensagem.</p>

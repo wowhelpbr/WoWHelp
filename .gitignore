@@ -1,1 +1,13 @@
 node_modules/
+
+# Materiais originais (artes, contratos, documentos antigos). Nunca versionar:
+# o repositório é público, os arquivos são grandes e o contrato tem dados pessoais.
+# Versões otimizadas e liberadas para o site vão para apps/web/public/brand.
+docs/Artes WoWhelp/
+
+# Testes e temporários locais
+.tmp/
+apps/web/test-results/
+apps/web/playwright-report/
+supabase/.temp/
+supabase/.branches/

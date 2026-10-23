@@ -1,0 +1,21 @@
+{
+  "name": "@wowhelp/shared",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Domínio e contratos compartilhados do WoWHelp (enums, schemas Zod, regras puras).",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "vitest": "^5.0.5"
+  }
+}
