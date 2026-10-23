@@ -6,6 +6,11 @@ create extension if not exists pgtap with schema extensions;
 
 select plan(27);
 
+-- Começa do zero (tudo volta no rollback do fim): o teste não depende do que
+-- já existe no banco local, como contas e catálogo criados pelos testes E2E.
+delete from auth.users;
+delete from public.collectibles;
+
 -- Usuários de teste (o trigger on_auth_user_created cria os perfis).
 insert into auth.users (id, email, raw_user_meta_data, aud, role)
 values
