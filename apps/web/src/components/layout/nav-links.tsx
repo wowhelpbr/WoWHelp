@@ -27,7 +27,7 @@ function NavLinksView({ pathname }: { pathname: string | null }) {
   return (
     <ul className="hidden h-full items-stretch gap-1 md:flex">
       {NAV_ITEMS.filter((item) => item.key !== 'settings').map((item) => {
-        const active = isActive(pathname, item.href);
+        const active = isActive(pathname, item.href, 'also' in item ? item.also : []);
         return (
           <li key={item.key} className="flex">
             <Link

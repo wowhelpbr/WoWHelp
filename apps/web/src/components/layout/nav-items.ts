@@ -2,13 +2,15 @@ import { Compass, LayoutDashboard, Settings } from 'lucide-react';
 
 export const NAV_ITEMS = [
   { href: '/', key: 'home', icon: Compass },
-  { href: '/mounts', key: 'mounts', icon: null },
+  // Coleções: montarias, mascotes e brinquedos (abas dentro da página).
+  { href: '/mounts', key: 'mounts', icon: null, also: ['/pets', '/toys'] },
   { href: '/dashboard', key: 'dashboard', icon: LayoutDashboard },
   { href: '/settings', key: 'settings', icon: Settings },
 ] as const;
 
 /** pathname null = ainda carregando (rota dinâmica): nada marcado como ativo. */
-export function isActive(pathname: string | null, href: string) {
+export function isActive(pathname: string | null, href: string, also: readonly string[] = []) {
   if (pathname === null) return false;
-  return href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+  if (href === '/') return pathname === '/';
+  return [href, ...also].some((h) => pathname === h || pathname.startsWith(`${h}/`));
 }

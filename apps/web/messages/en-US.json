@@ -7,7 +7,7 @@
   "Nav": {
     "main": "Main navigation",
     "home": "Discover",
-    "mounts": "Mounts",
+    "mounts": "Collections",
     "dashboard": "My goals",
     "settings": "Settings",
     "account": "Account",
@@ -291,12 +291,14 @@
     "whereUnknown": "No reviewed location yet",
     "sourcePrefix": "Source:",
     "attemptsTitle": "Your attempts",
-    "attemptsSignIn": "Sign in and connect Battle.net to see how many times you killed the boss that drops this mount.",
+    "attemptsSignIn": "Sign in and connect Battle.net to see how many times you killed the boss that drops this item.",
     "attemptsConnect": "Connect Battle.net to count how many times you killed this boss.",
     "attemptsConnectLink": "Connect",
     "attemptsKills": "{count, plural, one {time you killed the boss} other {times you killed the boss}}{difficulty, select, any {} other { ({difficulty})}} {characters, plural, =0 {} one {with # character} other {across # characters}}",
     "attemptsSource": "From Battle.net, updated {when}. This counts boss kills, not loot rolls.",
-    "attemptsNone": "No kills of this boss on your Battle.net characters."
+    "attemptsNone": "No kills of this boss on your Battle.net characters.",
+    "categoryLabel": "Family",
+    "categoryAll": "Any family"
   },
   "Settings": {
     "metaTitle": "Settings",
@@ -537,8 +539,6 @@
     "communityTitle": "Brazilian community",
     "communitySoon": "Brazilian WoW creators. Coming in the next step.",
     "backToAdmin": "Back to curation",
-    "backToMounts": "Back to mounts",
-    "mountsCount": "{approved} published, {drafts} drafts, out of {total} mounts",
     "search": "Search by name or number",
     "filter": "Status",
     "filterAll": "All",
@@ -587,6 +587,55 @@
       },
       "difficulty": "Boss difficulty",
       "difficultyHint": "E.g. HEROIC, MYTHIC, LEGACY_25_MAN_HEROIC. Empty = any."
+    },
+    "petsTitle": "Pets",
+    "toysTitle": "Toys",
+    "itemsCount": "{approved} published, {drafts} drafts, out of {total} items",
+    "backToList": "Back to the list"
+  },
+  "Catalog": {
+    "tabsLabel": "Collection types",
+    "mount": {
+      "tab": "Mounts",
+      "metaTitle": "Mounts",
+      "title": "Mount catalog",
+      "intro": "Every World of Warcraft Retail mount, straight from Blizzard's official data. Search, filter and turn any mount into a goal.",
+      "attribution": "Mount data provided by Blizzard Entertainment and refreshed every week.",
+      "searchLabel": "Search mounts",
+      "searchPlaceholder": "Mount name",
+      "signInForStatus": "Sign in to see which mounts you already have.",
+      "results": "{count, plural, =0 {No mounts match these filters} one {# mount} other {# mounts}}",
+      "notFound": "This mount is not in the catalog.",
+      "back": "Back to the catalog",
+      "blizzardId": "Blizzard mount ID {id}"
+    },
+    "pet": {
+      "tab": "Pets",
+      "metaTitle": "Pets",
+      "title": "Pet catalog",
+      "intro": "Every World of Warcraft Retail battle pet, straight from Blizzard's official data. Filter by family, source and what you already have.",
+      "attribution": "Pet data provided by Blizzard Entertainment and refreshed every week.",
+      "searchLabel": "Search pets",
+      "searchPlaceholder": "Pet name",
+      "signInForStatus": "Sign in to see which pets you already have.",
+      "results": "{count, plural, =0 {No pets match these filters} one {# pet} other {# pets}}",
+      "notFound": "This pet is not in the catalog.",
+      "back": "Back to pets",
+      "blizzardId": "Blizzard species ID {id}"
+    },
+    "toy": {
+      "tab": "Toys",
+      "metaTitle": "Toys",
+      "title": "Toy catalog",
+      "intro": "Every World of Warcraft Retail Toy Box toy, straight from Blizzard's official data.",
+      "attribution": "Toy data provided by Blizzard Entertainment and refreshed every week.",
+      "searchLabel": "Search toys",
+      "searchPlaceholder": "Toy name",
+      "signInForStatus": "Sign in to see which toys you already have.",
+      "results": "{count, plural, =0 {No toys match these filters} one {# toy} other {# toys}}",
+      "notFound": "This toy is not in the catalog.",
+      "back": "Back to toys",
+      "blizzardId": "Blizzard toy ID {id}"
     }
   }
 }

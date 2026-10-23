@@ -7,7 +7,7 @@
   "Nav": {
     "main": "Navegação principal",
     "home": "Descobrir",
-    "mounts": "Montarias",
+    "mounts": "Coleções",
     "dashboard": "Meus objetivos",
     "settings": "Configurações",
     "account": "Conta",
@@ -291,12 +291,14 @@
     "whereUnknown": "Ainda sem local revisado",
     "sourcePrefix": "Fonte:",
     "attemptsTitle": "Suas tentativas",
-    "attemptsSignIn": "Entre e conecte a Battle.net para ver quantas vezes você já matou o chefe que solta esta montaria.",
+    "attemptsSignIn": "Entre e conecte a Battle.net para ver quantas vezes você já matou o chefe que solta este item.",
     "attemptsConnect": "Conecte a Battle.net para contar quantas vezes você já matou este chefe.",
     "attemptsConnectLink": "Conectar",
     "attemptsKills": "{count, plural, one {vez que você matou o chefe} other {vezes que você matou o chefe}}{difficulty, select, any {} other { ({difficulty})}} {characters, plural, =0 {} one {com # personagem} other {somando # personagens}}",
     "attemptsSource": "Pela Battle.net, atualizado {when}. É a contagem de mortes do chefe, não de saques.",
-    "attemptsNone": "Nenhuma morte deste chefe nos seus personagens da Battle.net."
+    "attemptsNone": "Nenhuma morte deste chefe nos seus personagens da Battle.net.",
+    "categoryLabel": "Tipo",
+    "categoryAll": "Qualquer tipo"
   },
   "Settings": {
     "metaTitle": "Configurações",
@@ -537,8 +539,6 @@
     "communityTitle": "Comunidade BR",
     "communitySoon": "Criadores brasileiros de WoW. Chega na próxima etapa.",
     "backToAdmin": "Voltar à curadoria",
-    "backToMounts": "Voltar às montarias",
-    "mountsCount": "{approved} publicadas, {drafts} em rascunho, de {total} montarias",
     "search": "Buscar por nome ou número",
     "filter": "Situação",
     "filterAll": "Todas",
@@ -587,6 +587,55 @@
       },
       "difficulty": "Dificuldade do chefe",
       "difficultyHint": "Ex.: HEROIC, MYTHIC, LEGACY_25_MAN_HEROIC. Vazio = qualquer uma."
+    },
+    "petsTitle": "Mascotes",
+    "toysTitle": "Brinquedos",
+    "itemsCount": "{approved} publicados, {drafts} em rascunho, de {total} itens",
+    "backToList": "Voltar à lista"
+  },
+  "Catalog": {
+    "tabsLabel": "Tipos de coleção",
+    "mount": {
+      "tab": "Montarias",
+      "metaTitle": "Montarias",
+      "title": "Catálogo de montarias",
+      "intro": "Todas as montarias do World of Warcraft Retail, direto dos dados oficiais da Blizzard. Busque, filtre e transforme qualquer montaria em objetivo.",
+      "attribution": "Dados das montarias fornecidos pela Blizzard Entertainment e atualizados toda semana.",
+      "searchLabel": "Buscar montarias",
+      "searchPlaceholder": "Nome da montaria",
+      "signInForStatus": "Entre para ver quais montarias você já tem.",
+      "results": "{count, plural, =0 {Nenhuma montaria com esses filtros} one {# montaria} other {# montarias}}",
+      "notFound": "Esta montaria não está no catálogo.",
+      "back": "Voltar às montarias",
+      "blizzardId": "ID da montaria na Blizzard {id}"
+    },
+    "pet": {
+      "tab": "Mascotes",
+      "metaTitle": "Mascotes",
+      "title": "Catálogo de mascotes",
+      "intro": "Todos os mascotes de batalha do World of Warcraft Retail, direto dos dados oficiais da Blizzard. Filtre por tipo, origem e o que você já tem.",
+      "attribution": "Dados dos mascotes fornecidos pela Blizzard Entertainment e atualizados toda semana.",
+      "searchLabel": "Buscar mascotes",
+      "searchPlaceholder": "Nome do mascote",
+      "signInForStatus": "Entre para ver quais mascotes você já tem.",
+      "results": "{count, plural, =0 {Nenhum mascote com esses filtros} one {# mascote} other {# mascotes}}",
+      "notFound": "Este mascote não está no catálogo.",
+      "back": "Voltar aos mascotes",
+      "blizzardId": "ID da espécie na Blizzard {id}"
+    },
+    "toy": {
+      "tab": "Brinquedos",
+      "metaTitle": "Brinquedos",
+      "title": "Catálogo de brinquedos",
+      "intro": "Todos os brinquedos da Caixa de Brinquedos do World of Warcraft Retail, direto dos dados oficiais da Blizzard.",
+      "attribution": "Dados dos brinquedos fornecidos pela Blizzard Entertainment e atualizados toda semana.",
+      "searchLabel": "Buscar brinquedos",
+      "searchPlaceholder": "Nome do brinquedo",
+      "signInForStatus": "Entre para ver quais brinquedos você já tem.",
+      "results": "{count, plural, =0 {Nenhum brinquedo com esses filtros} one {# brinquedo} other {# brinquedos}}",
+      "notFound": "Este brinquedo não está no catálogo.",
+      "back": "Voltar aos brinquedos",
+      "blizzardId": "ID do brinquedo na Blizzard {id}"
     }
   }
 }
