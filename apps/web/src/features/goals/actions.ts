@@ -72,6 +72,8 @@ export async function addStepAction(_prev: GoalFormState, formData: FormData): P
     label: formData.get('label'),
   });
   if (!parsed.success) return { status: 'error', code: 'invalid_step' };
+  const minutesRaw = Number(formData.get('minutes'));
+  const minutes = Number.isInteger(minutesRaw) && minutesRaw >= 1 && minutesRaw <= 600 ? minutesRaw : null;
 
   const supabase = await createClient();
   const { data: last } = await supabase
@@ -86,6 +88,7 @@ export async function addStepAction(_prev: GoalFormState, formData: FormData): P
     goal_id: parsed.data.goalId,
     label: parsed.data.label,
     sort_order: (last?.sort_order ?? -1) + 1,
+    estimated_minutes: minutes,
   });
   if (error) return { status: 'error', code: dbError(error) };
 

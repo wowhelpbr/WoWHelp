@@ -29,8 +29,10 @@ Atualizado durante a noite de 23/10/2026. Tarefas de até ~4 horas, com resultad
 
 ## Fase 4: Planejador
 
-- [ ] Atividades semanais do jogador com reset por região (fonte oficial)
-- [ ] Planejador de sessão de 15 / 30 / 60 / 120+ minutos
+- [x] Atividades semanais do jogador com reset por região (Europa oficial; demais estimadas e sinalizadas)
+- [x] Planejador de sessão de 15 / 30 / 60 / 120+ minutos
+- [ ] Confirmar reset das Américas pelo addon ou fonte oficial
+- [ ] Lista editorial revisada de atividades semanais do Midnight
 
 ## Fase 5: Addon
 

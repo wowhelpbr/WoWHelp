@@ -7,15 +7,15 @@ import { MountGlyph } from '@/components/brand/mount-glyph';
  * planning/docs/02_FASES_E_MARCOS.md e 08_BACKLOG.md). Hoje todas já
  * funcionam com objetivos e checklists manuais.
  */
-export type ToolAvailability = { phase: number } | 'after_beta';
+export type ToolAvailability = { href: '/mounts' | '/planner' | '/characters' } | { phase: number } | 'after_beta';
 
 export const FOCUS_AREA_CONFIG: Record<FocusArea, { icon: LucideIcon | typeof MountGlyph; tool: ToolAvailability }> = {
   gear: { icon: Shield, tool: 'after_beta' },
-  mounts: { icon: MountGlyph, tool: { phase: 3 } },
+  mounts: { icon: MountGlyph, tool: { href: '/mounts' } },
   achievements: { icon: Trophy, tool: 'after_beta' },
-  weekly: { icon: CalendarCheck, tool: { phase: 4 } },
-  alts: { icon: Users, tool: { phase: 2 } },
+  weekly: { icon: CalendarCheck, tool: { href: '/planner' } },
+  alts: { icon: Users, tool: { href: '/characters' } },
   class: { icon: BookOpen, tool: 'after_beta' },
-  sessions: { icon: Hourglass, tool: { phase: 4 } },
+  sessions: { icon: Hourglass, tool: { href: '/planner' } },
   housing: { icon: House, tool: 'after_beta' },
 };

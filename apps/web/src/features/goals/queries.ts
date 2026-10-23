@@ -7,6 +7,7 @@ export interface StepView {
   label: string;
   sortOrder: number;
   completedAt: string | null;
+  estimatedMinutes: number | null;
 }
 
 export interface GoalView extends GoalLike {
@@ -25,7 +26,9 @@ type GoalRow = {
   created_at: string;
   updated_at: string;
   completed_at: string | null;
-  goal_steps: { id: string; label: string; sort_order: number; completed_at: string | null }[] | null;
+  goal_steps:
+    | { id: string; label: string; sort_order: number; completed_at: string | null; estimated_minutes: number | null }[]
+    | null;
 };
 
 export type GoalsResult = { status: 'ok'; goals: GoalView[] } | { status: 'error' };
@@ -39,7 +42,7 @@ export async function getMyGoals(): Promise<GoalsResult> {
   const { data, error } = await supabase
     .from('goals')
     .select(
-      'id, title, notes, status, priority, created_at, updated_at, completed_at, goal_steps(id, label, sort_order, completed_at)',
+      'id, title, notes, status, priority, created_at, updated_at, completed_at, goal_steps(id, label, sort_order, completed_at, estimated_minutes)',
     )
     .order('created_at', { ascending: true })
     .order('sort_order', { referencedTable: 'goal_steps', ascending: true })
@@ -63,6 +66,7 @@ export async function getMyGoals(): Promise<GoalsResult> {
         label: s.label,
         sortOrder: s.sort_order,
         completedAt: s.completed_at,
+        estimatedMinutes: s.estimated_minutes,
       })),
     })),
   };

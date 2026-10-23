@@ -45,6 +45,11 @@ function StepRow({ step, onToggle }: { step: StepView; onToggle: (step: StepView
         className={cn('min-w-0 flex-1 text-[0.95rem]', done ? 'text-muted-foreground line-through' : 'text-foreground')}
       >
         {step.label}
+        {step.estimatedMinutes !== null && (
+          <span className="ml-2 text-xs text-muted-foreground no-underline">
+            {t('minutesValue', { minutes: step.estimatedMinutes })}
+          </span>
+        )}
       </span>
       <form action={deleteStepAction}>
         <input type="hidden" name="stepId" value={step.id} />
@@ -84,6 +89,22 @@ function AddStep({ goalId }: { goalId: string }) {
           placeholder={t('stepPlaceholder')}
           className={cn(inputClasses, 'min-h-10 w-full min-w-0 flex-1 text-sm')}
         />
+        <label htmlFor={`step-min-${goalId}`} className="sr-only">
+          {t('stepMinutes')}
+        </label>
+        <select
+          id={`step-min-${goalId}`}
+          name="minutes"
+          defaultValue=""
+          className={cn(inputClasses, 'min-h-10 w-24 shrink-0 text-sm')}
+        >
+          <option value="">{t('minutesNone')}</option>
+          {[5, 10, 15, 30, 45, 60, 90, 120].map((m) => (
+            <option key={m} value={m}>
+              {t('minutesValue', { minutes: m })}
+            </option>
+          ))}
+        </select>
         <button
           type="submit"
           disabled={pending}
