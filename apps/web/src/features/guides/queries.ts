@@ -18,6 +18,7 @@ export interface GuideRow {
   how_en: string | null;
   how_pt: string | null;
   journal_encounter_id: number | null;
+  encounter_difficulty: string | null;
   source_url: string | null;
   source_label: string | null;
   status: 'draft' | 'approved';
@@ -26,7 +27,7 @@ export interface GuideRow {
 }
 
 const COLUMNS =
-  'kind, external_item_id, drop_chance_percent, chance_note_en, chance_note_pt, location_en, location_pt, how_en, how_pt, journal_encounter_id, source_url, source_label, status, reviewed_at, updated_at';
+  'kind, external_item_id, drop_chance_percent, chance_note_en, chance_note_pt, location_en, location_pt, how_en, how_pt, journal_encounter_id, encounter_difficulty, source_url, source_label, status, reviewed_at, updated_at';
 
 /** Curadoria publicada de um item, já no idioma da página (cai para o inglês). */
 export interface PublishedGuide {
@@ -34,6 +35,9 @@ export interface PublishedGuide {
   chanceNote: string | null;
   location: string | null;
   how: string | null;
+  /** Chefe e dificuldade que soltam o item (para contar tentativas). */
+  encounterId: number | null;
+  encounterDifficulty: string | null;
   sourceUrl: string | null;
   sourceLabel: string | null;
   reviewedAt: string | null;
@@ -64,6 +68,8 @@ export async function getPublishedGuide(
     chanceNote: (pt ? data.chance_note_pt : null) ?? data.chance_note_en,
     location: (pt ? data.location_pt : null) ?? data.location_en,
     how: (pt ? data.how_pt : null) ?? data.how_en,
+    encounterId: data.journal_encounter_id,
+    encounterDifficulty: data.encounter_difficulty,
     sourceUrl: data.source_url,
     sourceLabel: data.source_label,
     reviewedAt: data.reviewed_at,

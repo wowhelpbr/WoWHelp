@@ -1,6 +1,7 @@
-import { NextResponse, type NextRequest } from 'next/server';
+import { after, NextResponse, type NextRequest } from 'next/server';
 import { getCurrentUser } from '@/features/auth/session';
 import { OAUTH_COOKIE, OAUTH_COOKIE_PATH, decodeOAuthState, sameState } from '@/features/battlenet/oauth-state';
+import { syncEncounterKills } from '@/features/battlenet/encounters';
 import { syncFromAuthorization } from '@/features/battlenet/sync';
 import { LOCALE_PREFIX, routing } from '@/i18n/routing';
 import { callbackUrl } from '@/lib/blizzard/client';
@@ -13,6 +14,8 @@ import { getSiteUrl } from '@/lib/site-url';
  * volta para a página de personagens com um código de resultado (?bnet=...).
  * Nenhum token ou dado da conta aparece na URL.
  */
+export const maxDuration = 120;
+
 export async function GET(request: NextRequest) {
   const saved = decodeOAuthState(request.cookies.get(OAUTH_COOKIE)?.value);
   const prefix = LOCALE_PREFIX[saved?.locale ?? routing.defaultLocale];
@@ -46,5 +49,10 @@ export async function GET(request: NextRequest) {
     return back(result.code);
   }
   logEvent('battlenet_link_succeeded', { mounts: result.mounts !== null });
+  // Chefes mortos por personagem (para as tentativas): depois da resposta.
+  const userId = user.id;
+  after(async () => {
+    await syncEncounterKills(userId, saved.region).catch(() => undefined);
+  });
   return back(result.mounts === null ? 'connected_partial' : 'connected');
 }

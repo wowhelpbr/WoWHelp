@@ -289,7 +289,14 @@
     "reviewedOn": "Reviewed on {date}",
     "where": "Where",
     "whereUnknown": "No reviewed location yet",
-    "sourcePrefix": "Source:"
+    "sourcePrefix": "Source:",
+    "attemptsTitle": "Your attempts",
+    "attemptsSignIn": "Sign in and connect Battle.net to see how many times you killed the boss that drops this mount.",
+    "attemptsConnect": "Connect Battle.net to count how many times you killed this boss.",
+    "attemptsConnectLink": "Connect",
+    "attemptsKills": "{count, plural, one {time you killed the boss} other {times you killed the boss}}{difficulty, select, any {} other { ({difficulty})}} {characters, plural, =0 {} one {with # character} other {across # characters}}",
+    "attemptsSource": "From Battle.net, updated {when}. This counts boss kills, not loot rolls.",
+    "attemptsNone": "No kills of this boss on your Battle.net characters."
   },
   "Settings": {
     "metaTitle": "Settings",
@@ -577,7 +584,9 @@
         "invalid": "Check the fields: chance between 0 and 100, link starting with https:// and numeric ID.",
         "chance_needs_source": "Drop chance needs the source link.",
         "storage": "We couldn't save right now. Try again."
-      }
+      },
+      "difficulty": "Boss difficulty",
+      "difficultyHint": "E.g. HEROIC, MYTHIC, LEGACY_25_MAN_HEROIC. Empty = any."
     }
   }
 }

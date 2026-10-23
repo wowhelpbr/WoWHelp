@@ -289,7 +289,14 @@
     "reviewedOn": "Revisado em {date}",
     "where": "Onde",
     "whereUnknown": "Ainda sem local revisado",
-    "sourcePrefix": "Fonte:"
+    "sourcePrefix": "Fonte:",
+    "attemptsTitle": "Suas tentativas",
+    "attemptsSignIn": "Entre e conecte a Battle.net para ver quantas vezes você já matou o chefe que solta esta montaria.",
+    "attemptsConnect": "Conecte a Battle.net para contar quantas vezes você já matou este chefe.",
+    "attemptsConnectLink": "Conectar",
+    "attemptsKills": "{count, plural, one {vez que você matou o chefe} other {vezes que você matou o chefe}}{difficulty, select, any {} other { ({difficulty})}} {characters, plural, =0 {} one {com # personagem} other {somando # personagens}}",
+    "attemptsSource": "Pela Battle.net, atualizado {when}. É a contagem de mortes do chefe, não de saques.",
+    "attemptsNone": "Nenhuma morte deste chefe nos seus personagens da Battle.net."
   },
   "Settings": {
     "metaTitle": "Configurações",
@@ -577,7 +584,9 @@
         "invalid": "Confira os campos: chance entre 0 e 100, link começando com https:// e ID só com números.",
         "chance_needs_source": "Chance de drop só entra com o link da fonte.",
         "storage": "Não foi possível salvar agora. Tente de novo."
-      }
+      },
+      "difficulty": "Dificuldade do chefe",
+      "difficultyHint": "Ex.: HEROIC, MYTHIC, LEGACY_25_MAN_HEROIC. Vazio = qualquer uma."
     }
   }
 }

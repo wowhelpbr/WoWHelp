@@ -155,3 +155,14 @@ export async function fetchRenderImage(url: string): Promise<Buffer> {
   if (bytes.length === 0 || bytes.length > MAX_IMAGE_BYTES) throw new BlizzardError('bad_response', res.status);
   return bytes;
 }
+
+/**
+ * Profile API de um personagem (Client Credentials, token do app). O nome vai
+ * em minúsculas, como a API exige. 404 = personagem privado ou inexistente.
+ */
+export async function fetchCharacterProfile(region: BattlenetRegion, realmSlug: string, name: string, path: string) {
+  const base = testOverride() ?? apiBase(region);
+  const token = await getAppToken();
+  const url = `${base}/profile/wow/character/${encodeURIComponent(realmSlug)}/${encodeURIComponent(name.toLowerCase())}${path}?locale=en_US`;
+  return getJson(url, token, `profile-${region}`);
+}

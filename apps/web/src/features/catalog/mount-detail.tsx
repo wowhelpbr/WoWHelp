@@ -1,9 +1,10 @@
 import { mountStatusFor, type Locale } from '@wowhelp/shared';
-import { Check, CircleSlash, Percent, Target, X } from 'lucide-react';
+import { Check, CircleSlash, Percent, Swords, Target, X } from 'lucide-react';
 import { getFormatter, getLocale, getTranslations } from 'next-intl/server';
 import { buttonClasses } from '@/components/ui/button';
 import { DataStateBadge, StateNotice } from '@/components/ui/data-state';
 import { getCurrentUser } from '@/features/auth/session';
+import { getMyEncounterAttempts } from '@/features/battlenet/attempts';
 import { getPublishedGuide } from '@/features/guides/queries';
 import { Link } from '@/i18n/navigation';
 import { LOCALE_PREFIX } from '@/i18n/routing';
@@ -47,6 +48,8 @@ export async function MountDetail({ externalId, titleId }: { externalId: string;
     user ? getMyMountData() : null,
     getPublishedGuide('mount', mount.externalId, locale),
   ]);
+  const attempts =
+    user && guide?.encounterId ? await getMyEncounterAttempts(guide.encounterId, guide.encounterDifficulty) : null;
   const status = mine
     ? mountStatusFor(mount.externalId, mine.observations, {
         syncedAt: mine.accountSyncedAt,
@@ -136,6 +139,58 @@ export async function MountDetail({ externalId, titleId }: { externalId: string;
             {guide.reviewedAt &&
               t('reviewedOn', { date: format.dateTime(new Date(guide.reviewedAt), { dateStyle: 'medium' }) })}
           </p>
+        )}
+
+        {guide?.encounterId && (
+          <section aria-labelledby={`${titleId}-attempts`} className="frame corner-brackets flex flex-col gap-3 p-4">
+            <h2 id={`${titleId}-attempts`} className="eyebrow">
+              {t('attemptsTitle')}
+            </h2>
+            {!user ? (
+              <p className="text-sm text-muted-foreground">{t('attemptsSignIn')}</p>
+            ) : !attempts?.connected ? (
+              <p className="text-sm text-muted-foreground">
+                {t('attemptsConnect')}{' '}
+                <Link href="/characters" className="text-neon underline underline-offset-2">
+                  {t('attemptsConnectLink')}
+                </Link>
+              </p>
+            ) : (
+              <>
+                <p className="flex items-baseline gap-2">
+                  <Swords aria-hidden className="size-5 shrink-0 self-center text-primary" />
+                  <span className="font-display text-3xl text-primary tabular-nums">{attempts.total}</span>
+                  <span className="text-foreground">
+                    {t('attemptsKills', {
+                      count: attempts.total,
+                      characters: attempts.characters.length,
+                      difficulty: guide.encounterDifficulty ?? 'any',
+                    })}
+                  </span>
+                </p>
+                {attempts.characters.length > 0 && (
+                  <ul className="flex flex-col gap-1 text-sm">
+                    {attempts.characters.slice(0, 6).map((c) => (
+                      <li key={`${c.name}-${c.realm}`} className="flex justify-between gap-3">
+                        <span className="text-foreground">
+                          {c.name}
+                          {c.realm && <span className="text-muted-foreground"> · {c.realm}</span>}
+                        </span>
+                        <span className="text-muted-foreground tabular-nums">{c.count}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <p className="text-xs text-muted-foreground">
+                  {attempts.fetchedAt
+                    ? t('attemptsSource', {
+                        when: format.relativeTime(new Date(attempts.fetchedAt), new Date()),
+                      })
+                    : t('attemptsNone')}
+                </p>
+              </>
+            )}
+          </section>
         )}
 
         <div className="frame-raised flex flex-col gap-4 p-4">
