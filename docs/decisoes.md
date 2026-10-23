@@ -19,3 +19,8 @@ Complementa `planning/docs/10_DECISOES_E_RISCOS.md` (D01–D06 e R01–R09). Cad
 | T13 | 23/10/2026 | Sistema visual HUD (Chakra Petch, cantos retos) com cores do WoWHelp na linha do Heroes of the Storm | Pedido do Bruno; ver docs/design/identidade-visual.md | Revisão de marca antes do beta |
 | T14 | 23/10/2026 | Artes originais fora do git; só versões otimizadas (WebP) entram no repositório | Repositório público, 129 MB de originais e contrato com dados pessoais | — |
 | T15 | 23/10/2026 | Catálogo de montarias lido a cada requisição (sem `use cache`) | Ainda vazio e o banco pode não existir no build | Fase 3, junto com o conteúdo revisado |
+| T16 | 23/10/2026 | Token da Battle.net não é guardado: sincroniza logo após a autorização e descarta | Sem refresh token documentado; elimina risco de vazamento | Se a Blizzard documentar refresh token e houver necessidade de sync em segundo plano |
+| T17 | 23/10/2026 | Dados vindos da Blizzard só são gravados pelo servidor (chave secreta), depois de validar a sessão | O navegador não pode "fingir" dado oficial; marcação manual tem fonte própria (`manual`) | — |
+| T18 | 23/10/2026 | Limpeza de 30 dias pelo `pg_cron` no próprio banco | Termos da API exigem TTL máximo de 30 dias | Se o volume exigir limpeza em lote |
+| T19 | 23/10/2026 | E2E usa uma Battle.net falsa local (`tests/mocks/blizzard-mock.mjs`); o desvio só aceita endereço local | Testar o fluxo inteiro sem conta real nem segredo | — |
+| T20 | 23/10/2026 | Produção: Supabase "wowhelp site" configurado por `[remotes.production]` no config.toml; confirmação de e-mail desligada até SMTP próprio | Plano gratuito só entrega e-mail para a equipe e recusa modelo customizado | Ao configurar SMTP (Resend ou similar) |
