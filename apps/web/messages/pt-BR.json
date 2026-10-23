@@ -1,0 +1,273 @@
+{
+  "Meta": {
+    "title": "WoWHelp",
+    "titleTemplate": "%s · WoWHelp",
+    "description": "Planeje suas sessões de World of Warcraft: escolha o que quer fazer hoje, acompanhe seus objetivos e veja de onde vem cada informação."
+  },
+  "Nav": {
+    "main": "Navegação principal",
+    "home": "Descobrir",
+    "mounts": "Montarias",
+    "dashboard": "Meus objetivos",
+    "settings": "Configurações",
+    "account": "Conta",
+    "signIn": "Entrar",
+    "signUp": "Criar conta",
+    "signOut": "Sair",
+    "skipToContent": "Pular para o conteúdo",
+    "language": "Idioma",
+    "switchTo": "English",
+    "switchToShort": "EN",
+    "accountNav": "Seções da conta",
+    "overview": "Visão geral",
+    "characters": "Personagens",
+    "collections": "Coleções",
+    "planner": "Planejador semanal",
+    "addonImport": "Importar addon",
+    "phaseShort": "Fase {phase}"
+  },
+  "Footer": {
+    "disclaimer": "O WoWHelp é uma ferramenta feita por fãs. Não é afiliado nem endossado pela Blizzard Entertainment. World of Warcraft e Blizzard Entertainment são marcas comerciais ou registradas da Blizzard Entertainment, Inc.",
+    "status": "Versão inicial. Os recursos chegam por fases e cada página diz o que já está pronto.",
+    "install": "Instalar o app",
+    "credits": "Logo e ilustrações de Elianai dos Santos (eliz00r)."
+  },
+  "Focus": {
+    "gear": {
+      "title": "Melhorar meu equipamento",
+      "summary": "Descubra qual é o próximo upgrade que vale a pena correr atrás."
+    },
+    "mounts": {
+      "title": "Colecionar montarias",
+      "summary": "Escolha uma montaria que ainda falta e siga o passo a passo para pegar."
+    },
+    "achievements": {
+      "title": "Acompanhar conquistas",
+      "summary": "Fique de olho nas conquistas que importam para você."
+    },
+    "weekly": {
+      "title": "Organizar as semanais",
+      "summary": "Saiba o que reseta nesta semana e o que vale a pena fazer."
+    },
+    "alts": {
+      "title": "Cuidar dos meus alts",
+      "summary": "Divida os objetivos entre personagens sem fazer a mesma coisa duas vezes."
+    },
+    "class": {
+      "title": "Aprender minha classe",
+      "summary": "Entenda sua classe e especialização no seu ritmo."
+    },
+    "sessions": {
+      "title": "Planejar uma sessão",
+      "summary": "Tem 15, 30 ou 60 minutos? Receba uma lista curta para esse tempo."
+    },
+    "housing": {
+      "title": "Decorar minha moradia",
+      "summary": "Acompanhe as decorações que você quer para a sua casa."
+    }
+  },
+  "Home": {
+    "metaTitle": "O que você quer fazer hoje?",
+    "heading": "O que você quer fazer hoje?",
+    "intro": "Escolha o que você quer do jogo agora. O WoWHelp transforma isso em objetivos e passos curtos que você segue em qualquer tela, e mostra de onde vem cada informação.",
+    "pickerLabel": "Escolha até oito coisas que você quer fazer",
+    "selectedCount": "{count, plural, =0 {Nada escolhido ainda} one {# escolhido} other {# escolhidos}}",
+    "continue": "Continuar",
+    "continueSignedIn": "Salvar e abrir meus objetivos",
+    "trackerTitle": "Seu rastreador",
+    "trackerEmpty": "Escolha algo ao lado e ele aparece aqui, como uma missão que você acabou de aceitar.",
+    "trackerEmptyMobile": "Escolha algo acima e ele aparece aqui.",
+    "howTitle": "Como o WoWHelp funciona",
+    "howSteps": {
+      "choose": "Escolha o que você quer fazer. Dá para mudar quando quiser.",
+      "connect": "Traga seus personagens: a conexão com a Battle.net e a importação do addon Companion chegam nas próximas fases.",
+      "plan": "Siga objetivos e checklists do tamanho do tempo que você tem."
+    },
+    "sourcesTitle": "De onde vêm os seus dados",
+    "sourcesIntro": "Todo status no WoWHelp mostra a fonte e quando foi conferido pela última vez. Quando a gente não sabe, a gente diz, em vez de chutar.",
+    "sources": {
+      "battlenet": {
+        "title": "Battle.net",
+        "body": "Personagens e coleções pela API oficial da Blizzard, só com a sua permissão."
+      },
+      "addon": {
+        "title": "Addon WoWHelp Companion",
+        "body": "Dados que o jogo deixa os addons lerem, salvos no seu computador. Você mesmo envia o arquivo."
+      },
+      "manual": {
+        "title": "Você",
+        "body": "Objetivos, checklists e progresso que você mesmo marca. Sempre identificados como informados por você."
+      }
+    },
+    "eyebrow": "Seu companheiro no World of Warcraft",
+    "pickerTitle": "Escolha seus objetivos",
+    "pickerHint": "Escolha quantos quiser. Dá para mudar depois."
+  },
+  "Availability": {
+    "available": "Disponível",
+    "planned": "Previsto para a fase {phase}",
+    "afterBeta": "Previsto para depois do beta",
+    "goalsMeanwhile": "Enquanto cada ferramenta não chega, você já pode criar objetivos e checklists para qualquer uma delas logo abaixo."
+  },
+  "DataState": {
+    "loading": "Carregando",
+    "empty": "Nada por aqui ainda",
+    "unauthenticated": "É preciso entrar",
+    "permission_denied": "Falta permissão",
+    "stale": "Desatualizado",
+    "not_available": "Ainda não disponível",
+    "unknown": "Desconhecido",
+    "sync_failed": "Falha na sincronização"
+  },
+  "Auth": {
+    "signInTitle": "Entrar",
+    "signInIntro": "Use o e-mail e a senha da sua conta WoWHelp. Não é o seu login da Battle.net.",
+    "signUpTitle": "Crie sua conta",
+    "signUpIntro": "A conta WoWHelp guarda seus objetivos e checklists. Você pode conectar a Battle.net depois, separadamente.",
+    "email": "E-mail",
+    "password": "Senha",
+    "passwordHint": "Pelo menos 8 caracteres, com letras e números.",
+    "submitSignIn": "Entrar",
+    "submitSignUp": "Criar conta",
+    "pending": "Aguarde…",
+    "noAccount": "Primeira vez no WoWHelp?",
+    "haveAccount": "Já tem conta?",
+    "focusCarried": "Vamos salvar o que você escolheu: {areas}.",
+    "checkEmailTitle": "Confira seu e-mail",
+    "checkEmailBody": "Enviamos um link de confirmação para {email}. Abra o link para terminar de criar sua conta.",
+    "notConfigured": "As contas ainda não estão disponíveis neste ambiente: a conexão com o banco de dados não foi configurada.",
+    "errors": {
+      "invalid_input": "Confira o e-mail e a senha e tente de novo.",
+      "invalid_credentials": "E-mail ou senha incorretos.",
+      "email_not_confirmed": "Confirme seu e-mail primeiro. Procure o link que enviamos.",
+      "user_already_exists": "Já existe uma conta com este e-mail. Entre com ela.",
+      "weak_password": "Escolha uma senha mais forte: pelo menos 8 caracteres, com letras e números.",
+      "rate_limited": "Muitas tentativas. Espere um minuto e tente de novo.",
+      "not_configured": "As contas ainda não estão disponíveis neste ambiente.",
+      "unknown": "Algo deu errado do nosso lado. Tente de novo daqui a pouco."
+    },
+    "confirmErrorTitle": "Não conseguimos confirmar seu e-mail",
+    "confirmErrorBody": "O link pode ter expirado ou já ter sido usado. Entre na sua conta ou crie de novo para receber outro link."
+  },
+  "Dashboard": {
+    "metaTitle": "Meus objetivos",
+    "greeting": "Bom te ver de novo",
+    "signedInAs": "Conectado como {email}",
+    "nextActionsTitle": "Próximas ações",
+    "nextActionsEmpty": "Crie um objetivo abaixo e o próximo passo dele aparece aqui.",
+    "nextStep": "Próximo: {step}",
+    "noOpenSteps": "Adicione um passo para saber o que fazer em seguida.",
+    "focusTitle": "O que você quer fazer",
+    "focusEmpty": "Você ainda não escolheu nada.",
+    "focusEdit": "Alterar",
+    "focusSave": "Salvar",
+    "focusSaved": "Salvo",
+    "focusCancel": "Cancelar",
+    "charactersTitle": "Personagens",
+    "charactersBody": "Nenhum personagem conectado. A conexão com a Battle.net chega na fase 2 e a importação do addon na fase 5. Até lá, seus objetivos funcionam sem eles.",
+    "sourcesTitle": "Fontes de dados",
+    "sourceManual": "Seus objetivos e checklists",
+    "sourceBattlenet": "Battle.net",
+    "sourceAddon": "Importação do addon Companion",
+    "lastUpdated": "Atualizado {when}",
+    "neverSynced": "Nunca sincronizado",
+    "statsLabel": "Seu progresso",
+    "statActive": "Objetivos ativos",
+    "statSteps": "Passos feitos",
+    "statCompleted": "Objetivos concluídos"
+  },
+  "Goals": {
+    "title": "Objetivos",
+    "composerLabel": "Novo objetivo",
+    "composerPlaceholder": "Ex.: pegar uma montaria voadora nesta semana",
+    "priority": "Prioridade",
+    "priorityValue": "{value, select, 1 {Máxima} 2 {Alta} 3 {Normal} 4 {Baixa} 5 {Mínima} other {Normal}}",
+    "add": "Adicionar objetivo",
+    "empty": "Nenhum objetivo ainda. Escreva um acima: pode ser qualquer coisa que você queira fazer no jogo.",
+    "progress": "{done} de {total} passos",
+    "noSteps": "Nenhum passo ainda",
+    "addStep": "Adicionar passo",
+    "stepPlaceholder": "Próximo passo",
+    "markDone": "Marcar “{label}” como feito",
+    "markOpen": "Marcar “{label}” como não feito",
+    "deleteStep": "Remover o passo “{label}”",
+    "status": {
+      "active": "Ativo",
+      "paused": "Pausado",
+      "completed": "Concluído"
+    },
+    "pause": "Pausar",
+    "resume": "Retomar",
+    "complete": "Concluir",
+    "reopen": "Reabrir",
+    "delete": "Excluir objetivo",
+    "deleteConfirm": "Excluir “{title}” e todos os passos?",
+    "sourceManual": "Informado por você",
+    "filterLabel": "Mostrar",
+    "filters": {
+      "active": "Ativos",
+      "completed": "Concluídos",
+      "all": "Todos"
+    },
+    "errors": {
+      "invalid_input": "Escreva um título entre 1 e 160 caracteres.",
+      "invalid_step": "Escreva um passo entre 1 e 240 caracteres.",
+      "quota": "Você chegou ao limite desta lista. Remova algo para adicionar mais.",
+      "unauthenticated": "Sua sessão terminou. Entre de novo.",
+      "unknown": "Não conseguimos salvar. Tente de novo."
+    },
+    "saving": "Salvando…"
+  },
+  "Mounts": {
+    "metaTitle": "Montarias",
+    "title": "Catálogo de montarias",
+    "intro": "Cada montaria aqui é revisada à mão: como conseguir, requisitos, onde fica, fonte e a data da última conferência.",
+    "reviewTitle": "As primeiras entradas estão em revisão",
+    "reviewBody": "Estamos conferindo cada montaria no jogo atual antes de publicar. Nada aparece sem fonte e data de revisão. O primeiro lote chega na fase 3.",
+    "unavailable": "Não foi possível carregar o catálogo agora. Tente de novo daqui a pouco.",
+    "reviewedOn": "Conferido em {date}",
+    "source": "Fonte"
+  },
+  "Settings": {
+    "metaTitle": "Configurações",
+    "title": "Configurações",
+    "languageTitle": "Idioma",
+    "languageBody": "O WoWHelp está disponível em inglês e português do Brasil.",
+    "regionTitle": "Região do jogo",
+    "regionBody": "Usada mais tarde para calcular os resets e buscar seus personagens.",
+    "regionNone": "Não definida",
+    "regions": {
+      "us": "Américas e Oceania",
+      "eu": "Europa",
+      "kr": "Coreia",
+      "tw": "Taiwan",
+      "cn": "China"
+    },
+    "save": "Salvar",
+    "saved": "Salvo",
+    "privacyTitle": "Privacidade e dados",
+    "privacyBody": "O WoWHelp guarda seu e-mail, seus objetivos e suas preferências. Não usamos rastreadores de analytics nem de publicidade. Exportar dados e excluir a conta chegam antes do beta público.",
+    "installTitle": "Instalar o app",
+    "installBody": "Adicione o WoWHelp à tela inicial para abrir como um aplicativo.",
+    "installButton": "Instalar o WoWHelp",
+    "installIos": "No iPhone ou iPad: toque em Compartilhar e depois em Adicionar à Tela de Início.",
+    "installDone": "O WoWHelp já está instalado neste aparelho.",
+    "installUnsupported": "Seu navegador não oferece instalação aqui. Tente o Chrome ou o Edge no computador ou no Android, ou o Safari no iPhone."
+  },
+  "Offline": {
+    "metaTitle": "Sem conexão",
+    "title": "Você está sem internet",
+    "body": "O WoWHelp precisa de conexão para carregar seus objetivos. Seus dados ficam seguros no servidor e nada é guardado neste aparelho.",
+    "retry": "Tentar de novo"
+  },
+  "NotFound": {
+    "title": "Esta página não existe",
+    "body": "O link pode estar antigo ou com erro de digitação.",
+    "back": "Ir para a página inicial"
+  },
+  "Error": {
+    "title": "Algo deu errado",
+    "body": "A página não carregou. Tente de novo e, se continuar, volte mais tarde.",
+    "retry": "Tentar de novo"
+  }
+}
