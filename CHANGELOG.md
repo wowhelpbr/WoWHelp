@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.5.0 (prévia, sem divulgação) | 24/10/2026
+
+Fases 2 a 5.
+
+- Battle.net: conexão OAuth por região, personagens e montarias da conta, desconexão, limpeza automática em 30 dias.
+- Catálogo oficial de montarias (Game Data API, en-US e pt-BR) com busca, filtros, status coletada / não obtida / desconhecida, marcação manual e "transformar em objetivo".
+- Planejador semanal com reset por região (Europa oficial, demais estimadas e sinalizadas) e planejador de sessão de 15 a 120+ minutos com tempo estimado por passo.
+- Addon WoWHelp Companion 0.1.0 (Midnight, interface 120105) e página "Importar addon": prévia, escolha do que importar, histórico, exclusão. Leitor do arquivo sem executar Lua.
+- Correção: catálogo e coleção com mais de 1000 itens eram cortados pela paginação da API do Supabase.
+- Testes: 82 unitários do domínio, 29 do site, 58 de banco, 60 E2E.
+
 ## 0.1.0 (não publicado) | 23/10/2026
 
 Primeira entrega (Fases 0 e 1).

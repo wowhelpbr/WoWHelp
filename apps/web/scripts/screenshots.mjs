@@ -67,6 +67,24 @@ for (const [name, options] of Object.entries(viewports)) {
   await shot('dashboard-en');
   await page.goto(`${base}/pt-br/dashboard`);
   await shot('dashboard-pt-br');
+
+  // Importação do addon com a prévia aberta (arquivo de TESTE).
+  const observed = Math.floor(Date.now() / 1000) - 3600;
+  const sample = `WoWHelpCompanionDB = {
+["schemaVersion"] = 1, ["addonVersion"] = "0.1.0", ["lastObservedAt"] = ${observed}, ["region"] = "us",
+["account"] = { ["mounts"] = { ["available"] = true, ["observedAt"] = ${observed}, ["collected"] = { 6, 7 } } },
+["characters"] = {
+["Player-1234-0ABCDEF0"] = { ["name"] = "Testmage", ["realm"] = "Test Realm", ["level"] = 80, ["className"] = "Maga", ["faction"] = "Alliance" },
+["Player-1234-0ABCDEF1"] = { ["name"] = "Testwarrior", ["realm"] = "Test Realm", ["level"] = 72, ["className"] = "Guerreiro", ["faction"] = "Horde" },
+},
+}`;
+  await page.goto(`${base}/pt-br/import`);
+  const input = page.getByLabel('Escolher o arquivo WoWHelpCompanion.lua');
+  await input.waitFor({ state: 'attached' });
+  await page.waitForFunction(() => !document.querySelector('input[type=file]')?.disabled);
+  await input.setInputFiles({ name: 'WoWHelpCompanion.lua', mimeType: 'text/plain', buffer: Buffer.from(sample) });
+  await page.getByText('Confira antes de importar').waitFor();
+  await shot('import-pt-br');
   await context.close();
 }
 
