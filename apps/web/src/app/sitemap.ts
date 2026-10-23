@@ -3,7 +3,7 @@ import { LOCALE_PREFIX, routing } from '@/i18n/routing';
 import { getSiteUrl } from '@/lib/site-url';
 
 const siteUrl = getSiteUrl();
-const PUBLIC_PATHS = ['', '/mounts', '/pets', '/toys', '/privacy', '/terms'];
+const PUBLIC_PATHS = ['', '/mounts', '/pets', '/toys', '/community', '/privacy', '/terms'];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return PUBLIC_PATHS.map((path) => ({

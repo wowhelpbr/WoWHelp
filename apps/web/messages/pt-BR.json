@@ -24,7 +24,8 @@
     "collections": "Coleções",
     "planner": "Planejador semanal",
     "addonImport": "Importar addon",
-    "phaseShort": "Fase {phase}"
+    "phaseShort": "Fase {phase}",
+    "community": "Comunidade"
   },
   "Footer": {
     "disclaimer": "O WoWHelp é uma ferramenta feita por fãs. Não é afiliado nem endossado pela Blizzard Entertainment. World of Warcraft e Blizzard Entertainment são marcas comerciais ou registradas da Blizzard Entertainment, Inc.",
@@ -537,7 +538,6 @@
     "mountsTitle": "Montarias",
     "mountsBody": "Chance de drop, onde conseguir, passo a passo e fonte.",
     "communityTitle": "Comunidade BR",
-    "communitySoon": "Criadores brasileiros de WoW. Chega na próxima etapa.",
     "backToAdmin": "Voltar à curadoria",
     "search": "Buscar por nome ou número",
     "filter": "Situação",
@@ -591,7 +591,69 @@
     "petsTitle": "Mascotes",
     "toysTitle": "Brinquedos",
     "itemsCount": "{approved} publicados, {drafts} em rascunho, de {total} itens",
-    "backToList": "Voltar à lista"
+    "backToList": "Voltar à lista",
+    "communityBody": "Criadores brasileiros: canais, assuntos, destaque e pedidos.",
+    "community": {
+      "title": "Comunidade BR",
+      "backToAdmin": "Voltar à curadoria",
+      "backToList": "Voltar à lista",
+      "count": "{published} publicados de {total} criadores",
+      "new": "Novo criador",
+      "edit": "Editar criador",
+      "created": "Criador salvo.",
+      "saved": "Alterações salvas.",
+      "save": "Salvar",
+      "saving": "Salvando…",
+      "name": "Nome",
+      "slug": "Endereço",
+      "slugHint": "Vazio = gerado pelo nome.",
+      "status": "Situação",
+      "statusDraft": "Rascunho (não aparece)",
+      "statusPublished": "Publicado",
+      "statusHidden": "Oculto",
+      "statusShort": {
+        "draft": "Rascunho",
+        "published": "Publicado",
+        "hidden": "Oculto"
+      },
+      "channels": "Canais",
+      "channelPlaceholder": {
+        "twitch": "twitch.tv/canal",
+        "youtube": "youtube.com/@canal",
+        "kick": "kick.com/canal"
+      },
+      "tags": "Assuntos",
+      "tagsHint": "Até 6.",
+      "bioPt": "Apresentação (português)",
+      "bioEn": "Apresentação (inglês)",
+      "featuredTitle": "Destaque",
+      "featured": "Mostrar em Destaque",
+      "featuredShort": "destaque",
+      "featuredNotePt": "Por que está em destaque (português)",
+      "featuredNoteEn": "Por que está em destaque (inglês)",
+      "delete": "Tirar da lista",
+      "deleteHint": "Apaga o criador e os canais da Comunidade BR.",
+      "requestsTitle": "{count, plural, =0 {Pedidos} one {# pedido em aberto} other {# pedidos em aberto}}",
+      "requestsEmpty": "Nenhum pedido em aberto.",
+      "requestKind": {
+        "join": "quer entrar",
+        "leave": "quer sair"
+      },
+      "createFromRequest": "Cadastrar a partir do pedido",
+      "requestAction": {
+        "approved": "Marcar como atendido",
+        "rejected": "Recusar"
+      },
+      "errors": {
+        "forbidden": "Sua conta não é de curador.",
+        "invalid": "Confira o nome, o endereço e os assuntos.",
+        "no_channel": "Coloque pelo menos um canal.",
+        "bad_channel": "O canal da {platform} não está num formato reconhecido.",
+        "slug_taken": "Já existe um criador com esse endereço.",
+        "channel_taken": "Esse canal da {platform} já está na lista em outro criador.",
+        "storage": "Não foi possível salvar agora. Tente de novo."
+      }
+    }
   },
   "Catalog": {
     "tabsLabel": "Tipos de coleção",
@@ -636,6 +698,76 @@
       "notFound": "Este brinquedo não está no catálogo.",
       "back": "Voltar aos brinquedos",
       "blizzardId": "ID do brinquedo na Blizzard {id}"
+    }
+  },
+  "Community": {
+    "metaTitle": "Comunidade BR",
+    "eyebrow": "Comunidade BR",
+    "title": "Quem faz WoW no Brasil",
+    "intro": "Criadores brasileiros de World of Warcraft, escolhidos a dedo. Veja quem está ao vivo, o que saiu de novo e encontre gente que fala de WoW em português.",
+    "curated": "Lista curada pela equipe do WoWHelp. Ninguém paga para aparecer aqui.",
+    "liveNow": "Ao vivo agora",
+    "liveSoon": "O \"ao vivo agora\" chega assim que a conexão com a Twitch e o YouTube estiver ligada.",
+    "nobodyLive": "Ninguém da lista está ao vivo neste momento.",
+    "live": "Ao vivo",
+    "viewers": "{count, plural, one {# espectador} other {# espectadores}}",
+    "featured": "Destaque",
+    "latest": "Novidades",
+    "directory": "Criadores",
+    "joinCta": "Você cria conteúdo de WoW? Peça para entrar",
+    "allTags": "Todos",
+    "tagsLabel": "Assuntos",
+    "empty": "Nenhum criador com esse assunto ainda.",
+    "unavailable": "Não foi possível carregar a comunidade agora. Tente de novo daqui a pouco.",
+    "opensNewTab": "(abre em outra aba)",
+    "platforms": {
+      "twitch": "Twitch",
+      "youtube": "YouTube",
+      "kick": "Kick"
+    },
+    "tags": {
+      "raide": "Raide",
+      "mitica": "Mítica+",
+      "pvp": "PvP",
+      "lore": "Lore e história",
+      "iniciantes": "Para iniciantes",
+      "casual": "Casual",
+      "colecionador": "Colecionador",
+      "moradia": "Moradia",
+      "guias": "Guias",
+      "humor": "Humor"
+    },
+    "request": {
+      "metaTitle": "Entrar na Comunidade BR",
+      "back": "Voltar à Comunidade",
+      "title": "Faça parte da Comunidade BR",
+      "intro": "Você faz live, vídeo ou conteúdo de World of Warcraft em português? Mande seus canais. A equipe do WoWHelp olha cada pedido com calma.",
+      "rule1": "Conteúdo de WoW em português, com frequência.",
+      "rule2": "Respeito com a comunidade: nada de ódio, golpe ou conteúdo impróprio.",
+      "rule3": "Não existe pagamento para entrar nem para ficar em destaque.",
+      "formTitle": "Pedido",
+      "kindLabel": "O que você quer?",
+      "kind": {
+        "join": "Quero ser listado",
+        "leave": "Quero sair da lista"
+      },
+      "displayName": "Nome do canal ou como você é conhecido",
+      "links": "Links dos seus canais",
+      "linksHint": "Um por linha: Twitch, YouTube ou Kick.",
+      "message": "Conte um pouco sobre seu conteúdo (opcional)",
+      "privacy": "Guardamos o pedido para a equipe avaliar. Os canais publicados mostram só o que já é público nas plataformas.",
+      "send": "Enviar pedido",
+      "sending": "Enviando…",
+      "sentJoin": "Pedido enviado! Avisamos quando você entrar na lista.",
+      "sentLeave": "Pedido enviado. Vamos tirar você da lista o quanto antes.",
+      "signIn": "Para evitar spam, é preciso entrar com uma conta do WoWHelp para mandar o pedido.",
+      "signInCta": "Entrar ou criar conta",
+      "errors": {
+        "unauthenticated": "Sua sessão expirou. Entre de novo.",
+        "invalid": "Confira o nome e coloque pelo menos um link de canal.",
+        "quota": "Você já tem 3 pedidos em aberto. Espere a resposta antes de mandar outro.",
+        "storage": "Não foi possível enviar agora. Tente de novo."
+      }
     }
   }
 }

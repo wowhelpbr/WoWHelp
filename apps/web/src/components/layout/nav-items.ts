@@ -1,9 +1,10 @@
-import { Compass, LayoutDashboard, Settings } from 'lucide-react';
+import { Compass, LayoutDashboard, Settings, Users } from 'lucide-react';
 
 export const NAV_ITEMS = [
   { href: '/', key: 'home', icon: Compass },
   // Coleções: montarias, mascotes e brinquedos (abas dentro da página).
   { href: '/mounts', key: 'mounts', icon: null, also: ['/pets', '/toys'] },
+  { href: '/community', key: 'community', icon: Users },
   { href: '/dashboard', key: 'dashboard', icon: LayoutDashboard },
   { href: '/settings', key: 'settings', icon: Settings },
 ] as const;

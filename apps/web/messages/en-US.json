@@ -24,7 +24,8 @@
     "collections": "Collections",
     "planner": "Weekly planner",
     "addonImport": "Addon import",
-    "phaseShort": "Phase {phase}"
+    "phaseShort": "Phase {phase}",
+    "community": "Community"
   },
   "Footer": {
     "disclaimer": "WoWHelp is a fan-made tool. It is not affiliated with or endorsed by Blizzard Entertainment. World of Warcraft and Blizzard Entertainment are trademarks or registered trademarks of Blizzard Entertainment, Inc.",
@@ -537,7 +538,6 @@
     "mountsTitle": "Mounts",
     "mountsBody": "Drop chance, where to get it, step by step and source.",
     "communityTitle": "Brazilian community",
-    "communitySoon": "Brazilian WoW creators. Coming in the next step.",
     "backToAdmin": "Back to curation",
     "search": "Search by name or number",
     "filter": "Status",
@@ -591,7 +591,69 @@
     "petsTitle": "Pets",
     "toysTitle": "Toys",
     "itemsCount": "{approved} published, {drafts} drafts, out of {total} items",
-    "backToList": "Back to the list"
+    "backToList": "Back to the list",
+    "communityBody": "Brazilian creators: channels, topics, featured and requests.",
+    "community": {
+      "title": "Brazilian community",
+      "backToAdmin": "Back to curation",
+      "backToList": "Back to the list",
+      "count": "{published} published out of {total} creators",
+      "new": "New creator",
+      "edit": "Edit creator",
+      "created": "Creator saved.",
+      "saved": "Changes saved.",
+      "save": "Save",
+      "saving": "Saving…",
+      "name": "Name",
+      "slug": "Address",
+      "slugHint": "Empty = made from the name.",
+      "status": "Status",
+      "statusDraft": "Draft (doesn't show)",
+      "statusPublished": "Published",
+      "statusHidden": "Hidden",
+      "statusShort": {
+        "draft": "Draft",
+        "published": "Published",
+        "hidden": "Hidden"
+      },
+      "channels": "Channels",
+      "channelPlaceholder": {
+        "twitch": "twitch.tv/channel",
+        "youtube": "youtube.com/@channel",
+        "kick": "kick.com/channel"
+      },
+      "tags": "Topics",
+      "tagsHint": "Up to 6.",
+      "bioPt": "Intro (Portuguese)",
+      "bioEn": "Intro (English)",
+      "featuredTitle": "Featured",
+      "featured": "Show in Featured",
+      "featuredShort": "featured",
+      "featuredNotePt": "Why they are featured (Portuguese)",
+      "featuredNoteEn": "Why they are featured (English)",
+      "delete": "Remove from the list",
+      "deleteHint": "Deletes the creator and their channels from the community.",
+      "requestsTitle": "{count, plural, =0 {Requests} one {# open request} other {# open requests}}",
+      "requestsEmpty": "No open requests.",
+      "requestKind": {
+        "join": "wants to join",
+        "leave": "wants to leave"
+      },
+      "createFromRequest": "Add from this request",
+      "requestAction": {
+        "approved": "Mark as done",
+        "rejected": "Reject"
+      },
+      "errors": {
+        "forbidden": "Your account is not a curator.",
+        "invalid": "Check the name, the address and the topics.",
+        "no_channel": "Add at least one channel.",
+        "bad_channel": "The {platform} channel isn't in a format we recognize.",
+        "slug_taken": "There is already a creator with this address.",
+        "channel_taken": "This {platform} channel is already on the list under another creator.",
+        "storage": "We couldn't save right now. Try again."
+      }
+    }
   },
   "Catalog": {
     "tabsLabel": "Collection types",
@@ -636,6 +698,76 @@
       "notFound": "This toy is not in the catalog.",
       "back": "Back to toys",
       "blizzardId": "Blizzard toy ID {id}"
+    }
+  },
+  "Community": {
+    "metaTitle": "Brazilian community",
+    "eyebrow": "Brazilian community",
+    "title": "Who makes WoW content in Brazil",
+    "intro": "Hand-picked Brazilian World of Warcraft creators. See who is live, what just came out and find people talking WoW in Portuguese.",
+    "curated": "List curated by the WoWHelp team. Nobody pays to be here.",
+    "liveNow": "Live now",
+    "liveSoon": "\"Live now\" arrives as soon as the Twitch and YouTube connection is turned on.",
+    "nobodyLive": "Nobody on the list is live right now.",
+    "live": "Live",
+    "viewers": "{count, plural, one {# viewer} other {# viewers}}",
+    "featured": "Featured",
+    "latest": "Latest",
+    "directory": "Creators",
+    "joinCta": "Do you make WoW content? Ask to join",
+    "allTags": "All",
+    "tagsLabel": "Topics",
+    "empty": "No creators with this topic yet.",
+    "unavailable": "We couldn't load the community right now. Try again in a moment.",
+    "opensNewTab": "(opens in a new tab)",
+    "platforms": {
+      "twitch": "Twitch",
+      "youtube": "YouTube",
+      "kick": "Kick"
+    },
+    "tags": {
+      "raide": "Raids",
+      "mitica": "Mythic+",
+      "pvp": "PvP",
+      "lore": "Lore",
+      "iniciantes": "For beginners",
+      "casual": "Casual",
+      "colecionador": "Collector",
+      "moradia": "Housing",
+      "guias": "Guides",
+      "humor": "Comedy"
+    },
+    "request": {
+      "metaTitle": "Join the Brazilian community",
+      "back": "Back to the community",
+      "title": "Join the Brazilian community",
+      "intro": "Do you stream, make videos or other World of Warcraft content in Portuguese? Send your channels. The WoWHelp team reviews every request.",
+      "rule1": "WoW content in Portuguese, on a regular basis.",
+      "rule2": "Respect for the community: no hate, scams or inappropriate content.",
+      "rule3": "Nobody pays to join or to be featured.",
+      "formTitle": "Request",
+      "kindLabel": "What do you want?",
+      "kind": {
+        "join": "Add me to the list",
+        "leave": "Remove me from the list"
+      },
+      "displayName": "Channel name or how people know you",
+      "links": "Links to your channels",
+      "linksHint": "One per line: Twitch, YouTube or Kick.",
+      "message": "Tell us a bit about your content (optional)",
+      "privacy": "We keep the request for the team to review. Published channels only show what is already public on each platform.",
+      "send": "Send request",
+      "sending": "Sending…",
+      "sentJoin": "Request sent! We'll let you know when you're on the list.",
+      "sentLeave": "Request sent. We'll remove you from the list as soon as possible.",
+      "signIn": "To prevent spam, you need to sign in with a WoWHelp account to send the request.",
+      "signInCta": "Sign in or create an account",
+      "errors": {
+        "unauthenticated": "Your session expired. Sign in again.",
+        "invalid": "Check the name and add at least one channel link.",
+        "quota": "You already have 3 open requests. Wait for an answer before sending another.",
+        "storage": "We couldn't send it right now. Try again."
+      }
     }
   }
 }
