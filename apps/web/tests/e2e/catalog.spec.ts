@@ -117,3 +117,18 @@ test('card com imagem oficial guardada no Storage e janela de detalhes', async (
   await expect(page.getByRole('heading', { level: 1, name: 'Test Mount One' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Back to the catalog' })).toBeVisible();
 });
+
+test('importa mascotes e brinquedos oficiais e as imagens deles', async ({ request }) => {
+  const auth = { Authorization: 'Bearer test-cron-secret' };
+  const bad = await request.post('/api/cron/catalog-sync?kind=hats', { headers: auth });
+  expect(bad.status()).toBe(400);
+  for (const kind of ['pet', 'toy']) {
+    const res = await request.post(`/api/cron/catalog-sync?kind=${kind}&batch=50`, { headers: auth });
+    expect(res.ok()).toBe(true);
+    expect((await res.json()).total).toBe(2);
+    const media = await request.post(`/api/cron/catalog-sync?job=media&kind=${kind}&batch=10`, { headers: auth });
+    expect(media.ok()).toBe(true);
+    const body = await media.json();
+    expect(body.failed).toBe(0);
+  }
+});

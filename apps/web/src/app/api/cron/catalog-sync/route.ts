@@ -1,13 +1,14 @@
 import { timingSafeEqual } from 'node:crypto';
 import { revalidateTag } from 'next/cache';
 import { NextResponse, type NextRequest } from 'next/server';
-import { syncMountMedia } from '@/features/catalog/media-sync';
+import { syncOfficialCollection } from '@/features/catalog/collection-sync';
+import { syncCatalogMedia } from '@/features/catalog/media-sync';
 import { syncOfficialMounts } from '@/features/catalog/sync';
 import { isBattlenetConfigured } from '@/lib/blizzard/client';
 import { isAdminConfigured } from '@/lib/supabase/admin';
 
-// Tarefa agendada: importa/renova um lote do catálogo oficial de montarias
-// (?job=media: um lote das imagens oficiais, guardadas no Storage).
+// Tarefa agendada: importa/renova um lote do catálogo oficial
+// (?kind=mount|pet|toy, padrão mount; ?job=media: um lote das imagens oficiais, guardadas no Storage).
 // Chamada pelo GitHub Actions (.github/workflows/catalogo.yml) com o CRON_SECRET.
 export const maxDuration = 60;
 
@@ -25,11 +26,20 @@ async function handle(request: NextRequest) {
     return NextResponse.json({ error: 'not_configured' }, { status: 503 });
   }
   const media = request.nextUrl.searchParams.get('job') === 'media';
+  const kindParam = request.nextUrl.searchParams.get('kind') ?? 'mount';
+  if (kindParam !== 'mount' && kindParam !== 'pet' && kindParam !== 'toy') {
+    return NextResponse.json({ error: 'invalid_kind' }, { status: 400 });
+  }
+  const kind = kindParam;
   const fallback = media ? 40 : 120;
   const requested = Number(request.nextUrl.searchParams.get('batch') ?? fallback);
   const batch = Number.isInteger(requested) ? Math.min(Math.max(requested, 1), media ? 120 : 300) : fallback;
   try {
-    const result = media ? await syncMountMedia(batch) : await syncOfficialMounts(batch);
+    const result = media
+      ? await syncCatalogMedia(kind, batch)
+      : kind === 'mount'
+        ? await syncOfficialMounts(batch)
+        : await syncOfficialCollection(kind, batch);
     // Lista nova aparece já na próxima visita (o catálogo fica em cache por 1 h).
     if (result.processed > 0 || ('missing' in result && result.missing > 0)) revalidateTag('catalog', { expire: 0 });
     return NextResponse.json(result);

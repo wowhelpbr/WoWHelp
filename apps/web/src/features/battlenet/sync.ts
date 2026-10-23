@@ -2,6 +2,8 @@ import 'server-only';
 import {
   apiLocaleFor,
   normalizeAccountMounts,
+  normalizeAccountPets,
+  normalizeAccountToys,
   normalizeProfileCharacters,
   normalizeUserInfo,
   type BattlenetRegion,
@@ -138,6 +140,39 @@ export async function syncFromAuthorization(input: {
     mountCount = null;
   }
 
+  // Mascotes e brinquedos da conta: mesma regra (falhou = desconhecido).
+  const replaceCollection = async (kind: 'pet' | 'toy', ids: string[] | null): Promise<boolean> => {
+    if (ids === null) return false;
+    const { error: del } = await admin
+      .from('collection_states')
+      .delete()
+      .eq('user_id', userId)
+      .eq('kind', kind)
+      .eq('source', 'blizzard_api');
+    if (del) return false;
+    if (ids.length === 0) return true;
+    const { error } = await admin.from('collection_states').insert(
+      ids.slice(0, 5000).map((id) => ({
+        user_id: userId,
+        kind,
+        external_item_id: id,
+        status: 'collected',
+        source: 'blizzard_api',
+        observed_at: now,
+        fetched_at: now,
+      })),
+    );
+    return !error;
+  };
+  const [petsOk, toysOk] = await Promise.all([
+    fetchAccountProfile(region, token, apiLocale, '/collections/pets')
+      .then((json) => replaceCollection('pet', normalizeAccountPets(json)))
+      .catch(() => false),
+    fetchAccountProfile(region, token, apiLocale, '/collections/toys')
+      .then((json) => replaceCollection('toy', normalizeAccountToys(json)))
+      .catch(() => false),
+  ]);
+
   await admin
     .from('game_connections')
     .update({
@@ -145,6 +180,8 @@ export async function syncFromAuthorization(input: {
       last_sync_error: mountCount === null ? 'mounts' : null,
       characters_synced_at: now,
       mounts_synced_at: mountCount === null ? null : now,
+      pets_synced_at: petsOk ? now : null,
+      toys_synced_at: toysOk ? now : null,
     })
     .eq('id', connection.id);
 

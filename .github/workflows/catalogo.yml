@@ -1,7 +1,7 @@
-# Importa e renova o catálogo oficial de montarias (Game Data API da Blizzard)
-# chamando a rota protegida do site em lotes até não sobrar nada pendente.
-# Depois, baixa as imagens oficiais (cópia própria no Storage).
-# Roda todo dia; cada montaria e cada imagem são renovadas a cada 7 dias (limite dos Termos: 30).
+# Importa e renova o catálogo oficial (montarias, mascotes e brinquedos, Game
+# Data API da Blizzard) chamando a rota protegida do site em lotes até não
+# sobrar nada pendente. Depois, baixa as imagens oficiais (cópia própria no Storage).
+# Roda todo dia; cada item e cada imagem são renovados a cada 7 dias (limite dos Termos: 30).
 name: Catálogo oficial
 
 on:
@@ -15,34 +15,37 @@ permissions:
 jobs:
   sincronizar:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
+    env:
+      CRON_SECRET: ${{ secrets.CRON_SECRET }}
+      SITE: https://wowhelp.vercel.app
     steps:
-      - name: Importa em lotes
-        env:
-          CRON_SECRET: ${{ secrets.CRON_SECRET }}
-          SITE: https://wowhelp.vercel.app
+      - name: Prepara a função de lotes
         run: |
-          for i in $(seq 1 40); do
-            resposta=$(curl -sS --fail-with-body -X POST -H "Authorization: Bearer $CRON_SECRET" "$SITE/api/cron/catalog-sync?batch=120")
+          cat > "$RUNNER_TEMP/lotes.sh" <<'SCRIPT'
+          # uso: lotes.sh <query> <máximo de lotes>
+          for i in $(seq 1 "$2"); do
+            resposta=$(curl -sS --fail-with-body -X POST -H "Authorization: Bearer $CRON_SECRET" "$SITE/api/cron/catalog-sync?$1")
             echo "lote $i: $resposta"
             restante=$(echo "$resposta" | jq -r '.remaining')
-            if [ "$restante" = "0" ]; then echo "catálogo em dia"; exit 0; fi
-            sleep 2
-          done
-          echo "ainda há pendências; o próximo agendamento continua"
-
-      - name: Baixa as imagens em lotes
-        env:
-          CRON_SECRET: ${{ secrets.CRON_SECRET }}
-          SITE: https://wowhelp.vercel.app
-        run: |
-          for i in $(seq 1 80); do
-            resposta=$(curl -sS --fail-with-body -X POST -H "Authorization: Bearer $CRON_SECRET" "$SITE/api/cron/catalog-sync?job=media&batch=40")
-            echo "lote $i: $resposta"
-            restante=$(echo "$resposta" | jq -r '.remaining')
-            andou=$(echo "$resposta" | jq -r '.processed + .missing')
-            if [ "$restante" = "0" ]; then echo "imagens em dia"; exit 0; fi
+            andou=$(echo "$resposta" | jq -r '.processed + (.missing // 0)')
+            if [ "$restante" = "0" ]; then echo "em dia"; exit 0; fi
             if [ "$andou" = "0" ]; then echo "nenhum avanço neste lote; tenta no próximo agendamento"; exit 0; fi
             sleep 2
           done
-          echo "ainda há imagens pendentes; o próximo agendamento continua"
+          echo "ainda há pendências; o próximo agendamento continua"
+          SCRIPT
+          chmod +x "$RUNNER_TEMP/lotes.sh"
+
+      - name: Montarias
+        run: '"$RUNNER_TEMP/lotes.sh" "kind=mount&batch=120" 40'
+      - name: Mascotes
+        run: '"$RUNNER_TEMP/lotes.sh" "kind=pet&batch=80" 40'
+      - name: Brinquedos
+        run: '"$RUNNER_TEMP/lotes.sh" "kind=toy&batch=120" 30'
+      - name: Imagens das montarias
+        run: '"$RUNNER_TEMP/lotes.sh" "job=media&kind=mount&batch=40" 80'
+      - name: Imagens dos mascotes
+        run: '"$RUNNER_TEMP/lotes.sh" "job=media&kind=pet&batch=40" 80'
+      - name: Ícones dos brinquedos
+        run: '"$RUNNER_TEMP/lotes.sh" "job=media&kind=toy&batch=60" 40'
