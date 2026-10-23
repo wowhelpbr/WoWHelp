@@ -2,6 +2,13 @@ import { describe, expect, it } from 'vitest';
 import {
   apiLocaleFor,
   isOfficialRenderUrl,
+  normalizeAccountPets,
+  normalizeAccountToys,
+  normalizeCollectionIndex,
+  normalizeCreatureDisplayId,
+  normalizeItemIcon,
+  normalizePetDetail,
+  normalizeToyDetail,
   normalizeCharacterEncounters,
   normalizeCreatureDisplayMedia,
   normalizeAccountMounts,
@@ -258,5 +265,68 @@ describe('chefes mortos por personagem (encounters)', () => {
         ],
       }),
     ).toEqual([]);
+  });
+});
+
+describe('mascotes e brinquedos', () => {
+  it('mascote: nomes, tipo, facção, criatura e origem', () => {
+    const pet = normalizePetDetail({
+      id: 39,
+      name: { en_US: 'Test Pet', pt_BR: 'Mascote de Teste' },
+      description: { en_US: 'A test pet.', pt_BR: 'Um mascote de teste.' },
+      battle_pet_type: { id: 7, type: 'BEAST', name: { en_US: 'Beast', pt_BR: 'Fera' } },
+      source: { type: 'VENDOR', name: { en_US: 'Vendor', pt_BR: 'Vendedor' } },
+      is_horde_only: true,
+      creature: { id: 2671, name: { en_US: 'Test Creature' } },
+    });
+    expect(pet).toMatchObject({
+      id: '39',
+      names: { 'en-US': 'Test Pet', 'pt-BR': 'Mascote de Teste' },
+      category: 'BEAST',
+      categoryNames: { 'en-US': 'Beast', 'pt-BR': 'Fera' },
+      faction: 'HORDE',
+      creatureId: 2671,
+      sourceType: 'VENDOR',
+    });
+  });
+
+  it('brinquedo: nome vem do item, mídia do item vira referência', () => {
+    const toy = normalizeToyDetail({
+      id: 1131,
+      item: { id: 54452, name: { en_US: 'Test Toy', pt_BR: 'Brinquedo de Teste' } },
+      source: { type: 'DROP', name: { en_US: 'Drop' } },
+      media: { id: 54452 },
+      should_exclude_if_uncollected: true,
+    });
+    expect(toy).toMatchObject({
+      id: '1131',
+      names: { 'pt-BR': 'Brinquedo de Teste' },
+      mediaRef: 54452,
+      hiddenUntilCollected: true,
+    });
+    expect(normalizeToyDetail({ id: 1 })).toBeNull();
+  });
+
+  it('índices, criatura e ícone', () => {
+    expect(normalizeCollectionIndex({ pets: [{ id: 39 }, { id: 39 }, { id: 'x' }] }, 'pets')).toEqual(['39']);
+    expect(normalizeCollectionIndex({ toys: [{ id: 1131 }] }, 'toys')).toEqual(['1131']);
+    expect(normalizeCollectionIndex({}, 'toys')).toEqual([]);
+    expect(normalizeCreatureDisplayId({ creature_displays: [{ id: 5555 }] })).toBe(5555);
+    expect(normalizeCreatureDisplayId({})).toBeNull();
+    expect(
+      normalizeItemIcon({
+        assets: [{ key: 'icon', value: 'https://render.worldofwarcraft.com/us/icons/56/inv_toy.jpg' }],
+      }),
+    ).toBe('https://render.worldofwarcraft.com/us/icons/56/inv_toy.jpg');
+    expect(normalizeItemIcon({ assets: [{ key: 'icon', value: 'https://evil.example.com/a.jpg' }] })).toBeNull();
+  });
+
+  it('coleções da conta: formato inesperado vira desconhecido (null), nunca vazio', () => {
+    expect(
+      normalizeAccountPets({ pets: [{ species: { id: 39 } }, { species: { id: 39 } }, { species: { id: 40 } }] }),
+    ).toEqual(['39', '40']);
+    expect(normalizeAccountToys({ toys: [{ toy: { id: 1131 } }] })).toEqual(['1131']);
+    expect(normalizeAccountPets({ something: [] })).toBeNull();
+    expect(normalizeAccountToys(null)).toBeNull();
   });
 });

@@ -156,6 +156,129 @@ export function normalizeCharacterEncounters(json: Json): EncounterKill[] {
   return [...out.values()];
 }
 
+/** Coleção de mascotes da conta: IDs das espécies. Formato inesperado = null (desconhecido). */
+export function normalizeAccountPets(json: Json): string[] | null {
+  if (!isObj(json) || !Array.isArray(json.pets)) return null;
+  const ids = new Set<string>();
+  for (const entry of json.pets) {
+    const id = isObj(entry) && isObj(entry.species) ? idString(entry.species.id) : null;
+    if (id) ids.add(id);
+  }
+  return [...ids];
+}
+
+/** Coleção de brinquedos da conta: IDs dos brinquedos. Formato inesperado = null (desconhecido). */
+export function normalizeAccountToys(json: Json): string[] | null {
+  if (!isObj(json) || !Array.isArray(json.toys)) return null;
+  const ids = new Set<string>();
+  for (const entry of json.toys) {
+    const id = isObj(entry) && isObj(entry.toy) ? idString(entry.toy.id) : null;
+    if (id) ids.add(id);
+  }
+  return [...ids];
+}
+
+/** Índice de mascotes (pets) ou brinquedos (toys): lista de IDs. */
+export function normalizeCollectionIndex(json: Json, key: 'pets' | 'toys'): string[] {
+  if (!isObj(json) || !Array.isArray(json[key])) return [];
+  const ids = new Set<string>();
+  for (const entry of json[key] as Json[]) {
+    const id = isObj(entry) ? idString(entry.id) : null;
+    if (id) ids.add(id);
+  }
+  return [...ids];
+}
+
+type Texts = { 'en-US': string | null; 'pt-BR': string | null };
+const texts = (v: Json): Texts => ({ 'en-US': exact(v, 'en_US'), 'pt-BR': exact(v, 'pt_BR') });
+
+export interface CollectibleDetail {
+  id: string;
+  names: Texts;
+  descriptions: Texts;
+  sourceType: string | null;
+  sourceNames: Texts;
+  faction: 'ALLIANCE' | 'HORDE' | null;
+  hiddenUntilCollected: boolean;
+  /** Tipo do item (mascote: BEAST, CRITTER...). */
+  category: string | null;
+  categoryNames: Texts;
+  /** Mascote: criatura que leva ao modelo renderizado. */
+  creatureId: number | null;
+  /** Brinquedo: documento de mídia do item (ícone). */
+  mediaRef: number | null;
+}
+
+function sourceOf(json: Record<string, Json>) {
+  const src = isObj(json.source) ? json.source : null;
+  const type = src ? str(src.type, 32) : null;
+  return {
+    sourceType: type && /^[A-Z_]+$/.test(type) ? type : null,
+    sourceNames: src ? texts(src.name) : { 'en-US': null, 'pt-BR': null },
+  };
+}
+
+/** /data/wow/pet/{id} pedido sem locale (todos os idiomas). */
+export function normalizePetDetail(json: Json): CollectibleDetail | null {
+  if (!isObj(json)) return null;
+  const id = idString(json.id);
+  const en = localized(json.name, 'en_US');
+  if (!id || !en) return null;
+  const type = isObj(json.battle_pet_type) ? json.battle_pet_type : null;
+  const typeKey = type ? str(type.type, 32) : null;
+  return {
+    id,
+    names: { 'en-US': en, 'pt-BR': exact(json.name, 'pt_BR') },
+    descriptions: texts(json.description),
+    ...sourceOf(json),
+    faction: json.is_alliance_only === true ? 'ALLIANCE' : json.is_horde_only === true ? 'HORDE' : null,
+    hiddenUntilCollected: false,
+    category: typeKey && /^[A-Z_]+$/.test(typeKey) ? typeKey : null,
+    categoryNames: type ? texts(type.name) : { 'en-US': null, 'pt-BR': null },
+    creatureId: isObj(json.creature) ? int(json.creature.id) : null,
+    mediaRef: null,
+  };
+}
+
+/** /data/wow/toy/{id} pedido sem locale: o nome vem do item. */
+export function normalizeToyDetail(json: Json): CollectibleDetail | null {
+  if (!isObj(json)) return null;
+  const id = idString(json.id);
+  const item = isObj(json.item) ? json.item : null;
+  const en = item ? localized(item.name, 'en_US') : null;
+  if (!id || !item || !en) return null;
+  return {
+    id,
+    names: { 'en-US': en, 'pt-BR': exact(item.name, 'pt_BR') },
+    descriptions: { 'en-US': null, 'pt-BR': null },
+    ...sourceOf(json),
+    faction: null,
+    hiddenUntilCollected: json.should_exclude_if_uncollected === true,
+    category: null,
+    categoryNames: { 'en-US': null, 'pt-BR': null },
+    creatureId: null,
+    mediaRef: isObj(json.media) ? int(json.media.id) : null,
+  };
+}
+
+/** /data/wow/creature/{id}: primeiro modelo (creature display). */
+export function normalizeCreatureDisplayId(json: Json): number | null {
+  if (!isObj(json) || !Array.isArray(json.creature_displays)) return null;
+  const first = json.creature_displays.find(isObj);
+  return first ? int(first.id) : null;
+}
+
+/** /data/wow/media/item/{id}: URL do ícone oficial. */
+export function normalizeItemIcon(json: Json, allowHost?: (url: string) => boolean): string | null {
+  if (!isObj(json) || !Array.isArray(json.assets)) return null;
+  const assets = json.assets
+    .filter(isObj)
+    .map((a) => ({ key: str(a.key, 32), value: str(a.value, 500) }))
+    .filter((a): a is { key: string | null; value: string } => a.value !== null)
+    .filter((a) => isOfficialRenderUrl(a.value) || (allowHost?.(a.value) ?? false));
+  return (assets.find((a) => a.key === 'icon') ?? assets[0])?.value ?? null;
+}
+
 /** /data/wow/mount/index → lista de IDs. */
 export function normalizeMountIndex(json: Json): string[] {
   if (!isObj(json) || !Array.isArray(json.mounts)) return [];

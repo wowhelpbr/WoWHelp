@@ -1,12 +1,13 @@
 import 'server-only';
-import { normalizeCreatureDisplayMedia } from '@wowhelp/shared';
+import { normalizeCreatureDisplayMedia, normalizeItemIcon } from '@wowhelp/shared';
 import sharp from 'sharp';
 import { BlizzardError, fetchGameData, fetchRenderImage, isTestMediaUrl } from '@/lib/blizzard/client';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { hasOpaquePixel, removeFlatBackground } from './background';
 
-// Imagens oficiais das montarias (documento de mídia creature-display, asset
-// "zoom"). A Blizzard recomenda guardar cópia própria: baixamos, convertemos
+// Imagens oficiais do catálogo. Montarias e mascotes: modelo renderizado
+// (creature-display, asset "zoom"), com o fundo recortado. Brinquedos: ícone
+// do item. A Blizzard recomenda guardar cópia própria: baixamos, convertemos
 // para WebP e guardamos no Storage. Renovação a cada 7 dias, bem antes do
 // limite de 30 dias dos termos da API.
 
@@ -14,6 +15,9 @@ export const MEDIA_BUCKET = 'catalog-media';
 const REFRESH_AFTER_DAYS = 7;
 const CONCURRENCY = 4;
 const WIDTH = 640;
+
+export type MediaKind = 'mount' | 'pet' | 'toy';
+const FOLDER: Record<MediaKind, string> = { mount: 'mounts', pet: 'pets', toy: 'toys' };
 
 export interface MediaSyncResult {
   processed: number;
@@ -23,7 +27,13 @@ export interface MediaSyncResult {
   removed: number;
 }
 
-type Row = { id: string; external_item_id: string; creature_display_id: number | null; media_path: string | null };
+type Row = {
+  id: string;
+  external_item_id: string;
+  creature_display_id: number | null;
+  media_ref: number | null;
+  media_path: string | null;
+};
 
 /**
  * Render oficial → WebP com fundo transparente, sem margem sobrando.
@@ -43,13 +53,34 @@ export async function toWebp(input: Buffer): Promise<Buffer | null> {
   return image.webp({ quality: 82, alphaQuality: 90 }).toBuffer();
 }
 
-/** Arquivos do bucket cuja montaria saiu do catálogo ou ficou sem imagem (limite de 30 dias). */
-async function removeOrphans(admin: ReturnType<typeof createAdminClient>): Promise<number> {
+/** Ícone (quadrado, já com moldura do jogo): só converte, sem recorte. */
+async function iconToWebp(input: Buffer): Promise<Buffer> {
+  return sharp(input, { limitInputPixels: 1024 * 1024 })
+    .webp({ quality: 90 })
+    .toBuffer();
+}
+
+/** URL da imagem oficial do item, ou null se a Blizzard não tem. */
+async function imageUrlFor(kind: MediaKind, row: Row): Promise<string | null> {
+  if (kind === 'toy') {
+    if (row.media_ref === null) return null;
+    return normalizeItemIcon(await fetchGameData('us', `/media/item/${row.media_ref}`), isTestMediaUrl);
+  }
+  if (row.creature_display_id === null) return null;
+  return normalizeCreatureDisplayMedia(
+    await fetchGameData('us', `/media/creature-display/${row.creature_display_id}`),
+    isTestMediaUrl,
+  );
+}
+
+/** Arquivos do bucket cujo item saiu do catálogo ou ficou sem imagem (limite de 30 dias). */
+async function removeOrphans(admin: ReturnType<typeof createAdminClient>, kind: MediaKind): Promise<number> {
+  const folder = FOLDER[kind];
   const stored: string[] = [];
   for (let offset = 0; offset < 20_000; offset += 1000) {
-    const { data, error } = await admin.storage.from(MEDIA_BUCKET).list('mounts', { limit: 1000, offset });
+    const { data, error } = await admin.storage.from(MEDIA_BUCKET).list(folder, { limit: 1000, offset });
     if (error) throw error;
-    stored.push(...(data ?? []).map((f) => `mounts/${f.name}`));
+    stored.push(...(data ?? []).map((f) => `${folder}/${f.name}`));
     if (!data || data.length < 1000) break;
   }
   if (stored.length === 0) return 0;
@@ -59,7 +90,7 @@ async function removeOrphans(admin: ReturnType<typeof createAdminClient>): Promi
     const { data, error } = await admin
       .from('collectibles')
       .select('media_path')
-      .eq('kind', 'mount')
+      .eq('kind', kind)
       .not('media_path', 'is', null)
       .order('id')
       .range(from, from + 999);
@@ -75,19 +106,16 @@ async function removeOrphans(admin: ReturnType<typeof createAdminClient>): Promi
   return orphans.length;
 }
 
-export async function syncMountMedia(batchSize: number): Promise<MediaSyncResult> {
+export async function syncCatalogMedia(kind: MediaKind, batchSize: number): Promise<MediaSyncResult> {
   const admin = createAdminClient();
   const staleBefore = new Date(Date.now() - REFRESH_AFTER_DAYS * 86_400_000).toISOString();
 
-  const pendingQuery = () =>
-    admin
-      .from('collectibles')
-      .select('id, external_item_id, creature_display_id, media_path', { count: 'exact' })
-      .eq('kind', 'mount')
-      .eq('source', 'blizzard_api')
-      .or(`media_fetched_at.is.null,media_fetched_at.lt.${staleBefore}`);
-
-  const { data, count, error } = await pendingQuery()
+  const { data, count, error } = await admin
+    .from('collectibles')
+    .select('id, external_item_id, creature_display_id, media_ref, media_path', { count: 'exact' })
+    .eq('kind', kind)
+    .eq('source', 'blizzard_api')
+    .or(`media_fetched_at.is.null,media_fetched_at.lt.${staleBefore}`)
     .order('media_fetched_at', { ascending: true, nullsFirst: true })
     .limit(batchSize);
   if (error) throw error;
@@ -101,30 +129,21 @@ export async function syncMountMedia(batchSize: number): Promise<MediaSyncResult
       .from('collectibles')
       .update({ ...fields, media_fetched_at: now })
       .eq('id', row.id);
+  const markMissing = async (row: Row) => {
+    missing++;
+    await mark(row, { media_path: null, media_status: 'missing' });
+  };
 
   for (let i = 0; i < batch.length; i += CONCURRENCY) {
     await Promise.all(
       batch.slice(i, i + CONCURRENCY).map(async (row) => {
         try {
-          const url =
-            row.creature_display_id === null
-              ? null
-              : normalizeCreatureDisplayMedia(
-                  await fetchGameData('us', `/media/creature-display/${row.creature_display_id}`),
-                  isTestMediaUrl,
-                );
-          if (!url) {
-            missing++;
-            await mark(row, { media_path: null, media_status: 'missing' });
-            return;
-          }
-          const webp = await toWebp(await fetchRenderImage(url));
-          if (!webp) {
-            missing++;
-            await mark(row, { media_path: null, media_status: 'missing' });
-            return;
-          }
-          const path = `mounts/${row.external_item_id}.webp`;
+          const url = await imageUrlFor(kind, row);
+          if (!url) return markMissing(row);
+          const bytes = await fetchRenderImage(url);
+          const webp = kind === 'toy' ? await iconToWebp(bytes) : await toWebp(bytes);
+          if (!webp) return markMissing(row);
+          const path = `${FOLDER[kind]}/${row.external_item_id}.webp`;
           const { error: upError } = await admin.storage
             .from(MEDIA_BUCKET)
             .upload(path, webp, { contentType: 'image/webp', upsert: true, cacheControl: '86400' });
@@ -132,11 +151,7 @@ export async function syncMountMedia(batchSize: number): Promise<MediaSyncResult
           const { error: rowError } = await mark(row, { media_path: path, media_status: 'ok' });
           if (rowError) throw rowError;
         } catch (e) {
-          if (e instanceof BlizzardError && e.code === 'not_found') {
-            missing++;
-            await mark(row, { media_path: null, media_status: 'missing' });
-            return;
-          }
+          if (e instanceof BlizzardError && e.code === 'not_found') return markMissing(row);
           failed++;
         }
       }),
@@ -145,6 +160,8 @@ export async function syncMountMedia(batchSize: number): Promise<MediaSyncResult
 
   const remaining = Math.max(0, (count ?? 0) - batch.length + failed);
   // Limpeza só quando não há mais nada para baixar (uma vez por ciclo).
-  const removed = remaining === 0 ? await removeOrphans(admin) : 0;
+  const removed = remaining === 0 ? await removeOrphans(admin, kind) : 0;
   return { processed: batch.length - failed - missing, missing, failed, remaining, removed };
 }
+
+export const syncMountMedia = (batchSize: number) => syncCatalogMedia('mount', batchSize);
