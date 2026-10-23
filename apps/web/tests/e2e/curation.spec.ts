@@ -75,7 +75,7 @@ test('curador publica chance de drop com fonte e o público vê', async ({ page 
 
   await page.goto('/en/settings');
   await page.getByRole('link', { name: 'Open curation' }).click();
-  await page.getByRole('link', { name: /Drop chance, where to get it/ }).click();
+  await page.getByRole('link', { name: /^Mounts Drop chance/ }).click();
   await page.getByLabel('Search by name or number').fill(name);
   await page.getByRole('button', { name: 'Filter' }).click();
   await page.getByRole('link', { name: new RegExp(name) }).click();

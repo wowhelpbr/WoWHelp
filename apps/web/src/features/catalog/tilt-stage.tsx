@@ -8,7 +8,15 @@ import { cn } from '@/lib/cn';
 const MAX_TILT = 7;
 
 /** Palco grande da imagem oficial na página/janela de detalhes, com profundidade no mouse. */
-export function TiltStage({ imageUrl, className }: { imageUrl: string | null; className?: string }) {
+export function TiltStage({
+  imageUrl,
+  imageMode = 'render',
+  className,
+}: {
+  imageUrl: string | null;
+  imageMode?: 'render' | 'icon';
+  className?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
 
   function onMove(e: PointerEvent<HTMLDivElement>) {
@@ -36,7 +44,13 @@ export function TiltStage({ imageUrl, className }: { imageUrl: string | null; cl
       onPointerLeave={onLeave}
       className={cn('frame tilt-card tilt-stage hex-grid corner-brackets relative aspect-[4/3]', className)}
     >
-      {imageUrl ? (
+      {imageUrl && imageMode === 'icon' ? (
+        <div className="tilt-art absolute inset-0 grid place-items-center">
+          <div className="relative size-32 overflow-hidden rounded-sm border-2 border-primary/70 shadow-[0_0_40px_rgb(60_200_255/0.4)]">
+            <Image src={imageUrl} alt="" fill unoptimized priority sizes="128px" className="object-cover" />
+          </div>
+        </div>
+      ) : imageUrl ? (
         <Image
           src={imageUrl}
           alt=""

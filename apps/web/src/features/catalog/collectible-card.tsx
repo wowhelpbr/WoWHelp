@@ -13,12 +13,15 @@ export function CollectibleCard({
   name,
   subtitle,
   imageUrl,
+  imageMode = 'render',
   badges,
 }: {
   href: string;
   name: string;
   subtitle: string;
   imageUrl: string | null;
+  /** icon = ícone pequeno do jogo (brinquedos), mostrado em tamanho fixo. */
+  imageMode?: 'render' | 'icon';
   badges?: ReactNode;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
@@ -51,7 +54,13 @@ export function CollectibleCard({
       className="frame tilt-card group flex h-full flex-col hover:border-neon/60 focus-visible:border-neon"
     >
       <span className="tilt-stage hex-grid relative block aspect-[4/3] border-b border-border">
-        {imageUrl ? (
+        {imageUrl && imageMode === 'icon' ? (
+          <span className="tilt-art absolute inset-0 grid place-items-center">
+            <span className="relative size-20 overflow-hidden rounded-sm border-2 border-primary/70 shadow-[0_0_28px_rgb(60_200_255/0.35)]">
+              <Image src={imageUrl} alt="" fill unoptimized sizes="80px" className="object-cover" />
+            </span>
+          </span>
+        ) : imageUrl ? (
           <Image
             src={imageUrl}
             alt=""

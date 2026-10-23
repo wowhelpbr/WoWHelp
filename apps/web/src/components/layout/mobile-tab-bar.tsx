@@ -29,7 +29,7 @@ function MobileTabBarView({ pathname }: { pathname: string | null }) {
     >
       <ul className="grid grid-cols-4">
         {NAV_ITEMS.map((item) => {
-          const active = isActive(pathname, item.href);
+          const active = isActive(pathname, item.href, 'also' in item ? item.also : []);
           const Icon = item.icon ?? MountGlyph;
           return (
             <li key={item.key}>

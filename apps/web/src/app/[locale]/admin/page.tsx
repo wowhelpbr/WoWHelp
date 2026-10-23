@@ -1,4 +1,4 @@
-import { Users } from 'lucide-react';
+import { Gift, PawPrint, Users } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
@@ -32,16 +32,24 @@ async function AdminHub() {
         <h1 className="mt-2 text-4xl text-foreground">{t('title')}</h1>
         <p className="mt-2 max-w-3xl text-muted-foreground">{t('intro')}</p>
       </header>
-      <ul className="grid gap-4 md:grid-cols-2">
-        <li>
-          <Link href="/admin/mounts" className="frame flex h-full items-start gap-4 p-5 hover:border-neon/60">
-            <MountGlyph aria-hidden className="size-8 shrink-0 text-primary" />
-            <span>
-              <span className="block font-display text-xl text-foreground">{t('mountsTitle')}</span>
-              <span className="mt-1 block text-sm text-muted-foreground">{t('mountsBody')}</span>
-            </span>
-          </Link>
-        </li>
+      <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {(
+          [
+            ['/admin/mounts', 'mountsTitle', MountGlyph],
+            ['/admin/pets', 'petsTitle', PawPrint],
+            ['/admin/toys', 'toysTitle', Gift],
+          ] as const
+        ).map(([href, key, Icon]) => (
+          <li key={href}>
+            <Link href={href} className="frame flex h-full items-start gap-4 p-5 hover:border-neon/60">
+              <Icon aria-hidden className="size-8 shrink-0 text-primary" />
+              <span>
+                <span className="block font-display text-xl text-foreground">{t(key)}</span>
+                <span className="mt-1 block text-sm text-muted-foreground">{t('mountsBody')}</span>
+              </span>
+            </Link>
+          </li>
+        ))}
         <li>
           <div aria-disabled="true" className="frame flex h-full items-start gap-4 p-5 opacity-70">
             <Users aria-hidden className="size-8 shrink-0 text-muted-foreground" />
