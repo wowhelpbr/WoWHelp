@@ -282,7 +282,10 @@
     "clearManual": "Tirar minha marcação",
     "blizzardId": "ID da montaria na Blizzard {id}",
     "updated": "Dados atualizados {when}",
-    "notFound": "Esta montaria não está no catálogo."
+    "notFound": "Esta montaria não está no catálogo.",
+    "close": "Fechar",
+    "dropChance": "Chance de drop",
+    "dropChanceUnknown": "Desconhecida: ainda sem fonte revisada"
   },
   "Settings": {
     "metaTitle": "Configurações",

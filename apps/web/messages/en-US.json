@@ -282,7 +282,10 @@
     "clearManual": "Remove my marking",
     "blizzardId": "Blizzard mount ID {id}",
     "updated": "Data refreshed {when}",
-    "notFound": "This mount is not in the catalog."
+    "notFound": "This mount is not in the catalog.",
+    "close": "Close",
+    "dropChance": "Drop chance",
+    "dropChanceUnknown": "Unknown: no reviewed source yet"
   },
   "Settings": {
     "metaTitle": "Settings",
