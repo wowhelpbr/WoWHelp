@@ -4,6 +4,7 @@ import type { MountEntry } from './queries';
 export interface MountFilters {
   q: string;
   source: string;
+  category: string;
   faction: '' | 'ALLIANCE' | 'HORDE';
   status: '' | CollectionStatus;
 }
@@ -25,6 +26,7 @@ export function parseFilters(sp: Record<string, string | string[] | undefined>):
   return {
     q: one('q').slice(0, 80),
     source: /^[A-Z_]{1,32}$/.test(one('source')) ? one('source') : '',
+    category: /^[A-Z_]{1,32}$/.test(one('category')) ? one('category') : '',
     faction: faction === 'ALLIANCE' || faction === 'HORDE' ? faction : '',
     status: status === 'collected' || status === 'not_collected' || status === 'unknown' ? status : '',
     page: Number.isInteger(page) && page > 0 && page < 1000 ? page : 1,
@@ -47,6 +49,7 @@ export function filterMounts(
     if (m.hiddenUntilCollected && status !== 'collected') return false;
     if (q && !fold(m.name).includes(q)) return false;
     if (f.source && m.sourceType !== f.source) return false;
+    if (f.category && m.category !== f.category) return false;
     if (f.faction && m.faction !== null && m.faction !== f.faction) return false;
     if (f.status && statusOf && status !== f.status) return false;
     return true;
@@ -58,6 +61,15 @@ export function sourceOptions(mounts: readonly MountEntry[]): { value: string; l
   const seen = new Map<string, string>();
   for (const m of mounts) {
     if (m.sourceType && !seen.has(m.sourceType)) seen.set(m.sourceType, m.sourceName ?? m.sourceType);
+  }
+  return [...seen.entries()].map(([value, label]) => ({ value, label })).sort((a, b) => a.label.localeCompare(b.label));
+}
+
+/** Tipos presentes no catálogo (mascote: Fera, Bicho...), com o nome traduzido da API. */
+export function categoryOptions(items: readonly MountEntry[]): { value: string; label: string }[] {
+  const seen = new Map<string, string>();
+  for (const m of items) {
+    if (m.category && !seen.has(m.category)) seen.set(m.category, m.categoryName ?? m.category);
   }
   return [...seen.entries()].map(([value, label]) => ({ value, label })).sort((a, b) => a.label.localeCompare(b.label));
 }

@@ -16,6 +16,9 @@ const m = (externalId: string, name: string, extra: Partial<MountEntry> = {}): M
   fetchedAt: null,
   lastReviewedAt: null,
   imageUrl: null,
+  kind: 'mount',
+  category: null,
+  categoryName: null,
   ...extra,
 });
 
@@ -26,7 +29,7 @@ const mounts = [
   m('4', 'Montaria Escondida', { hiddenUntilCollected: true }),
 ];
 
-const none = { q: '', source: '', faction: '' as const, status: '' as const };
+const none = { q: '', source: '', category: '', faction: '' as const, status: '' as const };
 
 describe('filterMounts', () => {
   it('esconde as ocultas até coletar', () => {
@@ -53,9 +56,12 @@ describe('filterMounts', () => {
 
 describe('parseFilters', () => {
   it('aceita só valores conhecidos', () => {
-    expect(parseFilters({ q: 'x', source: 'DROP', faction: 'HORDE', status: 'unknown', page: '2' })).toEqual({
+    expect(
+      parseFilters({ q: 'x', source: 'DROP', category: 'BEAST', faction: 'HORDE', status: 'unknown', page: '2' }),
+    ).toEqual({
       q: 'x',
       source: 'DROP',
+      category: 'BEAST',
       faction: 'HORDE',
       status: 'unknown',
       page: 2,
