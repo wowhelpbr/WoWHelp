@@ -132,3 +132,26 @@ export async function fetchGameData(region: BattlenetRegion, path: string, local
   const qs = locale ? `?locale=${locale}` : '';
   return getJson(`${base}/data/wow${path}${qs}`, token, `static-${region}`);
 }
+
+/** No teste local, libera imagens servidas pela Battle.net falsa. */
+export function isTestMediaUrl(url: string): boolean {
+  const base = testOverride();
+  return base !== null && url.startsWith(`${base}/`);
+}
+
+const IMAGE_TYPES = /^image\/(jpeg|png|webp)$/;
+const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
+
+/** Baixa uma imagem de render (URL já validada), com tempo e tamanho limitados. */
+export async function fetchRenderImage(url: string): Promise<Buffer> {
+  const res = await fetch(url, { cache: 'no-store', redirect: 'error', signal: AbortSignal.timeout(15_000) });
+  if (res.status === 404) throw new BlizzardError('not_found', 404);
+  if (!res.ok) throw new BlizzardError('unavailable', res.status);
+  const type = (res.headers.get('content-type') ?? '').split(';')[0]!.trim();
+  if (!IMAGE_TYPES.test(type)) throw new BlizzardError('bad_response', res.status);
+  const declared = Number(res.headers.get('content-length') ?? 0);
+  if (declared > MAX_IMAGE_BYTES) throw new BlizzardError('bad_response', res.status);
+  const bytes = Buffer.from(await res.arrayBuffer());
+  if (bytes.length === 0 || bytes.length > MAX_IMAGE_BYTES) throw new BlizzardError('bad_response', res.status);
+  return bytes;
+}

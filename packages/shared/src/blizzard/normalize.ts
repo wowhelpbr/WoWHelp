@@ -156,6 +156,34 @@ export function normalizeMountDetail(json: Json): MountDetail | null {
   };
 }
 
+// Imagens oficiais da Blizzard vêm de render.worldofwarcraft.com ou
+// render-{região}.worldofwarcraft.com (planning: documentos de mídia).
+const RENDER_HOST = /^render(-[a-z]{2})?\.worldofwarcraft\.com$/;
+
+/** true se a URL é uma imagem oficial da Blizzard (https e host de render conhecido). */
+export function isOfficialRenderUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && RENDER_HOST.test(url.hostname) && !url.username && !url.password;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * /data/wow/media/creature-display/{id}: devolve a URL da imagem do modelo
+ * (prefere o asset "zoom"). `allowHost` libera um host extra só em teste local.
+ */
+export function normalizeCreatureDisplayMedia(json: Json, allowHost?: (url: string) => boolean): string | null {
+  if (!isObj(json) || !Array.isArray(json.assets)) return null;
+  const assets = json.assets
+    .filter(isObj)
+    .map((a) => ({ key: str(a.key, 32), value: str(a.value, 500) }))
+    .filter((a): a is { key: string | null; value: string } => a.value !== null)
+    .filter((a) => isOfficialRenderUrl(a.value) || (allowHost?.(a.value) ?? false));
+  return (assets.find((a) => a.key === 'zoom') ?? assets[0])?.value ?? null;
+}
+
 /** Idioma a pedir à API conforme a região (cada host aceita só alguns). */
 export function apiLocaleFor(region: BattlenetRegion, appLocale: 'en-US' | 'pt-BR'): string {
   switch (region) {

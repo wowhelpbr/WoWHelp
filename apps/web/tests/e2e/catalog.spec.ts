@@ -12,6 +12,11 @@ test.beforeAll(async ({ request }) => {
   expect(res.ok()).toBe(true);
   const body = await res.json();
   expect(body.total).toBe(2);
+  // Imagens oficiais: a 6 tem modelo com imagem; a 7 não tem modelo (fica com o ícone padrão).
+  const media = await request.post('/api/cron/catalog-sync?job=media&batch=10', {
+    headers: { Authorization: 'Bearer test-cron-secret' },
+  });
+  expect(media.ok()).toBe(true);
 });
 
 async function signUp(page: Page) {
@@ -77,4 +82,37 @@ test('status cruza com a Battle.net e a montaria vira objetivo', async ({ page }
 test('montaria inexistente mostra aviso', async ({ page }) => {
   await page.goto('/en/mounts/999999');
   await expect(page.getByText('This mount is not in the catalog.')).toBeVisible();
+});
+
+test('card com imagem oficial guardada no Storage e janela de detalhes', async ({ page, request }) => {
+  await page.goto('/en/mounts');
+  const one = page.getByRole('link', { name: /Test Mount One/ });
+  const img = one.locator('img');
+  await expect(img).toHaveAttribute('src', /\/storage\/v1\/object\/public\/catalog-media\/mounts\/6\.webp\?v=/);
+  const file = await request.get((await img.getAttribute('src'))!);
+  expect(file.ok()).toBe(true);
+  expect(file.headers()['content-type']).toContain('image/webp');
+  await expect(page.getByRole('link', { name: /Test Mount Two/ }).locator('img')).toHaveCount(0);
+
+  // Clique abre por cima da lista, com URL própria; Esc fecha e volta para a lista.
+  await one.click();
+  const dialog = page.getByRole('dialog', { name: 'Test Mount One' });
+  await expect(dialog).toBeVisible();
+  await expect(page).toHaveURL(/\/en\/mounts\/6$/);
+  await expect(dialog.getByText('A mount used only in tests.')).toBeVisible();
+  await expect(dialog.getByText('Unknown: no reviewed source yet')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(dialog).toHaveCount(0);
+  await expect(page).toHaveURL(/\/en\/mounts$/);
+
+  // Botão fechar também volta.
+  await page.getByRole('link', { name: /Test Mount Two/ }).click();
+  await page.getByRole('dialog', { name: 'Test Mount Two' }).getByRole('button', { name: 'Close' }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+
+  // Link direto abre a página inteira, sem janela.
+  await page.goto('/en/mounts/6');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(page.getByRole('heading', { level: 1, name: 'Test Mount One' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Back to the catalog' })).toBeVisible();
 });

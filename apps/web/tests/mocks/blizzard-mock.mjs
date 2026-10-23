@@ -6,6 +6,11 @@ const PORT = Number(process.env.BLIZZARD_MOCK_PORT ?? 4010);
 const CLIENT = Buffer.from('test-client:test-secret').toString('base64');
 const TOKEN = 'mock-user-token';
 const APP_TOKEN = 'mock-app-token';
+// PNG 1x1 de teste (não é arte do jogo).
+const TEST_IMAGE = Buffer.from(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+  'base64',
+);
 
 const json = (res, status, body) => {
   res.writeHead(status, { 'Content-Type': 'application/json' });
@@ -112,6 +117,20 @@ const server = http.createServer(async (req, res) => {
     const detail = mountDetails[mountMatch[1]];
     if (!appOk) return json(res, 401, {});
     return detail ? json(res, 200, detail) : json(res, 404, {});
+  }
+
+  const mediaMatch = url.pathname.match(/^\/data\/wow\/media\/creature-display\/(\d+)$/);
+  if (mediaMatch) {
+    if (!appOk) return json(res, 401, {});
+    if (mediaMatch[1] !== '1') return json(res, 404, {});
+    return json(res, 200, {
+      id: 1,
+      assets: [{ key: 'zoom', value: `http://127.0.0.1:${PORT}/render/creature-display-1.png` }],
+    });
+  }
+  if (url.pathname === '/render/creature-display-1.png') {
+    res.writeHead(200, { 'Content-Type': 'image/png' });
+    return res.end(TEST_IMAGE);
   }
 
   if (url.pathname === '/health') return json(res, 200, { ok: true });

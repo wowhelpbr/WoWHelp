@@ -18,7 +18,8 @@ const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
+  // Imagens do catálogo vêm do Storage do Supabase (cópia própria das imagens oficiais).
+  `img-src 'self' data: blob: ${supabaseOrigin}`.trim(),
   "font-src 'self'",
   `connect-src 'self' ${supabaseOrigin}`.trim(),
   "worker-src 'self'",

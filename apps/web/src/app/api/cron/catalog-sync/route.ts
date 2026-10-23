@@ -1,11 +1,13 @@
 import { timingSafeEqual } from 'node:crypto';
 import { revalidateTag } from 'next/cache';
 import { NextResponse, type NextRequest } from 'next/server';
+import { syncMountMedia } from '@/features/catalog/media-sync';
 import { syncOfficialMounts } from '@/features/catalog/sync';
 import { isBattlenetConfigured } from '@/lib/blizzard/client';
 import { isAdminConfigured } from '@/lib/supabase/admin';
 
-// Tarefa agendada: importa/renova um lote do catálogo oficial de montarias.
+// Tarefa agendada: importa/renova um lote do catálogo oficial de montarias
+// (?job=media: um lote das imagens oficiais, guardadas no Storage).
 // Chamada pelo GitHub Actions (.github/workflows/catalogo.yml) com o CRON_SECRET.
 export const maxDuration = 60;
 
@@ -22,12 +24,14 @@ async function handle(request: NextRequest) {
   if (!isBattlenetConfigured() || !isAdminConfigured()) {
     return NextResponse.json({ error: 'not_configured' }, { status: 503 });
   }
-  const requested = Number(request.nextUrl.searchParams.get('batch') ?? 120);
-  const batch = Number.isInteger(requested) ? Math.min(Math.max(requested, 1), 300) : 120;
+  const media = request.nextUrl.searchParams.get('job') === 'media';
+  const fallback = media ? 40 : 120;
+  const requested = Number(request.nextUrl.searchParams.get('batch') ?? fallback);
+  const batch = Number.isInteger(requested) ? Math.min(Math.max(requested, 1), media ? 120 : 300) : fallback;
   try {
-    const result = await syncOfficialMounts(batch);
+    const result = media ? await syncMountMedia(batch) : await syncOfficialMounts(batch);
     // Lista nova aparece já na próxima visita (o catálogo fica em cache por 1 h).
-    if (result.processed > 0) revalidateTag('catalog', { expire: 0 });
+    if (result.processed > 0 || ('missing' in result && result.missing > 0)) revalidateTag('catalog', { expire: 0 });
     return NextResponse.json(result);
   } catch (e) {
     // Só código e mensagem curta (erros do Supabase não são instâncias de Error); nunca segredos.
