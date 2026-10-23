@@ -25,6 +25,10 @@ Data: 24/10/2026 (madrugada). Gate (planning/docs/02): fluxos críticos aprovado
 - Contas de teste noturnas apagadas da produção (só a conta do Bruno ficou).
 - Testes do banco agora começam do zero dentro da transação, sem depender do que já existe no banco local.
 
+## Teste de fumaça na produção
+
+24/10/2026, `apps/web/scripts/smoke-production.mjs` contra https://wowhelp.vercel.app: home, cadastro, objetivo, botão da Battle.net (leva ao login da Blizzard), importação do addon, filtro de montarias coletadas, exportar dados e excluir conta. Todos ok; depois disso o banco ficou só com a conta do Bruno.
+
 ## Checklist de go live (planning/docs/09)
 
 | Item | Situação |
