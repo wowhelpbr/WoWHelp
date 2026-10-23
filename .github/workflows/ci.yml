@@ -1,0 +1,71 @@
+# CI do WoWHelp: qualidade do código, testes de banco (RLS) e testes de ponta a ponta.
+# Nada aqui publica o site: deploy é responsabilidade da Vercel, com preview por PR.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  qualidade:
+    name: Lint, tipos, unitários e build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      # Build sem Supabase configurado: o site precisa subir mostrando
+      # "contas indisponíveis neste ambiente" em vez de quebrar.
+      - run: npm run build
+
+  banco-e-e2e:
+    name: RLS (pgTAP) e E2E com Supabase local
+    runs-on: ubuntu-latest
+    needs: qualidade
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: npm ci
+      - name: Sobe o Supabase local (migrations aplicadas)
+        run: supabase start
+      - name: Testes de isolamento entre contas (RLS)
+        run: supabase test db
+      - name: Variáveis do Supabase local para o app
+        run: |
+          eval "$(supabase status -o env | grep -E '^(API_URL|PUBLISHABLE_KEY)=')"
+          {
+            echo "NEXT_PUBLIC_SUPABASE_URL=$API_URL"
+            echo "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=$PUBLISHABLE_KEY"
+            echo "NEXT_PUBLIC_SITE_URL=http://localhost:3100"
+          } > apps/web/.env.local
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+        working-directory: apps/web
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: apps/web/test-results/
+          retention-days: 7
