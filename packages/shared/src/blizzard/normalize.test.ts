@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   apiLocaleFor,
   isOfficialRenderUrl,
+  isPlaceholderName,
   normalizeAccountPets,
   normalizeAccountToys,
   normalizeCollectionIndex,
@@ -328,5 +329,21 @@ describe('mascotes e brinquedos', () => {
     expect(normalizeAccountToys({ toys: [{ toy: { id: 1131 } }] })).toEqual(['1131']);
     expect(normalizeAccountPets({ something: [] })).toBeNull();
     expect(normalizeAccountToys(null)).toBeNull();
+  });
+});
+
+describe('isPlaceholderName', () => {
+  it('reconhece marcas de rascunho da Blizzard', () => {
+    for (const name of [
+      '[PH] Horse with Hat',
+      'Pink Rocket Mount [PH]',
+      '[DNT] Storm Pet Boss - Rare',
+      '[DND] Test Mount JZB',
+    ]) {
+      expect(isPlaceholderName(name)).toBe(true);
+    }
+    for (const name of ['Fuzzy', 'Swift Razzashi Raptor', 'Big Blizzard Bear', null]) {
+      expect(isPlaceholderName(name)).toBe(false);
+    }
   });
 });
