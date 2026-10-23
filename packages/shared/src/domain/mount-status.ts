@@ -19,20 +19,24 @@ export interface StoredObservation {
 export function mountStatusFor(
   mountId: string,
   observations: readonly StoredObservation[],
-  accountSync: { syncedAt: string | null; now: Date },
+  accountSync: { syncedAt: string | null; now: Date; addonObservedAt?: string | null },
 ): { status: CollectionStatus; source: DataSource | null; observedAt: string | null } {
   const own: CollectionObservation[] = observations
     .filter((o) => o.externalItemId === mountId)
     .map(({ status, source, observedAt }) => ({ status, source, observedAt }));
 
-  const syncedAt = accountSync.syncedAt ? Date.parse(accountSync.syncedAt) : NaN;
-  const syncValid =
-    !Number.isNaN(syncedAt) &&
-    accountSync.now.getTime() - syncedAt <= 30 * 86_400_000 &&
-    syncedAt <= accountSync.now.getTime() + 60_000;
-
-  if (syncValid && !own.some((o) => o.source === 'blizzard_api')) {
-    own.push({ status: 'not_collected', source: 'blizzard_api', observedAt: accountSync.syncedAt! });
+  // Fontes com lista COMPLETA do que a conta tem: Battle.net e addon Companion.
+  const complete: [DataSource, string | null | undefined][] = [
+    ['blizzard_api', accountSync.syncedAt],
+    ['addon_import', accountSync.addonObservedAt],
+  ];
+  for (const [source, at] of complete) {
+    const t = at ? Date.parse(at) : NaN;
+    const valid =
+      !Number.isNaN(t) && accountSync.now.getTime() - t <= 30 * 86_400_000 && t <= accountSync.now.getTime() + 60_000;
+    if (valid && !own.some((o) => o.source === source)) {
+      own.push({ status: 'not_collected', source, observedAt: at! });
+    }
   }
 
   const resolved = resolveCollectionStatus(own);

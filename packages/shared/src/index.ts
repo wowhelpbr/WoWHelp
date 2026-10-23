@@ -5,3 +5,5 @@ export * from './schemas';
 export * from './blizzard/normalize';
 export * from './domain/mount-status';
 export * from './domain/resets';
+export * from './addon/saved-variables';
+export * from './addon/snapshot';
