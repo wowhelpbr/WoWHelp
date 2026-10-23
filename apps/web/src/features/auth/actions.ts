@@ -5,6 +5,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { LOCALE_PREFIX, routing, type AppLocale } from '@/i18n/routing';
 import { safeNextPath } from '@/lib/safe-redirect';
+import { getSiteUrl } from '@/lib/site-url';
 import { isSupabaseConfigured } from '@/lib/supabase/env';
 import { createClient } from '@/lib/supabase/server';
 import { mapAuthError, type AuthErrorCode } from './errors';
@@ -20,9 +21,8 @@ function readLocale(formData: FormData): AppLocale {
 }
 
 async function siteOrigin(): Promise<string> {
-  const configured = process.env.NEXT_PUBLIC_SITE_URL;
-  if (configured) return configured.replace(/\/$/, '');
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  // Em produção/preview vem do ambiente; localmente, do cabeçalho da requisição.
+  if (process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL) return getSiteUrl();
   const h = await headers();
   const host = h.get('host') ?? 'localhost:3100';
   const proto = h.get('x-forwarded-proto') ?? 'http';

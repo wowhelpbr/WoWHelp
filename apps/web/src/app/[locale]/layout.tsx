@@ -9,6 +9,7 @@ import { SiteHeader } from '@/components/layout/site-header';
 import { ServiceWorkerRegister } from '@/components/pwa/service-worker-register';
 import { LOCALE_PREFIX, routing } from '@/i18n/routing';
 import '../globals.css';
+import { getSiteUrl } from '@/lib/site-url';
 
 // Chakra Petch: geométrica e angular (sistema HUD), com acentos do português.
 const chakra = Chakra_Petch({
@@ -18,7 +19,7 @@ const chakra = Chakra_Petch({
   display: 'swap',
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3100';
+const siteUrl = getSiteUrl();
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
