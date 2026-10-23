@@ -1,0 +1,212 @@
+@import 'tailwindcss';
+
+/*
+ * WoWHelp HUD (v1). Sistema "hud-dark-design-system" com as cores do WoWHelp,
+ * na linha do Heroes of the Storm: azul-noite profundo, amarelo-ouro do logo
+ * para ação e seleção, azul-elétrico para estrutura e informação.
+ * Racional e pesquisa em docs/design/identidade-visual.md.
+ */
+@theme {
+  --color-background: #090e22;
+  --color-sidebar: #070b1b;
+  --color-card: #0f1734;
+  --color-card-raised: #16214a;
+  --color-border: #22346c;
+  --color-border-strong: #3a55a6;
+  --color-foreground: #eef1fb;
+  --color-muted-foreground: #9aa6cc;
+
+  /* Uma cor de ação (ouro do medalhão) e uma de estrutura (azul do Nexus). */
+  --color-primary: #ffc629;
+  --color-primary-deep: #d99b00;
+  --color-primary-foreground: #0b1024;
+  --color-neon: #3cc8ff;
+
+  /* Semânticas: nunca reaproveitar o ouro ou o azul para estado de dado. */
+  --color-success: #4ade80;
+  --color-warning: #f59e0b;
+  --color-danger: #ff5d6c;
+  --color-unknown: #8b94b4;
+
+  --font-sans: var(--font-chakra), 'Segoe UI', system-ui, sans-serif;
+  --font-display: var(--font-chakra), 'Segoe UI', system-ui, sans-serif;
+
+  --radius-hud: 0.25rem;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background-color: var(--color-background);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100dvh;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    line-height: 1.55;
+    background:
+      radial-gradient(90% 55% at 15% -5%, rgb(76 54 196 / 0.32), transparent 60%),
+      radial-gradient(70% 45% at 95% 0%, rgb(60 200 255 / 0.12), transparent 65%), var(--color-background);
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: rgb(255 198 41 / 0.35);
+  }
+}
+
+@layer components {
+  /* Painel HUD: borda visível, canto reto, sem sombra macia. */
+  .frame {
+    position: relative;
+    background: linear-gradient(180deg, rgb(19 30 66 / 0.92), rgb(13 21 48 / 0.92));
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-hud);
+  }
+
+  .frame-raised {
+    position: relative;
+    background: var(--color-card-raised);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-hud);
+  }
+
+  /* Cantoneiras douradas de retícula: só em painéis de destaque. */
+  .corner-brackets::before,
+  .corner-brackets::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+  }
+  .corner-brackets::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid var(--color-primary);
+    border-left: 2px solid var(--color-primary);
+  }
+  .corner-brackets::after {
+    right: -1px;
+    bottom: -1px;
+    border-right: 2px solid var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
+  }
+
+  /* Rótulo técnico "// TEXTO" acima de grupos de conteúdo. */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-neon);
+  }
+  .eyebrow::before {
+    content: '//';
+    opacity: 0.6;
+  }
+
+  /* Colmeia do Nexus: textura de fundo para áreas de destaque (nunca em listas densas). */
+  .hex-grid {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='41.57' height='72'%3E%3Cpath d='M20.78 0L41.57 12V36L20.78 48L0 36V12Z M20.78 48V72' fill='none' stroke='%233cc8ff' stroke-opacity='0.09' stroke-width='1'/%3E%3C/svg%3E");
+    background-size: 41.57px 72px;
+  }
+
+  .scanlines {
+    position: relative;
+  }
+  .scanlines::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgb(0 0 0 / 0.08) 2px 4px);
+  }
+
+  /* Marcador de missão em hexágono: "!" disponível, preenchido quando aceito. */
+  /* Hexágono em duas camadas: a de fora é o contorno dourado, a de dentro o miolo. */
+  .quest-mark {
+    position: relative;
+    isolation: isolate;
+    display: inline-grid;
+    place-items: center;
+    width: 1.85rem;
+    height: 2.1rem;
+    flex: none;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--color-primary);
+    background: var(--color-primary);
+  }
+  .quest-mark::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    z-index: -1;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    background: linear-gradient(180deg, #1b2550, #111a38);
+  }
+
+  .quest-mark[data-state='accepted'] {
+    color: var(--color-primary-foreground);
+  }
+  .quest-mark[data-state='accepted']::before {
+    display: none;
+  }
+}
+
+@keyframes hero-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-art {
+  animation: hero-arrive 700ms cubic-bezier(0.2, 0.7, 0.2, 1) 120ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
