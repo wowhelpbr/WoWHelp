@@ -61,11 +61,13 @@ Mudou o addon? Rode `npm run addon:zip -w @wowhelp/web` para atualizar o zip de 
 | `npx supabase test db` | Isolamento entre contas no banco (RLS) |
 | `npm run build && npm run test:e2e` | Ponta a ponta no desktop e no celular, incluindo acessibilidade WCAG A/AA e Battle.net falsa |
 | `npm run lint`, `npm run typecheck`, `npm run format:check` | Qualidade do código |
+| `node apps/web/scripts/smoke-production.mjs` | Fumaça na produção: conta temporária passa pelos fluxos principais e é excluída no fim |
 
 O CI (`.github/workflows/ci.yml`) roda tudo isso em cada PR.
 
 ## Documentação
 
+- [Relatório da manhã de 24/10/2026](docs/relatorio-24-10-2026.md)
 - [Quadro de tarefas](docs/a-fazer.md) e [decisões técnicas](docs/decisoes.md)
 - [Fase 0: relatório](docs/fase-0/relatorio-fase-0.md), [cobertura de dados Battle.net e addon](docs/fase-0/cobertura-de-dados-battlenet-e-addon.md), [inventário de assets](docs/fase-0/inventario-de-assets.md)
 - Relatórios: [Fase 1](docs/fase-1/relatorio-fase-1.md), [Fase 2](docs/fase-2/relatorio-fase-2.md), [Fase 3](docs/fase-3/relatorio-fase-3.md), [Fase 4](docs/fase-4/relatorio-fase-4.md), [Fase 5](docs/fase-5/relatorio-fase-5.md), [Fase 6](docs/fase-6/relatorio-fase-6.md)

@@ -9,6 +9,7 @@ Atualizado na madrugada de 24/10/2026. Tarefas de até ~4 horas, com resultado v
 - [x] Login do Supabase apontando para wowhelp.vercel.app (confirmação de e-mail desligada até haver SMTP)
 - [x] Variáveis na Vercel (Supabase e Battle.net)
 - [x] Cadastro, painel e objetivo salvo testados em https://wowhelp.vercel.app
+- [x] Teste de fumaça completo na produção (apps/web/scripts/smoke-production.mjs), 24/10/2026
 - [!] SMTP próprio (ex.: Resend) para ligar a confirmação de e-mail antes do beta público
 - [x] Apagar as contas de teste `qa-noturno-*@wowhelp.test`
 - [!] Escolher backup: Supabase Pro (cópia diária) ou cópia manual semanal (docs/operacao/backup-e-rollback.md)
