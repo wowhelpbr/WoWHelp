@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   apiLocaleFor,
+  isOfficialRenderUrl,
+  normalizeCreatureDisplayMedia,
   normalizeAccountMounts,
   normalizeMountDetail,
   normalizeMountIndex,
@@ -135,5 +137,53 @@ describe('apiLocaleFor', () => {
     expect(apiLocaleFor('us', 'pt-BR')).toBe('pt_BR');
     expect(apiLocaleFor('us', 'en-US')).toBe('en_US');
     expect(apiLocaleFor('eu', 'pt-BR')).toBe('en_GB');
+  });
+});
+
+describe('mídia de modelo (creature-display)', () => {
+  const media = (assets: unknown) => ({ id: 1, assets });
+
+  it('prefere a imagem zoom oficial', () => {
+    expect(
+      normalizeCreatureDisplayMedia(
+        media([
+          { key: 'other', value: 'https://render.worldofwarcraft.com/us/npcs/other/x.jpg' },
+          { key: 'zoom', value: 'https://render.worldofwarcraft.com/us/npcs/zoom/creature-display-1.jpg' },
+        ]),
+      ),
+    ).toBe('https://render.worldofwarcraft.com/us/npcs/zoom/creature-display-1.jpg');
+  });
+
+  it('aceita host por região e cai para o primeiro asset válido', () => {
+    expect(
+      normalizeCreatureDisplayMedia(media([{ key: 'x', value: 'https://render-eu.worldofwarcraft.com/a.jpg' }])),
+    ).toBe('https://render-eu.worldofwarcraft.com/a.jpg');
+  });
+
+  it('recusa host desconhecido, http e credenciais na URL', () => {
+    for (const value of [
+      'https://evil.example.com/zoom.jpg',
+      'http://render.worldofwarcraft.com/a.jpg',
+      'https://user:pw@render.worldofwarcraft.com/a.jpg',
+      'https://render.worldofwarcraft.com.evil.com/a.jpg',
+      'javascript:alert(1)',
+    ]) {
+      expect(isOfficialRenderUrl(value)).toBe(false);
+    }
+    expect(normalizeCreatureDisplayMedia(media([{ key: 'zoom', value: 'https://evil.example.com/z.jpg' }]))).toBeNull();
+  });
+
+  it('formato inesperado vira nulo', () => {
+    expect(normalizeCreatureDisplayMedia(null)).toBeNull();
+    expect(normalizeCreatureDisplayMedia({ assets: 'x' })).toBeNull();
+    expect(normalizeCreatureDisplayMedia(media([]))).toBeNull();
+  });
+
+  it('host extra só quando liberado (teste local)', () => {
+    const local = 'http://127.0.0.1:4010/render/1.jpg';
+    expect(normalizeCreatureDisplayMedia(media([{ key: 'zoom', value: local }]))).toBeNull();
+    expect(
+      normalizeCreatureDisplayMedia(media([{ key: 'zoom', value: local }]), (u) => u.startsWith('http://127.0.0.1:')),
+    ).toBe(local);
   });
 });
