@@ -1,7 +1,7 @@
 'use server';
 
 import { createHash } from 'node:crypto';
-import { readAddonSnapshot, type AddonReadResult } from '@wowhelp/shared';
+import { readAddonSnapshot, type AddonReadResult, type AddonSnapshot } from '@wowhelp/shared';
 import { refresh } from 'next/cache';
 import { z } from 'zod';
 import { getCurrentUser } from '@/features/auth/session';
@@ -16,7 +16,7 @@ export type ImportPreview =
       ok: true;
       addonVersion: string;
       observedAt: string | null;
-      region: string | null;
+      region: AddonSnapshot['region'];
       characters: { name: string; realm: string | null; level: number | null; className: string | null }[];
       mountsCount: number | null;
       alreadyImported: boolean;

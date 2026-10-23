@@ -7,7 +7,7 @@ const handleI18nRouting = createMiddleware(routing);
 
 // Checagem otimista: visitantes vão para o login antes de renderizar.
 // A checagem real acontece de novo na página e em cada Server Action.
-const PROTECTED_PATHS = ['/dashboard', '/characters', '/planner', '/settings'];
+const PROTECTED_PATHS = ['/dashboard', '/characters', '/planner', '/import', '/settings'];
 
 export default async function proxy(request: NextRequest) {
   const session = await refreshSession(request);

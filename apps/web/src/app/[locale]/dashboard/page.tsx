@@ -7,6 +7,7 @@ import { ButtonLink } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { DataStateBadge, StateNotice } from '@/components/ui/data-state';
 import { Panel } from '@/components/ui/panel';
+import { getMyAddonImports } from '@/features/addon/queries';
 import { getCurrentUser } from '@/features/auth/session';
 import { getMyBattlenetData } from '@/features/battlenet/queries';
 import { GoalComposer } from '@/features/goals/goal-composer';
@@ -14,7 +15,7 @@ import { GoalList } from '@/features/goals/goal-list';
 import { getMyGoals } from '@/features/goals/queries';
 import { FocusEditor } from '@/features/onboarding/focus-editor';
 import { getMyProfile } from '@/features/profile/queries';
-import { redirect } from '@/i18n/navigation';
+import { Link, redirect } from '@/i18n/navigation';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Dashboard');
@@ -40,16 +41,17 @@ async function Dashboard() {
   const user = await getCurrentUser();
   if (!user) redirect({ href: '/login?next=/dashboard', locale });
 
-  const [goalsResult, profile, bnet, t, tg, format] = await Promise.all([
+  const [goalsResult, profile, bnet, addonImports, t, tg, format] = await Promise.all([
     getMyGoals(),
     getMyProfile(),
     getMyBattlenetData(),
+    getMyAddonImports(),
     getTranslations('Dashboard'),
     getTranslations('Goals'),
     getFormatter(),
   ]);
-  const ta = await getTranslations('Availability');
   const now = new Date();
+  const lastAddonImport = addonImports?.[0]?.importedAt ?? null;
   const characters = bnet?.characters ?? [];
   const lastBattlenetSync =
     bnet?.connections
@@ -202,8 +204,17 @@ async function Dashboard() {
                 )}
               </li>
               <li className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-foreground">{t('sourceAddon')}</span>
-                <DataStateBadge state="not_available" label={ta('planned', { phase: 5 })} />
+                <Link href="/import" className="text-foreground underline-offset-4 hover:text-primary hover:underline">
+                  {t('sourceAddon')}
+                </Link>
+                {lastAddonImport ? (
+                  <DataStateBadge
+                    state="ok"
+                    label={t('lastUpdated', { when: format.relativeTime(new Date(lastAddonImport), now) })}
+                  />
+                ) : (
+                  <DataStateBadge state="empty" label={t('addonNever')} />
+                )}
               </li>
             </ul>
           </Panel>
