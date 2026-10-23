@@ -3,6 +3,7 @@ import { normalizeCreatureDisplayMedia } from '@wowhelp/shared';
 import sharp from 'sharp';
 import { BlizzardError, fetchGameData, fetchRenderImage, isTestMediaUrl } from '@/lib/blizzard/client';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { hasOpaquePixel, removeFlatBackground } from './background';
 
 // Imagens oficiais das montarias (documento de mídia creature-display, asset
 // "zoom"). A Blizzard recomenda guardar cópia própria: baixamos, convertemos
@@ -24,11 +25,22 @@ export interface MediaSyncResult {
 
 type Row = { id: string; external_item_id: string; creature_display_id: number | null; media_path: string | null };
 
-async function toWebp(input: Buffer): Promise<Buffer> {
-  return sharp(input, { limitInputPixels: 4096 * 4096 })
-    .resize({ width: WIDTH, withoutEnlargement: true })
-    .webp({ quality: 80 })
-    .toBuffer();
+/**
+ * Render oficial → WebP com fundo transparente, sem margem sobrando.
+ * Devolve null se a imagem era só fundo.
+ */
+export async function toWebp(input: Buffer): Promise<Buffer | null> {
+  const { data, info } = await sharp(input, { limitInputPixels: 4096 * 4096 })
+    .resize({ width: WIDTH, height: WIDTH, fit: 'inside', withoutEnlargement: true })
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const pixels = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
+  const cut = removeFlatBackground(pixels, info.width, info.height);
+  if (cut && !hasOpaquePixel(pixels)) return null;
+  let image = sharp(pixels, { raw: { width: info.width, height: info.height, channels: 4 } });
+  if (cut) image = image.trim({ threshold: 1 });
+  return image.webp({ quality: 82, alphaQuality: 90 }).toBuffer();
 }
 
 /** Arquivos do bucket cuja montaria saiu do catálogo ou ficou sem imagem (limite de 30 dias). */
@@ -107,6 +119,11 @@ export async function syncMountMedia(batchSize: number): Promise<MediaSyncResult
             return;
           }
           const webp = await toWebp(await fetchRenderImage(url));
+          if (!webp) {
+            missing++;
+            await mark(row, { media_path: null, media_status: 'missing' });
+            return;
+          }
           const path = `mounts/${row.external_item_id}.webp`;
           const { error: upError } = await admin.storage
             .from(MEDIA_BUCKET)
