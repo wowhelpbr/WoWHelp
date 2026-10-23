@@ -17,7 +17,7 @@ select is(
   (select coalesce(array_agg(distinct table_name::text order by table_name::text), '{}')
      from information_schema.role_table_grants
     where grantee = 'anon' and table_schema = 'public'),
-  array['collectible_guides', 'collectible_translations', 'collectibles']::text[],
+  array['collectible_guides', 'collectible_translations', 'collectibles', 'creator_channels', 'creators']::text[],
   'anon só enxerga o catálogo'
 );
 
