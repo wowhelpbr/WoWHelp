@@ -20,10 +20,25 @@ export default defineConfig({
     { name: 'desktop', use: { ...devices['Desktop Chrome'], viewport: { width: 1366, height: 900 } } },
     { name: 'mobile', use: { ...devices['Pixel 7'] } },
   ],
-  webServer: {
-    command: `npx next start -p ${port}`,
-    url: `http://localhost:${port}/en`,
-    reuseExistingServer: true,
-    timeout: 60_000,
-  },
+  webServer: [
+    {
+      // Battle.net falsa: OAuth e API com dados de teste (tests/mocks/blizzard-mock.mjs).
+      command: 'node tests/mocks/blizzard-mock.mjs',
+      url: 'http://127.0.0.1:4010/health',
+      reuseExistingServer: true,
+      timeout: 15_000,
+    },
+    {
+      command: `npx next start -p ${port}`,
+      url: `http://localhost:${port}/en`,
+      reuseExistingServer: false,
+      timeout: 60_000,
+      env: {
+        BATTLENET_CLIENT_ID: 'test-client',
+        BATTLENET_CLIENT_SECRET: 'test-secret',
+        BATTLENET_TEST_BASE_URL: 'http://127.0.0.1:4010',
+        CRON_SECRET: 'test-cron-secret',
+      },
+    },
+  ],
 });
