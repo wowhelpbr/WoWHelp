@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { getCurrentUser } from '@/features/auth/session';
 import { LOCALE_PREFIX, routing } from '@/i18n/routing';
+import { logEvent } from '@/lib/log';
 import { createClient } from '@/lib/supabase/server';
 
 /** Cria um objetivo a partir de uma montaria do catálogo e abre o painel. */
@@ -36,6 +37,7 @@ export async function createMountGoalAction(formData: FormData): Promise<void> {
     title: name.slice(0, 160),
     priority: 3,
   });
+  logEvent('objective_created', { source: 'mount' });
   redirect(`${prefix}/dashboard`);
 }
 

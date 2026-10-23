@@ -3,6 +3,7 @@
 import { goalCreateSchema, goalStatusSchema, goalStepCreateSchema, uuidSchema } from '@wowhelp/shared';
 import { refresh } from 'next/cache';
 import { getCurrentUser } from '@/features/auth/session';
+import { logEvent } from '@/lib/log';
 import { createClient } from '@/lib/supabase/server';
 
 export type GoalErrorCode = 'invalid_input' | 'invalid_step' | 'quota' | 'unauthenticated' | 'unknown';
@@ -33,6 +34,7 @@ export async function createGoalAction(_prev: GoalFormState, formData: FormData)
     notes: parsed.data.notes ?? null,
   });
   if (error) return { status: 'error', code: dbError(error) };
+  logEvent('objective_created', { source: 'manual' });
 
   refresh();
   return { status: 'ok', at: Date.now() };
