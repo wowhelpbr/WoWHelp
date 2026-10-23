@@ -2,13 +2,26 @@
 
 import { Languages } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
+import { Suspense } from 'react';
 import { Link, usePathname } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 
 export function LanguageSwitcher() {
+  return (
+    <Suspense fallback={<LanguageSwitcherView pathname="/" />}>
+      <LanguageSwitcherLive />
+    </Suspense>
+  );
+}
+
+function LanguageSwitcherLive() {
+  return <LanguageSwitcherView pathname={usePathname()} />;
+}
+
+/** Enquanto o caminho carrega, o link leva à home do outro idioma. */
+function LanguageSwitcherView({ pathname }: { pathname: string }) {
   const t = useTranslations('Nav');
   const locale = useLocale();
-  const pathname = usePathname();
   const other = routing.locales.find((l) => l !== locale) ?? routing.defaultLocale;
   return (
     <Link

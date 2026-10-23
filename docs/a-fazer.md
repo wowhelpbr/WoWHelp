@@ -21,9 +21,11 @@ Atualizado durante a noite de 23/10/2026. Tarefas de até ~4 horas, com resultad
 
 ## Fase 3: Montarias
 
-- [ ] Importação do catálogo oficial (Game Data API) rodando na Vercel, renovada antes de 30 dias
-- [ ] Catálogo com busca, filtros e status coletada / faltando / desconhecida
-- [ ] Criar objetivo a partir de uma montaria
+- [x] Importação do catálogo oficial (Game Data API) rodando na Vercel, renovada antes de 30 dias
+- [x] Catálogo com busca, filtros e status coletada / não obtida / desconhecida
+- [x] Criar objetivo a partir de uma montaria
+- [ ] Imagens das montarias (cópia no Storage com crédito)
+- [ ] Passo a passo editorial revisado para as montarias mais buscadas
 
 ## Fase 4: Planejador
 

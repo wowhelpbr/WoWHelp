@@ -1,0 +1,31 @@
+# Importa e renova o catálogo oficial de montarias (Game Data API da Blizzard)
+# chamando a rota protegida do site em lotes até não sobrar nada pendente.
+# Roda todo dia; cada montaria é renovada a cada 7 dias (limite dos Termos: 30).
+name: Catálogo oficial
+
+on:
+  schedule:
+    - cron: '35 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sincronizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Importa em lotes
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          SITE: https://wowhelp.vercel.app
+        run: |
+          for i in $(seq 1 40); do
+            resposta=$(curl -sS --fail-with-body -X POST -H "Authorization: Bearer $CRON_SECRET" "$SITE/api/cron/catalog-sync?batch=120")
+            echo "lote $i: $resposta"
+            restante=$(echo "$resposta" | jq -r '.remaining')
+            if [ "$restante" = "0" ]; then echo "catálogo em dia"; exit 0; fi
+            sleep 2
+          done
+          echo "ainda há pendências; o próximo agendamento continua"
