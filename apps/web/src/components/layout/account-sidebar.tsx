@@ -9,7 +9,7 @@ import { cn } from '@/lib/cn';
 type Item = {
   key: 'overview' | 'characters' | 'collections' | 'planner' | 'addonImport' | 'settings';
   icon: LucideIcon | typeof MountGlyph;
-} & ({ href: '/dashboard' | '/characters' | '/mounts' | '/planner' | '/settings' } | { phase: number });
+} & ({ href: '/dashboard' | '/characters' | '/mounts' | '/planner' | '/import' | '/settings' } | { phase: number });
 
 // Mapa de navegação da conta (planning/docs/05_WEB_PWA_E_UX.md). Seções que
 // ainda não existem aparecem com a fase prevista, sem link: nada de tela falsa.
@@ -18,7 +18,7 @@ const ITEMS: Item[] = [
   { key: 'characters', icon: Users, href: '/characters' },
   { key: 'collections', icon: MountGlyph, href: '/mounts' },
   { key: 'planner', icon: CalendarCheck, href: '/planner' },
-  { key: 'addonImport', icon: FileUp, phase: 5 },
+  { key: 'addonImport', icon: FileUp, href: '/import' },
   { key: 'settings', icon: Settings, href: '/settings' },
 ];
 

@@ -47,4 +47,9 @@ test('painel logado sem violações WCAG A/AA', async ({ page }) => {
   await page.goto('/en/settings');
   const settings = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   expect(settings.violations.map((v) => v.id)).toEqual([]);
+
+  await page.goto('/en/import');
+  await expect(page.getByRole('heading', { name: 'Import from the addon' })).toBeVisible();
+  const importPage = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
+  expect(importPage.violations.map((v) => v.id)).toEqual([]);
 });

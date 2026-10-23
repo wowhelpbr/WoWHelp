@@ -64,7 +64,11 @@ async function MountCatalog({ searchParams }: { searchParams: PageProps<'/[local
     ? (id: string): CollectionStatus => {
         let s = statusMap.get(id);
         if (!s) {
-          s = mountStatusFor(id, mine.observations, { syncedAt: mine.accountSyncedAt, now });
+          s = mountStatusFor(id, mine.observations, {
+            syncedAt: mine.accountSyncedAt,
+            addonObservedAt: mine.addonObservedAt,
+            now,
+          });
           statusMap.set(id, s);
         }
         return s.status;

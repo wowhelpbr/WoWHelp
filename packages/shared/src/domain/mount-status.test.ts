@@ -52,3 +52,28 @@ describe('mountStatusFor', () => {
     expect(mountStatusFor('7', [], { syncedAt: '2027-01-01T00:00:00Z', now }).status).toBe('unknown');
   });
 });
+
+describe('mountStatusFor com o addon', () => {
+  const now = new Date('2026-10-23T12:00:00Z');
+  it('lista do addon recente também define "não obtida"', () => {
+    expect(mountStatusFor('7', [], { syncedAt: null, addonObservedAt: '2026-10-22T00:00:00Z', now }).status).toBe(
+      'not_collected',
+    );
+  });
+
+  it('addon mais recente que a Battle.net vence', () => {
+    const fromAddon = {
+      externalItemId: '7',
+      status: 'collected' as const,
+      source: 'addon_import' as const,
+      observedAt: '2026-10-23T08:00:00Z',
+    };
+    expect(
+      mountStatusFor('7', [fromAddon], {
+        syncedAt: '2026-10-20T00:00:00Z',
+        addonObservedAt: '2026-10-23T08:00:00Z',
+        now,
+      }),
+    ).toMatchObject({ status: 'collected', source: 'addon_import' });
+  });
+});

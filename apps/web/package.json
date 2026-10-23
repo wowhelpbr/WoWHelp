@@ -10,7 +10,8 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "icons": "node scripts/generate-icons.mjs"
+    "icons": "node scripts/generate-icons.mjs",
+    "addon:zip": "node scripts/build-addon-zip.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

@@ -1,9 +1,10 @@
 import type { BattlenetRegion } from '@wowhelp/shared';
-import { Shield } from 'lucide-react';
+import { FileUp, Shield } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getFormatter, getLocale, getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
 import { AccountSidebar } from '@/components/layout/account-sidebar';
+import { ButtonLink } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { DataStateBadge, StateNotice } from '@/components/ui/data-state';
 import { Panel } from '@/components/ui/panel';
@@ -133,6 +134,17 @@ async function Characters({ searchParams }: { searchParams: PageProps<'/[locale]
           </div>
         )}
       </Panel>
+
+      <div className="flex flex-col gap-3 rounded-sm border border-border bg-card/60 p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="font-semibold text-foreground">{t('addonTitle')}</p>
+          <p className="text-sm text-muted-foreground">{t('addonBody')}</p>
+        </div>
+        <ButtonLink href="/import" variant="secondary" size="sm" className="shrink-0 self-start sm:self-auto">
+          <FileUp aria-hidden className="size-4" />
+          {t('addonCta')}
+        </ButtonLink>
+      </div>
 
       {characters.length === 0 ? (
         <StateNotice state="empty" title={t('empty')} />

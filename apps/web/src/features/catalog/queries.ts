@@ -94,13 +94,24 @@ export async function getCatalogMounts(locale: Locale): Promise<CatalogResult> {
 export interface MyMountData {
   observations: StoredObservation[];
   accountSyncedAt: string | null;
+  /** Quando o addon leu a coleção completa pela última vez (importação mais recente). */
+  addonObservedAt: string | null;
 }
 
-/** Observações de coleção do usuário logado (todas as fontes) e a última sincronização. */
+/** Observações de coleção do usuário logado (todas as fontes) e as últimas leituras completas. */
 export async function getMyMountData(): Promise<MyMountData | null> {
   const supabase = await createClient();
-  const conns = await supabase.from('game_connections').select('mounts_synced_at');
-  if (conns.error) return null;
+  const [conns, addon] = await Promise.all([
+    supabase.from('game_connections').select('mounts_synced_at'),
+    supabase
+      .from('addon_imports')
+      .select('mounts_observed_at')
+      .contains('categories', ['mounts'])
+      .not('mounts_observed_at', 'is', null)
+      .order('mounts_observed_at', { ascending: false })
+      .limit(1),
+  ]);
+  if (conns.error || addon.error) return null;
 
   // Colecionadores passam de 1000 montarias; a API do Supabase devolve no
   // máximo 1000 linhas por consulta. Sem paginar, o resto viraria "não obtida".
@@ -131,5 +142,6 @@ export async function getMyMountData(): Promise<MyMountData | null> {
       observedAt: r.observed_at,
     })),
     accountSyncedAt: synced ?? null,
+    addonObservedAt: (addon.data?.[0]?.mounts_observed_at as string | undefined) ?? null,
   };
 }
