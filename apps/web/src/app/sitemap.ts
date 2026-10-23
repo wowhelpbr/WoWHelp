@@ -1,7 +1,8 @@
 import type { MetadataRoute } from 'next';
 import { LOCALE_PREFIX, routing } from '@/i18n/routing';
+import { getSiteUrl } from '@/lib/site-url';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3100';
+const siteUrl = getSiteUrl();
 const PUBLIC_PATHS = ['', '/mounts'];
 
 export default function sitemap(): MetadataRoute.Sitemap {

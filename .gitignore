@@ -11,3 +11,8 @@ apps/web/test-results/
 apps/web/playwright-report/
 supabase/.temp/
 supabase/.branches/
+
+# Vínculo local e variáveis puxadas pelo CLI da Vercel (nunca versionar)
+.vercel
+.env*
+!.env.example
