@@ -60,7 +60,11 @@ async function Mount({ params }: { params: PageProps<'/[locale]/mounts/[id]'>['p
 
   const mine = user ? await getMyMountData() : null;
   const status = mine
-    ? mountStatusFor(mount.externalId, mine.observations, { syncedAt: mine.accountSyncedAt, now: new Date() })
+    ? mountStatusFor(mount.externalId, mine.observations, {
+        syncedAt: mine.accountSyncedAt,
+        addonObservedAt: mine.addonObservedAt,
+        now: new Date(),
+      })
     : null;
   const manual = mine?.observations.find((o) => o.externalItemId === mount.externalId && o.source === 'manual');
   const back = `${LOCALE_PREFIX[locale]}/mounts/${mount.externalId}`;
