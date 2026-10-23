@@ -1,0 +1,13 @@
+## Interface: 120105, 120107
+## Title: WoWHelp Companion
+## Notes: Saves your characters and mount collection locally so you can import them on the WoWHelp site. No internet access, no combat data.
+## Notes-ptBR: Salva seus personagens e sua coleção de montarias no computador para importar no site do WoWHelp. Sem internet, sem dados de combate.
+## Author: WoWHelp
+## Version: 0.1.0
+## SavedVariables: WoWHelpCompanionDB
+
+Migrations.lua
+CharacterAdapter.lua
+CollectionAdapters.lua
+Core.lua
+UI.lua
