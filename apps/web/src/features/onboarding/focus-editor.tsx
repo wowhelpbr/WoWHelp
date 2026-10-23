@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useActionState, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { DataStateBadge } from '@/components/ui/data-state';
+import { Link } from '@/i18n/navigation';
 import { saveFocusAreasAction, type FocusSaveState } from './actions';
 import { FOCUS_AREA_CONFIG } from './focus-areas';
 
@@ -70,10 +71,16 @@ export function FocusEditor({ areas }: { areas: FocusArea[] }) {
                   <Icon aria-hidden className="size-4 text-muted-foreground" />
                   {tf(`${area}.title`)}
                 </span>
-                <DataStateBadge
-                  state="not_available"
-                  label={tool === 'after_beta' ? ta('afterBeta') : ta('planned', { phase: tool.phase })}
-                />
+                {typeof tool === 'object' && 'href' in tool ? (
+                  <Link href={tool.href} className="rounded-sm">
+                    <DataStateBadge state="ok" label={ta('openTool')} />
+                  </Link>
+                ) : (
+                  <DataStateBadge
+                    state="not_available"
+                    label={tool === 'after_beta' ? ta('afterBeta') : ta('planned', { phase: tool.phase })}
+                  />
+                )}
               </li>
             );
           })}

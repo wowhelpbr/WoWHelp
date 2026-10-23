@@ -107,7 +107,8 @@
     "available": "Available",
     "planned": "Planned for phase {phase}",
     "afterBeta": "Planned after the beta",
-    "goalsMeanwhile": "Until each tool arrives, you can already create goals and checklists for any of them below."
+    "goalsMeanwhile": "Until each tool arrives, you can already create goals and checklists for any of them below.",
+    "openTool": "Open the tool"
   },
   "DataState": {
     "loading": "Loading",
@@ -220,7 +221,10 @@
       "unauthenticated": "Your session ended. Sign in again.",
       "unknown": "We couldn't save that. Try again."
     },
-    "saving": "Saving…"
+    "saving": "Saving…",
+    "stepMinutes": "Estimated time",
+    "minutesNone": "Time?",
+    "minutesValue": "{minutes} min"
   },
   "Mounts": {
     "metaTitle": "Mounts",
@@ -354,6 +358,51 @@
       "storage": "We could not save the data. Try again.",
       "not_configured": "Battle.net linking is not available in this environment yet.",
       "invalid_region": "Choose a valid region."
+    }
+  },
+  "Planner": {
+    "metaTitle": "Planner",
+    "title": "Planner",
+    "intro": "Pick how much time you have. WoWHelp builds a short list from your weekly tasks and the next step of each active goal, in an order you can follow.",
+    "sessionTitle": "Your session",
+    "sessionLabel": "How much time do you have?",
+    "minutes": "{minutes} min",
+    "plan": "{count, plural, =0 {Nothing fits in this time yet} one {# item · about {minutes} min} other {# items · about {minutes} min}}",
+    "planEmpty": "Add weekly tasks below or steps with an estimated time to your goals, and they show up here.",
+    "leftover": "{count, plural, one {# more item did not fit} other {# more items did not fit}}",
+    "unestimated": "Without a time estimate (not counted)",
+    "fromGoal": "Goal: {goal}",
+    "weeklyTag": "Weekly",
+    "dailyTag": "Daily",
+    "resetTitle": "Resets",
+    "weeklyReset": "Weekly reset",
+    "dailyReset": "Daily reset",
+    "resetOfficial": "Official time from Blizzard.",
+    "resetEstimated": "Estimated time: Blizzard does not publish it for this region. Check in game.",
+    "resetSource": "Source",
+    "regionHint": "Region: {region}. Change it in Settings.",
+    "tasksTitle": "Recurring tasks",
+    "tasksIntro": "Things you do every week or every day. Marking one as done counts only until the next reset.",
+    "taskTitle": "Task",
+    "taskPlaceholder": "e.g. Open the Great Vault",
+    "cadence": "Repeats",
+    "cadences": {
+      "weekly": "Every week",
+      "daily": "Every day"
+    },
+    "taskMinutes": "Time",
+    "minutesNone": "No estimate",
+    "addTask": "Add task",
+    "tasksEmpty": "No recurring tasks yet.",
+    "doneThisCycle": "Done until the next reset",
+    "markDone": "Mark “{title}” as done",
+    "markOpen": "Mark “{title}” as not done",
+    "deleteTask": "Remove task “{title}”",
+    "sourceManual": "Entered by you",
+    "errors": {
+      "invalid": "Write a task between 1 and 120 characters.",
+      "quota": "You reached the limit of recurring tasks.",
+      "unknown": "We couldn’t save that. Try again."
     }
   }
 }
