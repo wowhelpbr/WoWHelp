@@ -200,6 +200,55 @@
   animation: hero-arrive 700ms cubic-bezier(0.2, 0.7, 0.2, 1) 120ms both;
 }
 
+/* Card de colecionável com profundidade: inclina com o mouse (variáveis
+   --rx/--ry/--mx/--my definidas pelo componente), a arte sai do plano e um
+   brilho segue o cursor. Sem mouse ou com movimento reduzido, fica parado. */
+.tilt-card {
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 30%;
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition:
+    transform 180ms ease-out,
+    border-color 180ms ease-out;
+}
+.tilt-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 180ms ease-out;
+  background: radial-gradient(420px circle at var(--mx) var(--my), rgb(60 200 255 / 0.14), transparent 45%);
+}
+.tilt-card:hover::after,
+.tilt-card:focus-visible::after {
+  opacity: 1;
+}
+.tilt-card .tilt-art {
+  transform: translateZ(36px);
+  transition: transform 180ms ease-out;
+}
+.tilt-card:hover .tilt-art {
+  transform: translateZ(48px) scale(1.04);
+}
+.tilt-stage {
+  background:
+    radial-gradient(60% 55% at 50% 58%, rgb(60 200 255 / 0.22), transparent 70%),
+    radial-gradient(40% 30% at 50% 92%, rgb(255 198 41 / 0.16), transparent 75%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt-card,
+  .tilt-card .tilt-art,
+  .tilt-card:hover .tilt-art {
+    transform: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -12,6 +12,7 @@ import { inputClasses } from '@/components/ui/field';
 import { getCurrentUser } from '@/features/auth/session';
 import { PAGE_SIZE, filterMounts, parseFilters, sourceOptions } from '@/features/catalog/filter';
 import { getCatalogMounts, getMyMountData } from '@/features/catalog/queries';
+import { CollectibleCard } from '@/features/catalog/collectible-card';
 import { MountStatusBadge } from '@/features/catalog/status-badge';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
@@ -188,22 +189,28 @@ async function MountCatalog({ searchParams }: { searchParams: PageProps<'/[local
           {t('noResults')}
         </StateNotice>
       ) : (
-        <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {visible.map((mount) => (
             <li key={mount.id}>
-              <Link
+              <CollectibleCard
                 href={`/mounts/${mount.externalId}`}
-                className="frame flex h-full flex-col gap-2 p-4 transition-colors hover:border-neon/60"
-              >
-                <span className="text-lg leading-snug font-semibold text-foreground">{mount.name}</span>
-                <span className="text-sm text-muted-foreground">{mount.sourceName ?? t('sourceUnknown')}</span>
-                <span className="mt-auto flex flex-wrap gap-2 pt-1">
-                  {mount.faction && (
-                    <DataStateBadge state="ok" label={t('factionOnly', { faction: t(`factions.${mount.faction}`) })} />
-                  )}
-                  {statusOf && <MountStatusBadge status={statusOf(mount.externalId)} />}
-                </span>
-              </Link>
+                name={mount.name}
+                subtitle={mount.sourceName ?? t('sourceUnknown')}
+                imageUrl={mount.imageUrl}
+                badges={
+                  mount.faction || statusOf ? (
+                    <>
+                      {mount.faction && (
+                        <DataStateBadge
+                          state="ok"
+                          label={t('factionOnly', { faction: t(`factions.${mount.faction}`) })}
+                        />
+                      )}
+                      {statusOf && <MountStatusBadge status={statusOf(mount.externalId)} />}
+                    </>
+                  ) : undefined
+                }
+              />
             </li>
           ))}
         </ul>
