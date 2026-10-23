@@ -3,7 +3,7 @@ import { getSiteUrl } from '@/lib/site-url';
 
 const siteUrl = getSiteUrl();
 // Áreas da conta (as páginas também mandam noindex).
-const PRIVATE_PATHS = ['/dashboard', '/characters', '/planner', '/import', '/settings'];
+const PRIVATE_PATHS = ['/dashboard', '/characters', '/planner', '/import', '/settings', '/admin'];
 
 export default function robots(): MetadataRoute.Robots {
   // Previews da Vercel nunca devem ser indexados.

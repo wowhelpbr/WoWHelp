@@ -4,6 +4,7 @@ import { getFormatter, getLocale, getTranslations } from 'next-intl/server';
 import { buttonClasses } from '@/components/ui/button';
 import { DataStateBadge, StateNotice } from '@/components/ui/data-state';
 import { getCurrentUser } from '@/features/auth/session';
+import { getPublishedGuide } from '@/features/guides/queries';
 import { Link } from '@/i18n/navigation';
 import { LOCALE_PREFIX } from '@/i18n/routing';
 import { createMountGoalAction, setMountManualAction } from './actions';
@@ -42,7 +43,10 @@ export async function MountDetail({ externalId, titleId }: { externalId: string;
     );
   }
 
-  const mine = user ? await getMyMountData() : null;
+  const [mine, guide] = await Promise.all([
+    user ? getMyMountData() : null,
+    getPublishedGuide('mount', mount.externalId, locale),
+  ]);
   const status = mine
     ? mountStatusFor(mount.externalId, mine.observations, {
         syncedAt: mine.accountSyncedAt,
@@ -75,17 +79,64 @@ export async function MountDetail({ externalId, titleId }: { externalId: string;
 
         <dl className="grid gap-3 sm:grid-cols-2">
           <div className="frame p-4">
-            <dt className="eyebrow">{t('howToGet')}</dt>
-            <dd className="mt-1.5 text-foreground">{mount.sourceName ?? t('sourceUnknown')}</dd>
+            <dt className="eyebrow">{t('dropChance')}</dt>
+            {guide?.dropChancePercent ? (
+              <dd className="mt-1.5 flex flex-col gap-1">
+                <span className="font-display text-3xl text-primary tabular-nums">
+                  {format.number(guide.dropChancePercent / 100, { style: 'percent', maximumFractionDigits: 3 })}
+                </span>
+                {guide.chanceNote && <span className="text-sm text-foreground">{guide.chanceNote}</span>}
+              </dd>
+            ) : (
+              <dd className="mt-1.5 flex items-center gap-2 text-muted-foreground">
+                <Percent aria-hidden className="size-4 shrink-0" />
+                {t('dropChanceUnknown')}
+              </dd>
+            )}
           </div>
           <div className="frame p-4">
-            <dt className="eyebrow">{t('dropChance')}</dt>
-            <dd className="mt-1.5 flex items-center gap-2 text-muted-foreground">
-              <Percent aria-hidden className="size-4 shrink-0" />
-              {t('dropChanceUnknown')}
+            <dt className="eyebrow">{t('where')}</dt>
+            <dd className={guide?.location ? 'mt-1.5 text-foreground' : 'mt-1.5 text-muted-foreground'}>
+              {guide?.location ?? t('whereUnknown')}
             </dd>
           </div>
+          <div className="frame p-4 sm:col-span-2">
+            <dt className="eyebrow">{t('howToGet')}</dt>
+            {guide?.how ? (
+              <dd className="mt-1.5 flex flex-col gap-2 text-foreground">
+                {guide.how
+                  .split(/\n+/)
+                  .filter((line) => line.trim())
+                  .map((line, i) => (
+                    <p key={i}>{line}</p>
+                  ))}
+              </dd>
+            ) : (
+              <dd className="mt-1.5 text-foreground">{mount.sourceName ?? t('sourceUnknown')}</dd>
+            )}
+          </div>
         </dl>
+
+        {guide && (guide.sourceUrl || guide.reviewedAt) && (
+          <p className="text-xs text-muted-foreground">
+            {guide.sourceUrl && (
+              <>
+                {t('sourcePrefix')}{' '}
+                <a
+                  href={guide.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  className="text-neon underline underline-offset-2"
+                >
+                  {guide.sourceLabel ?? new URL(guide.sourceUrl).hostname}
+                </a>
+                {guide.reviewedAt ? ' · ' : ''}
+              </>
+            )}
+            {guide.reviewedAt &&
+              t('reviewedOn', { date: format.dateTime(new Date(guide.reviewedAt), { dateStyle: 'medium' }) })}
+          </p>
+        )}
 
         <div className="frame-raised flex flex-col gap-4 p-4">
           <form action={createMountGoalAction}>

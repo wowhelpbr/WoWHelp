@@ -5,7 +5,9 @@ import { AccountSidebar } from '@/components/layout/account-sidebar';
 import { Container } from '@/components/ui/container';
 import { Panel } from '@/components/ui/panel';
 import { InstallApp } from '@/components/pwa/install-app';
+import { ButtonLink } from '@/components/ui/button';
 import { AccountData } from '@/features/account/account-data';
+import { getAdminUser } from '@/features/admin/session';
 import { getCurrentUser } from '@/features/auth/session';
 import { getMyProfile } from '@/features/profile/queries';
 import { SettingsForm } from '@/features/profile/settings-form';
@@ -39,7 +41,12 @@ async function AccountSettings() {
   const locale = await getLocale();
   const user = await getCurrentUser();
   if (!user) redirect({ href: '/login?next=/settings', locale });
-  const [profile, t] = await Promise.all([getMyProfile(), getTranslations('Settings')]);
+  const [profile, t, admin, ta] = await Promise.all([
+    getMyProfile(),
+    getTranslations('Settings'),
+    getAdminUser(),
+    getTranslations('Admin'),
+  ]);
   return (
     <>
       <div className="frame p-4 sm:p-5">
@@ -56,6 +63,14 @@ async function AccountSettings() {
           <AccountData />
         </div>
       </Panel>
+      {admin && (
+        <Panel title={ta('settingsTitle')} titleId="curation" className="corner-brackets">
+          <p className="mb-3 text-sm text-muted-foreground">{ta('settingsBody')}</p>
+          <ButtonLink href="/admin" variant="secondary" size="sm">
+            {ta('settingsLink')}
+          </ButtonLink>
+        </Panel>
+      )}
     </>
   );
 }
