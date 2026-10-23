@@ -51,13 +51,13 @@ async function AdminHub() {
           </li>
         ))}
         <li>
-          <div aria-disabled="true" className="frame flex h-full items-start gap-4 p-5 opacity-70">
-            <Users aria-hidden className="size-8 shrink-0 text-muted-foreground" />
+          <Link href="/admin/community" className="frame flex h-full items-start gap-4 p-5 hover:border-neon/60">
+            <Users aria-hidden className="size-8 shrink-0 text-primary" />
             <span>
               <span className="block font-display text-xl text-foreground">{t('communityTitle')}</span>
-              <span className="mt-1 block text-sm text-muted-foreground">{t('communitySoon')}</span>
+              <span className="mt-1 block text-sm text-muted-foreground">{t('communityBody')}</span>
             </span>
-          </div>
+          </Link>
         </li>
       </ul>
     </div>

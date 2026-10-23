@@ -38,6 +38,12 @@ export default defineConfig({
         BATTLENET_CLIENT_SECRET: 'test-secret',
         BATTLENET_TEST_BASE_URL: 'http://127.0.0.1:4010',
         CRON_SECRET: 'test-cron-secret',
+        // Twitch e YouTube falsos (mesmo servidor de teste).
+        TWITCH_CLIENT_ID: 'test-twitch',
+        TWITCH_CLIENT_SECRET: 'test-twitch-secret',
+        TWITCH_TEST_BASE_URL: 'http://127.0.0.1:4010',
+        YOUTUBE_API_KEY: 'test-youtube',
+        YOUTUBE_TEST_BASE_URL: 'http://127.0.0.1:4010',
       },
     },
   ],

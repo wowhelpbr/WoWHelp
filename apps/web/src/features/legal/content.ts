@@ -44,6 +44,7 @@ const privacy: Record<Locale, LegalDocument> = {
           'Se você conectar a Battle.net: identificador da conta Battle.net, BattleTag, região, permissões aprovadas, seus personagens (nome, reino, nível, classe, raça e facção) e os números das montarias coletadas. A chave de acesso da Battle.net é usada na hora e descartada; não guardamos.',
           'Se você importar o arquivo do addon WoWHelp Companion: personagens e montarias que estão no arquivo, a versão do addon, o horário da leitura no jogo, contagens e uma impressão digital (hash) do arquivo para não importar o mesmo duas vezes. O arquivo em si não é guardado.',
           'Marcações manuais de coleção ("já tenho" / "ainda não tenho").',
+          'Se você pedir para entrar ou sair da Comunidade BR: o nome, os links e a mensagem que você mandou.',
           'Cookies necessários: sessão de login e idioma escolhido. Não usamos cookies de analytics nem de publicidade.',
           'Registros técnicos dos provedores de hospedagem (como endereço IP e navegador), mantidos por eles por tempo limitado para segurança e diagnóstico.',
         ],
@@ -77,6 +78,12 @@ const privacy: Record<Locale, LegalDocument> = {
         ],
         paragraphs: [
           'Por isso há transferência internacional de dados para os Estados Unidos (LGPD, art. 33). Não vendemos nem alugamos dados.',
+        ],
+      },
+      {
+        heading: 'Criadores na Comunidade BR',
+        paragraphs: [
+          'A Comunidade BR lista criadores brasileiros de World of Warcraft escolhidos pela equipe. Mostramos o nome, a apresentação, os links dos canais e informações que já são públicas nas plataformas (como foto do canal, título da live e último vídeo, pelas APIs oficiais da Twitch e do YouTube). A base legal é o legítimo interesse de divulgar conteúdo público da comunidade (LGPD, art. 7º, IX). Quem não quiser aparecer pode pedir para sair a qualquer momento na própria página da Comunidade.',
         ],
       },
       {
@@ -131,6 +138,7 @@ const privacy: Record<Locale, LegalDocument> = {
           'If you connect Battle.net: your Battle.net account identifier, BattleTag, region, approved permissions, your characters (name, realm, level, class, race and faction) and the IDs of collected mounts. The Battle.net access key is used right away and discarded; we do not keep it.',
           'If you import the WoWHelp Companion addon file: characters and mounts in the file, addon version, in-game read time, counts and a fingerprint (hash) of the file so the same file is not imported twice. The file itself is not kept.',
           'Manual collection marks ("I have it" / "I don\'t have it yet").',
+          'If you ask to join or leave the Brazilian community: the name, links and message you sent.',
           'Necessary cookies: sign-in session and chosen language. We use no analytics or advertising cookies.',
           'Technical logs kept by our hosting providers (such as IP address and browser) for a limited time for security and troubleshooting.',
         ],
@@ -164,6 +172,12 @@ const privacy: Record<Locale, LegalDocument> = {
         ],
         paragraphs: [
           'This means data is transferred internationally to the United States (LGPD, art. 33). We do not sell or rent data.',
+        ],
+      },
+      {
+        heading: 'Creators in the Brazilian community',
+        paragraphs: [
+          'The Brazilian community lists Brazilian World of Warcraft creators chosen by the team. We show the name, intro, channel links and information that is already public on each platform (such as channel picture, stream title and latest video, through the official Twitch and YouTube APIs). The legal basis is the legitimate interest of promoting public community content (LGPD, art. 7, IX). Anyone who does not want to appear can ask to be removed at any time on the community page.',
         ],
       },
       {

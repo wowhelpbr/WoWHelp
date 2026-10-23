@@ -151,6 +151,80 @@ const server = http.createServer(async (req, res) => {
     return detail ? json(res, 200, detail) : json(res, 404, {});
   }
 
+  // Twitch e YouTube falsos para a Comunidade BR (dados de TESTE).
+  if (url.pathname === '/oauth2/token' && req.method === 'POST') {
+    const body = new URLSearchParams(await readBody(req));
+    return body.get('client_id') === 'test-twitch' && body.get('client_secret') === 'test-twitch-secret'
+      ? json(res, 200, { access_token: 'mock-twitch-token', expires_in: 3600, token_type: 'bearer' })
+      : json(res, 403, {});
+  }
+  if (url.pathname.startsWith('/twitch/helix/')) {
+    if (auth !== 'Bearer mock-twitch-token' || req.headers['client-id'] !== 'test-twitch') return json(res, 401, {});
+    if (url.pathname === '/twitch/helix/users') {
+      const logins = url.searchParams.getAll('login');
+      return json(res, 200, {
+        data: logins.map((login, i) => ({
+          id: String(1000 + i),
+          login,
+          profile_image_url: `https://static-cdn.jtvnw.net/jtv_user_pictures/${login}-test.png`,
+        })),
+      });
+    }
+    if (url.pathname === '/twitch/helix/streams') {
+      const logins = url.searchParams.getAll('user_login');
+      return json(res, 200, {
+        data: logins
+          .filter((l) => l === 'streamerteste')
+          .map((login) => ({
+            user_login: login,
+            type: 'live',
+            title: 'Raide de teste ao vivo',
+            game_name: 'World of Warcraft',
+            viewer_count: 42,
+            started_at: '2026-10-23T20:00:00Z',
+            thumbnail_url: `https://static-cdn.jtvnw.net/previews-ttv/live_user_${login}-{width}x{height}.jpg`,
+          })),
+      });
+    }
+  }
+  if (url.pathname === '/youtube/v3/channels') {
+    if (url.searchParams.get('key') !== 'test-youtube') return json(res, 403, {});
+    return url.searchParams.get('forHandle')?.toLowerCase() === '@canalteste'
+      ? json(res, 200, {
+          items: [
+            {
+              id: 'UCtesteaaaaaaaaaaaaaaaaa',
+              snippet: { thumbnails: { default: { url: 'https://yt3.ggpht.com/teste=s88' } } },
+            },
+          ],
+        })
+      : json(res, 200, { items: [] });
+  }
+  if (url.pathname === '/feeds/videos.xml') {
+    if (url.searchParams.get('channel_id') !== 'UCtesteaaaaaaaaaaaaaaaaa') return json(res, 404, {});
+    res.writeHead(200, { 'Content-Type': 'application/atom+xml' });
+    return res.end(`<?xml version="1.0"?><feed>
+<entry><yt:videoId>LIVEVIDEO01</yt:videoId><title>Live de teste no YouTube</title><published>2026-10-23T19:00:00+00:00</published></entry>
+<entry><yt:videoId>VIDEOTEST01</yt:videoId><title>Guia de teste &amp; dicas</title><published>2026-10-22T12:00:00+00:00</published></entry>
+</feed>`);
+  }
+  if (url.pathname === '/youtube/v3/videos') {
+    if (url.searchParams.get('key') !== 'test-youtube') return json(res, 403, {});
+    const ids = (url.searchParams.get('id') ?? '').split(',');
+    return json(res, 200, {
+      items: ids.map((id) => ({
+        id,
+        snippet: {
+          title: id === 'LIVEVIDEO01' ? 'Live de teste no YouTube' : 'Vídeo',
+          liveBroadcastContent: id === 'LIVEVIDEO01' ? 'live' : 'none',
+          thumbnails: { high: { url: `https://i.ytimg.com/vi/${id}/hqdefault.jpg` } },
+        },
+        liveStreamingDetails:
+          id === 'LIVEVIDEO01' ? { concurrentViewers: '17', actualStartTime: '2026-10-23T19:00:00Z' } : undefined,
+      })),
+    });
+  }
+
   // Mascotes e brinquedos (dados de TESTE).
   if (url.pathname === '/data/wow/pet/index') {
     return appOk ? json(res, 200, { pets: [{ id: 39 }, { id: 40 }] }) : json(res, 401, {});
