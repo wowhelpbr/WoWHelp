@@ -1,14 +1,29 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { Suspense } from 'react';
 import { Link, usePathname } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
 import { NAV_ITEMS, isActive } from './nav-items';
 
-/** Navegação do desktop (no celular quem navega é a barra de abas). Ativo: sublinhado dourado. */
+/**
+ * Navegação do desktop (no celular quem navega é a barra de abas). Ativo: sublinhado dourado.
+ * Em rotas dinâmicas o caminho só existe na requisição: mostra a versão sem destaque enquanto isso.
+ */
 export function NavLinks() {
+  return (
+    <Suspense fallback={<NavLinksView pathname={null} />}>
+      <NavLinksLive />
+    </Suspense>
+  );
+}
+
+function NavLinksLive() {
+  return <NavLinksView pathname={usePathname()} />;
+}
+
+function NavLinksView({ pathname }: { pathname: string | null }) {
   const t = useTranslations('Nav');
-  const pathname = usePathname();
   return (
     <ul className="hidden h-full items-stretch gap-1 md:flex">
       {NAV_ITEMS.filter((item) => item.key !== 'settings').map((item) => {

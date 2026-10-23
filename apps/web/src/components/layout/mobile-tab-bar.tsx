@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { Suspense } from 'react';
 import { MountGlyph } from '@/components/brand/mount-glyph';
 import { Link, usePathname } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
@@ -8,8 +9,19 @@ import { NAV_ITEMS, isActive } from './nav-items';
 
 /** Abas fixas no rodapé do celular: alvo de toque grande, sem depender de hover. */
 export function MobileTabBar() {
+  return (
+    <Suspense fallback={<MobileTabBarView pathname={null} />}>
+      <MobileTabBarLive />
+    </Suspense>
+  );
+}
+
+function MobileTabBarLive() {
+  return <MobileTabBarView pathname={usePathname()} />;
+}
+
+function MobileTabBarView({ pathname }: { pathname: string | null }) {
   const t = useTranslations('Nav');
-  const pathname = usePathname();
   return (
     <nav
       aria-label={t('main')}
