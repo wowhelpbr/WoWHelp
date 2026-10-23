@@ -62,7 +62,8 @@ Atualizado na madrugada de 24/10/2026. Tarefas de até ~4 horas, com resultado v
 
 ## Próximas ideias
 
-- [ ] Montarias: imagem oficial, card com profundidade, janela de detalhes, chance de drop e local com curadoria, tentativas pela Battle.net
+- [x] Montarias: imagem oficial, card com profundidade, janela de detalhes, curadoria (chance de drop com fonte, local, passo a passo) e tentativas pela Battle.net (docs/fase-7/relatorio-montarias.md)
+- [!] Curar as montarias mais buscadas (Bruno, em Configurações > Abrir a curadoria)
 - [ ] Mascotes e brinquedos no mesmo modelo das montarias
 - [ ] Comunidade BR: criadores curados pelo Bruno, ao vivo (Twitch, YouTube, Kick), novidades e destaque
 - [!] Modelo 3D: só com parecer jurídico (EULA proíbe extrair dados do cliente; modelos são obra da Blizzard)
