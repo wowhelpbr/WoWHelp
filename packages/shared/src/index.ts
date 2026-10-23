@@ -4,3 +4,4 @@ export * from './domain/goals';
 export * from './schemas';
 export * from './blizzard/normalize';
 export * from './domain/mount-status';
+export * from './domain/resets';
