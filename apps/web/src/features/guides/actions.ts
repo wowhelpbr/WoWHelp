@@ -51,6 +51,18 @@ const schema = z.object({
       }
       return Number(v);
     }),
+  encounterDifficulty: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .transform((v, ctx) => {
+      if (v === '') return null;
+      if (!/^[A-Z0-9_]{2,40}$/.test(v)) {
+        ctx.addIssue({ code: 'custom', message: 'difficulty' });
+        return z.NEVER;
+      }
+      return v;
+    }),
   sourceUrl: z
     .string()
     .trim()
@@ -88,6 +100,7 @@ export async function saveGuideAction(_prev: GuideFormState, formData: FormData)
     howEn: field(formData, 'howEn'),
     howPt: field(formData, 'howPt'),
     encounterId: field(formData, 'encounterId'),
+    encounterDifficulty: field(formData, 'encounterDifficulty'),
     sourceUrl: field(formData, 'sourceUrl'),
     sourceLabel: field(formData, 'sourceLabel'),
   });
@@ -110,6 +123,7 @@ export async function saveGuideAction(_prev: GuideFormState, formData: FormData)
         how_en: d.howEn,
         how_pt: d.howPt,
         journal_encounter_id: d.encounterId,
+        encounter_difficulty: d.encounterDifficulty,
         source_url: d.sourceUrl,
         source_label: d.sourceLabel,
         status: approve ? 'approved' : 'draft',

@@ -107,3 +107,40 @@ test('curador publica chance de drop com fonte e o público vê', async ({ page 
   await page.goto(`/en/mounts/${id}`);
   await expect(page.getByText('Unknown: no reviewed source yet')).toBeVisible();
 });
+
+test('tentativas: mortes do chefe pela Battle.net aparecem na montaria', async ({ page }, testInfo) => {
+  // Usa a montaria 6 e a Battle.net falsa; roda só no computador para não disputar dados com o celular.
+  test.skip(testInfo.project.name !== 'desktop', 'só no computador');
+  test.setTimeout(90_000);
+  await adminClient().from('collectible_guides').delete().eq('kind', 'mount').eq('external_item_id', '6');
+  const email = await signUp(page);
+  await promoteToAdmin(email);
+
+  await page.goto('/en/mounts/6');
+  await expect(page.getByRole('heading', { name: 'Your attempts' })).toHaveCount(0);
+
+  // Curador informa o chefe e a dificuldade.
+  await page.goto('/en/admin/mounts/6');
+  await page.getByLabel('Adventure Guide boss (ID)').fill('1234');
+  await page.getByLabel('Boss difficulty').fill('heroic');
+  await page.getByRole('button', { name: 'Publish', exact: true }).click();
+  await expect(page.getByRole('main').getByRole('status')).toHaveText('Published. It now shows on the site.');
+
+  await page.goto('/en/mounts/6');
+  await expect(page.getByText('Connect Battle.net to count how many times you killed this boss.')).toBeVisible();
+
+  await page.goto('/en/characters');
+  await page.getByRole('button', { name: 'Connect Battle.net' }).click();
+  await expect(page).toHaveURL(/bnet=connected/, { timeout: 20_000 });
+
+  // A busca roda depois da resposta: recarrega até aparecer (7 da raide + 2 da masmorra, heroico).
+  await expect(async () => {
+    await page.goto('/en/mounts/6');
+    await expect(page.getByText('times you killed the boss (HEROIC) across 2 characters')).toBeVisible({
+      timeout: 2_000,
+    });
+  }).toPass({ timeout: 30_000 });
+  const attempts = page.getByRole('region', { name: 'Your attempts' });
+  await expect(attempts.getByText('9', { exact: true })).toBeVisible();
+  await expect(attempts.getByRole('listitem').filter({ hasText: 'Testmage' })).toContainText('7');
+});

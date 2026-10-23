@@ -11,6 +11,19 @@ import type { GuideKind, GuideRow } from './queries';
 
 const initial: GuideFormState = { status: 'idle' };
 
+// Tipos de dificuldade que a Profile API da Blizzard usa.
+const DIFFICULTIES = [
+  'LFR',
+  'NORMAL',
+  'HEROIC',
+  'MYTHIC',
+  'MYTHIC_KEYSTONE',
+  'LEGACY_10_MAN',
+  'LEGACY_25_MAN',
+  'LEGACY_10_MAN_HEROIC',
+  'LEGACY_25_MAN_HEROIC',
+];
+
 function TextArea({
   id,
   name,
@@ -153,6 +166,19 @@ export function GuideForm({
           hint={t('encounterHint')}
           defaultValue={v(guide?.journal_encounter_id)}
         />
+        <Field
+          id="encounterDifficulty"
+          name="encounterDifficulty"
+          list="difficulties"
+          label={t('difficulty')}
+          hint={t('difficultyHint')}
+          defaultValue={v(guide?.encounter_difficulty)}
+        />
+        <datalist id="difficulties">
+          {DIFFICULTIES.map((d) => (
+            <option key={d} value={d} />
+          ))}
+        </datalist>
       </fieldset>
 
       {state.status === 'error' && (

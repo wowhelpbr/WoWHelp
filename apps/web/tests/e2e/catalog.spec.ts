@@ -100,7 +100,8 @@ test('card com imagem oficial guardada no Storage e janela de detalhes', async (
   await expect(dialog).toBeVisible();
   await expect(page).toHaveURL(/\/en\/mounts\/6$/);
   await expect(dialog.getByText('A mount used only in tests.')).toBeVisible();
-  await expect(dialog.getByText('Unknown: no reviewed source yet')).toBeVisible();
+  // O conteúdo da chance depende da curadoria (outros testes mexem nela); aqui basta a seção existir.
+  await expect(dialog.getByText('Drop chance', { exact: true })).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(dialog).toHaveCount(0);
   await expect(page).toHaveURL(/\/en\/mounts$/);

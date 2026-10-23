@@ -119,6 +119,27 @@ const server = http.createServer(async (req, res) => {
     return detail ? json(res, 200, detail) : json(res, 404, {});
   }
 
+  // Chefes mortos por personagem (dados de TESTE): Testmage tem raide, Testwarrior só masmorra.
+  const encMatch = url.pathname.match(/^\/profile\/wow\/character\/([a-z-]+)\/([a-z]+)\/encounters\/(raids|dungeons)$/);
+  if (encMatch) {
+    if (!appOk) return json(res, 401, {});
+    const [, , name, kind] = encMatch;
+    const mode = (count) => ({
+      difficulty: { type: 'HEROIC', name: 'Heroic' },
+      progress: {
+        completed_count: 1,
+        total_count: 1,
+        encounters: [{ encounter: { id: 1234, name: 'Test Boss' }, completed_count: count }],
+      },
+    });
+    const body = (count) => ({
+      expansions: [{ expansion: { id: 1 }, instances: [{ instance: { id: 10 }, modes: [mode(count)] }] }],
+    });
+    if (name === 'testmage' && kind === 'raids') return json(res, 200, body(7));
+    if (name === 'testwarrior' && kind === 'dungeons') return json(res, 200, body(2));
+    return json(res, 404, {});
+  }
+
   const mediaMatch = url.pathname.match(/^\/data\/wow\/media\/creature-display\/(\d+)$/);
   if (mediaMatch) {
     if (!appOk) return json(res, 401, {});
