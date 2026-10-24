@@ -158,6 +158,34 @@ const server = http.createServer(async (req, res) => {
       ? json(res, 200, { access_token: 'mock-twitch-token', expires_in: 3600, token_type: 'bearer' })
       : json(res, 403, {});
   }
+  if (url.pathname === '/oauth/token' && req.method === 'POST') {
+    const body = new URLSearchParams(await readBody(req));
+    return body.get('client_id') === 'test-kick' && body.get('client_secret') === 'test-kick-secret'
+      ? json(res, 200, { access_token: 'mock-kick-token', expires_in: 3600, token_type: 'Bearer' })
+      : json(res, 401, {});
+  }
+  if (url.pathname === '/kick/public/v1/channels') {
+    if (auth !== 'Bearer mock-kick-token') return json(res, 401, {});
+    const slugs = url.searchParams.getAll('slug');
+    return json(res, 200, {
+      data: slugs.map((slug) =>
+        slug === 'canalkickteste'
+          ? {
+              slug,
+              stream_title: 'Live de teste na Kick',
+              category: { id: 1, name: 'World of Warcraft' },
+              stream: {
+                is_live: true,
+                viewer_count: 9,
+                start_time: '2026-10-23T22:00:00Z',
+                thumbnail: 'https://images.kick.com/video_thumbnails/teste/720.webp',
+              },
+            }
+          : { slug, stream: { is_live: false } },
+      ),
+      message: 'OK',
+    });
+  }
   if (url.pathname.startsWith('/twitch/helix/')) {
     if (auth !== 'Bearer mock-twitch-token' || req.headers['client-id'] !== 'test-twitch') return json(res, 401, {});
     if (url.pathname === '/twitch/helix/users') {
