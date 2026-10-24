@@ -96,7 +96,7 @@ export async function CollectibleDetail({
 
         <dl className="grid gap-3 sm:grid-cols-2">
           <div className="frame p-4">
-            <dt className="eyebrow">{t('dropChance')}</dt>
+            <dt className="label">{t('dropChance')}</dt>
             {guide?.dropChancePercent ? (
               <dd className="mt-1.5 flex flex-col gap-1">
                 <span className="font-display text-3xl text-primary tabular-nums">
@@ -112,13 +112,13 @@ export async function CollectibleDetail({
             )}
           </div>
           <div className="frame p-4">
-            <dt className="eyebrow">{t('where')}</dt>
+            <dt className="label">{t('where')}</dt>
             <dd className={guide?.location ? 'mt-1.5 text-foreground' : 'mt-1.5 text-muted-foreground'}>
               {guide?.location ?? t('whereUnknown')}
             </dd>
           </div>
           <div className="frame p-4 sm:col-span-2">
-            <dt className="eyebrow">{t('howToGet')}</dt>
+            <dt className="label">{t('howToGet')}</dt>
             {guide?.how ? (
               <dd className="mt-1.5 flex flex-col gap-2 text-foreground">
                 {guide.how
@@ -157,7 +157,7 @@ export async function CollectibleDetail({
 
         {guide?.encounterId && (
           <section aria-labelledby={`${titleId}-attempts`} className="frame corner-brackets flex flex-col gap-3 p-4">
-            <h2 id={`${titleId}-attempts`} className="eyebrow">
+            <h2 id={`${titleId}-attempts`} className="label">
               {t('attemptsTitle')}
             </h2>
             {!user ? (
@@ -172,8 +172,10 @@ export async function CollectibleDetail({
             ) : (
               <>
                 <p className="flex items-baseline gap-2">
-                  <Swords aria-hidden className="size-5 shrink-0 self-center text-primary" />
-                  <span className="font-display text-3xl text-primary tabular-nums">{attempts.total}</span>
+                  <Swords aria-hidden className="size-5 shrink-0 self-center text-neon" />
+                  <span className="font-display text-3xl text-neon tabular-nums [text-shadow:0_0_18px_rgb(24_247_247/0.45)]">
+                    {attempts.total}
+                  </span>
                   <span className="text-foreground">
                     {t('attemptsKills', {
                       count: attempts.total,

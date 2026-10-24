@@ -73,7 +73,10 @@ async function AdminList({ kind, searchParams }: { kind: CatalogKind; searchPara
 
       <form method="get" className="frame grid gap-3 p-4 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_auto] md:items-end">
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="admin-q" className="text-sm font-medium text-foreground">
+          <label
+            htmlFor="admin-q"
+            className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+          >
             {t('search')}
           </label>
           <div className="relative">
@@ -85,7 +88,10 @@ async function AdminList({ kind, searchParams }: { kind: CatalogKind; searchPara
           </div>
         </div>
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="admin-only" className="text-sm font-medium text-foreground">
+          <label
+            htmlFor="admin-only"
+            className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+          >
             {t('filter')}
           </label>
           <select id="admin-only" name="only" defaultValue={only} className={cn(inputClasses, 'w-full')}>

@@ -1,4 +1,5 @@
 import { getFreshness, goalProgress, nextOpenStep, pickNextActions } from '@wowhelp/shared';
+import { ListChecks, Target, Trophy } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getFormatter, getLocale, getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
@@ -65,9 +66,9 @@ async function Dashboard() {
   const goals = goalsResult.status === 'ok' ? goalsResult.goals : [];
   const nextActions = pickNextActions(goals);
   const stats = [
-    { key: 'statActive', value: goals.filter((g) => g.status === 'active').length },
-    { key: 'statSteps', value: goals.reduce((sum, g) => sum + goalProgress(g.steps).done, 0) },
-    { key: 'statCompleted', value: goals.filter((g) => g.status === 'completed').length },
+    { key: 'statActive', icon: Target, value: goals.filter((g) => g.status === 'active').length },
+    { key: 'statSteps', icon: ListChecks, value: goals.reduce((sum, g) => sum + goalProgress(g.steps).done, 0) },
+    { key: 'statCompleted', icon: Trophy, value: goals.filter((g) => g.status === 'completed').length },
   ] as const;
   const lastManualUpdate = goals.reduce<string | null>(
     (latest, g) => (latest === null || Date.parse(g.updatedAt) > Date.parse(latest) ? g.updatedAt : latest),
@@ -84,15 +85,36 @@ async function Dashboard() {
           )}
         </div>
         {/* Blocos de números do HUD: só contagens reais dos objetivos do jogador. */}
-        <dl aria-label={t('statsLabel')} className="grid grid-cols-3 gap-2 xl:w-[26rem]">
-          {stats.map((stat) => (
-            <div key={stat.key} className="frame flex flex-col-reverse px-3 py-2.5">
-              <dt className="text-[0.7rem] font-semibold tracking-wider text-muted-foreground uppercase">
-                {t(stat.key)}
-              </dt>
-              <dd className="text-3xl font-bold text-foreground tabular-nums">{stat.value}</dd>
-            </div>
-          ))}
+        <dl aria-label={t('statsLabel')} className="grid gap-2 sm:grid-cols-3 xl:w-[40rem]">
+          {stats.map(({ key, icon: Icon, value }) => {
+            // O número que mais importa (objetivos concluídos) ganha o neon.
+            const hot = key === 'statCompleted';
+            return (
+              // dl > div > dt + dd (o ícone fica dentro do dt, para a lista continuar válida).
+              <div
+                key={key}
+                className={
+                  hot
+                    ? 'glow-lime relative flex flex-col-reverse rounded-lg bg-primary py-3 pr-4 pl-17 text-primary-foreground'
+                    : 'relative flex flex-col-reverse rounded-lg border border-border-soft bg-sidebar py-3 pr-4 pl-17'
+                }
+              >
+                <dt className={hot ? 'label text-primary-foreground/75' : 'label'}>
+                  <span
+                    className={
+                      hot
+                        ? 'absolute top-1/2 left-4 grid size-10 -translate-y-1/2 place-items-center rounded-full bg-black/10'
+                        : 'stat-icon absolute top-1/2 left-4 size-10! -translate-y-1/2'
+                    }
+                  >
+                    <Icon aria-hidden className="size-4.5" />
+                  </span>
+                  {t(key)}
+                </dt>
+                <dd className="font-display text-3xl leading-none font-bold tabular-nums">{value}</dd>
+              </div>
+            );
+          })}
         </dl>
       </header>
 

@@ -23,7 +23,10 @@ export function GoalComposer() {
 
   return (
     <form ref={formRef} action={action} className="@container flex flex-col gap-2">
-      <label htmlFor="goal-title" className="text-sm font-medium text-foreground">
+      <label
+        htmlFor="goal-title"
+        className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+      >
         {t('composerLabel')}
       </label>
       <div className="flex flex-col gap-2 @2xl:flex-row">

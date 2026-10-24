@@ -86,7 +86,7 @@
     "howTitle": "Como o WoWHelp funciona",
     "howSteps": {
       "choose": "Escolha o que você quer fazer. Dá para mudar quando quiser.",
-      "connect": "Traga seus personagens: a conexão com a Battle.net e a importação do addon Companion chegam nas próximas fases.",
+      "connect": "Traga seus personagens: conecte a Battle.net ou importe o arquivo do addon Companion.",
       "plan": "Siga objetivos e checklists do tamanho do tempo que você tem."
     },
     "sourcesTitle": "De onde vêm os seus dados",
@@ -107,7 +107,9 @@
     },
     "eyebrow": "Seu companheiro no World of Warcraft",
     "pickerTitle": "Escolha seus objetivos",
-    "pickerHint": "Escolha quantos quiser. Dá para mudar depois."
+    "pickerHint": "Escolha quantos quiser. Dá para mudar depois.",
+    "browseCollections": "Ver as coleções",
+    "shortcutsTitle": "Explorar"
   },
   "Availability": {
     "available": "Disponível",

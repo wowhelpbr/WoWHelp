@@ -86,7 +86,7 @@
     "howTitle": "How WoWHelp works",
     "howSteps": {
       "choose": "Choose what you want to do. You can change it whenever you like.",
-      "connect": "Bring in your characters: Battle.net linking and the Companion addon import arrive in later phases.",
+      "connect": "Bring in your characters: link Battle.net or import the Companion addon file.",
       "plan": "Follow goals and checklists made for the time you have."
     },
     "sourcesTitle": "Where your data comes from",
@@ -107,7 +107,9 @@
     },
     "eyebrow": "Your World of Warcraft companion",
     "pickerTitle": "Pick your goals",
-    "pickerHint": "Choose as many as you like. You can change them later."
+    "pickerHint": "Choose as many as you like. You can change them later.",
+    "browseCollections": "Browse collections",
+    "shortcutsTitle": "Explore"
   },
   "Availability": {
     "available": "Available",

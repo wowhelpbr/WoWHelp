@@ -88,7 +88,10 @@ export async function CatalogView({ kind, searchParams }: { kind: CatalogKind; s
         className="frame grid gap-3 p-4 md:grid-cols-2 xl:grid-cols-[minmax(0,2fr)_repeat(4,minmax(0,1fr))_auto] xl:items-end"
       >
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="catalog-q" className="text-sm font-medium text-foreground">
+          <label
+            htmlFor="catalog-q"
+            className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+          >
             {tk('searchLabel')}
           </label>
           <div className="relative">
@@ -107,7 +110,10 @@ export async function CatalogView({ kind, searchParams }: { kind: CatalogKind; s
           </div>
         </div>
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="catalog-source" className="text-sm font-medium text-foreground">
+          <label
+            htmlFor="catalog-source"
+            className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+          >
             {t('sourceLabel')}
           </label>
           <select
@@ -126,7 +132,10 @@ export async function CatalogView({ kind, searchParams }: { kind: CatalogKind; s
         </div>
         {categories.length > 0 && (
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="catalog-category" className="text-sm font-medium text-foreground">
+            <label
+              htmlFor="catalog-category"
+              className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+            >
               {t('categoryLabel')}
             </label>
             <select
@@ -145,7 +154,10 @@ export async function CatalogView({ kind, searchParams }: { kind: CatalogKind; s
           </div>
         )}
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="catalog-faction" className="text-sm font-medium text-foreground">
+          <label
+            htmlFor="catalog-faction"
+            className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+          >
             {t('factionLabel')}
           </label>
           <select
@@ -161,7 +173,10 @@ export async function CatalogView({ kind, searchParams }: { kind: CatalogKind; s
         </div>
         {user ? (
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="catalog-status" className="text-sm font-medium text-foreground">
+            <label
+              htmlFor="catalog-status"
+              className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+            >
               {t('statusLabel')}
             </label>
             <select
@@ -200,7 +215,7 @@ export async function CatalogView({ kind, searchParams }: { kind: CatalogKind; s
           {t('noResults')}
         </StateNotice>
       ) : (
-        <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]">
           {visible.map((item) => (
             <li key={item.id}>
               <CollectibleCard

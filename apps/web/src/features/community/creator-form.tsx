@@ -24,7 +24,10 @@ function TextArea({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-sm font-medium text-foreground">
+      <label
+        htmlFor={id}
+        className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+      >
         {label}
       </label>
       <textarea
@@ -77,7 +80,10 @@ export function CreatorForm({ creator, prefill }: { creator: CreatorView | null;
           defaultValue={creator?.slug ?? ''}
         />
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="status" className="text-sm font-medium text-foreground">
+          <label
+            htmlFor="status"
+            className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+          >
             {t('status')}
           </label>
           <select

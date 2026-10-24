@@ -100,7 +100,10 @@ export function TaskComposer() {
     <form ref={formRef} action={action} className="@container flex flex-col gap-2">
       <div className="grid gap-2 @2xl:grid-cols-[minmax(0,1fr)_auto_auto_auto]">
         <div className="flex flex-col gap-1">
-          <label htmlFor="task-title" className="text-sm font-medium text-foreground">
+          <label
+            htmlFor="task-title"
+            className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+          >
             {t('taskTitle')}
           </label>
           <input
@@ -114,7 +117,10 @@ export function TaskComposer() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label htmlFor="task-cadence" className="text-sm font-medium text-foreground">
+          <label
+            htmlFor="task-cadence"
+            className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+          >
             {t('cadence')}
           </label>
           <select id="task-cadence" name="cadence" defaultValue="weekly" className={inputClasses}>
@@ -123,7 +129,10 @@ export function TaskComposer() {
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label htmlFor="task-minutes" className="text-sm font-medium text-foreground">
+          <label
+            htmlFor="task-minutes"
+            className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+          >
             {t('taskMinutes')}
           </label>
           <select id="task-minutes" name="minutes" defaultValue="" className={inputClasses}>
