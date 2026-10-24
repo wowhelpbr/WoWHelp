@@ -38,7 +38,7 @@ async function promote(email: string) {
 
 test('página pública e pedido exigem o básico', async ({ page }) => {
   await page.goto('/pt-br/community');
-  await expect(page.getByRole('heading', { level: 1, name: 'Quem faz WoW no Brasil' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'Comunidade BR' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Ao vivo agora' })).toBeVisible();
   await page.getByRole('link', { name: 'Você cria conteúdo de WoW? Peça para entrar' }).click();
   await expect(page).toHaveURL(/\/pt-br\/community\/join$/);
@@ -92,7 +92,10 @@ test('curador cadastra criador, ao vivo aparece e pedido chega', async ({ page, 
   await expect(
     page.getByRole('region', { name: 'Destaque' }).getByText('Melhor guia de raide da semana.'),
   ).toBeVisible();
-  const card = page.getByRole('region', { name: 'Criadores' }).getByRole('listitem').filter({ hasText: 'Criador E2E' });
+  const card = page
+    .getByRole('region', { name: 'Todos os criadores' })
+    .getByRole('listitem')
+    .filter({ hasText: 'Criador E2E' });
   await expect(card.getByRole('link', { name: /Twitch/ })).toHaveAttribute(
     'href',
     'https://www.twitch.tv/streamerteste',
@@ -105,7 +108,9 @@ test('curador cadastra criador, ao vivo aparece e pedido chega', async ({ page, 
   // Filtro por assunto.
   await page.getByRole('navigation', { name: 'Assuntos' }).getByRole('link', { name: 'Guias' }).click();
   await expect(page).toHaveURL(/tag=guias/);
-  await expect(page.getByRole('region', { name: 'Criadores' }).getByText('Criador E2E')).toBeVisible();
+  await expect(
+    page.getByRole('region', { name: 'Todos os criadores' }).getByRole('heading', { name: 'Criador E2E' }),
+  ).toBeVisible();
 
   // Pedido de entrada chega ao curador.
   // Ocultar e publicar direto da lista da curadoria.
@@ -114,7 +119,7 @@ test('curador cadastra criador, ao vivo aparece e pedido chega', async ({ page, 
   await row.getByRole('button', { name: 'Ocultar' }).click();
   await expect(row.getByText('Oculto')).toBeVisible();
   await page.goto('/pt-br/community');
-  await expect(page.getByRole('region', { name: 'Criadores' }).getByText('Criador E2E')).toHaveCount(0);
+  await expect(page.getByRole('region', { name: 'Todos os criadores' }).getByText('Criador E2E')).toHaveCount(0);
   await page.goto('/pt-br/admin/community');
   await page.getByRole('listitem').filter({ hasText: 'Criador E2E' }).getByRole('button', { name: 'Publicar' }).click();
   await expect(page.getByRole('listitem').filter({ hasText: 'Criador E2E' }).getByText('Publicado')).toBeVisible();

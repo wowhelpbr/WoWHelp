@@ -26,7 +26,8 @@
     "addonImport": "Importar addon",
     "phaseShort": "Fase {phase}",
     "community": "Comunidade",
-    "supporterBadge": "Apoiador"
+    "supporterBadge": "Apoiador",
+    "dashboardShort": "Objetivos"
   },
   "Footer": {
     "disclaimer": "O WoWHelp é uma ferramenta feita por fãs. Não é afiliado nem endossado pela Blizzard Entertainment. World of Warcraft e Blizzard Entertainment são marcas comerciais ou registradas da Blizzard Entertainment, Inc.",
@@ -109,7 +110,45 @@
     "pickerTitle": "Escolha seus objetivos",
     "pickerHint": "Escolha quantos quiser. Dá para mudar depois.",
     "browseCollections": "Ver as coleções",
-    "shortcutsTitle": "Explorar"
+    "shortcutsTitle": "Explorar",
+    "ctaVisitor": "Criar conta grátis",
+    "trackerChosen": "Escolhido",
+    "trackerTrying": "Tentando",
+    "trackerDone": "Conseguiu",
+    "cursorYou": "Você",
+    "floatingLabel": "Montarias no catálogo",
+    "statsLabel": "O WoWHelp em números",
+    "statMounts": "Montarias no catálogo",
+    "statPets": "Mascotes",
+    "statToys": "Brinquedos",
+    "statForYou": "Para você",
+    "statFree": "Grátis",
+    "featuresEyebrow": "Em quatro passos",
+    "features": {
+      "choose": {
+        "title": "Escolha o que quer",
+        "body": "Montaria, semanais, alts: você diz o objetivo e ele vira uma lista de passos curtos."
+      },
+      "connect": {
+        "title": "Conecte a Battle.net",
+        "body": "Seus personagens e o que você já coletou entram sozinhos, com a data de quando foram conferidos."
+      },
+      "follow": {
+        "title": "Siga e marque",
+        "body": "O próximo passo aparece sempre no topo. Marcou, ele sai da frente e vem o seguinte."
+      },
+      "addon": {
+        "title": "Importe o addon",
+        "body": "O WoWHelp Companion lê o que o jogo mostra e você importa o arquivo no site."
+      }
+    },
+    "communityEyebrow": "Comunidade BR",
+    "liveTitle": "Ao vivo agora",
+    "latestTitle": "Novidades da comunidade",
+    "seeCreators": "Ver todos os criadores",
+    "supporterTitle": "Seja apoiador do WoWHelp",
+    "supporterBody": "Site sem anúncios e selo de apoiador. O rastreador continua grátis para todos.",
+    "supporterCta": "Ver os planos"
   },
   "Availability": {
     "available": "Disponível",
@@ -189,7 +228,28 @@
     "charactersConnect": "Conectar Battle.net",
     "notConnected": "Não conectado",
     "charactersMore": "{count, plural, one {+# personagem} other {+# personagens}}",
-    "addonNever": "Nenhuma importação"
+    "addonNever": "Nenhuma importação",
+    "newGoal": "Novo objetivo",
+    "statWeekly": "Semanais",
+    "colGoal": "Objetivo",
+    "colNext": "Próximo passo",
+    "colStatus": "Situação",
+    "colProgress": "Progresso",
+    "rowInProgress": "Em andamento",
+    "rowStarted": "Começou",
+    "rowDraft": "Rascunho",
+    "rowPaused": "Pausado",
+    "weekTitle": "Esta semana",
+    "weekResets": "reseta {day}",
+    "weekEmpty": "Nenhuma semanal cadastrada ainda.",
+    "weekDone": "feito",
+    "weekPending": "falta",
+    "weekOpenPlanner": "Abrir o planejador",
+    "battlenetOk": "Battle.net ok",
+    "pinnedTitle": "Objetivos ativos",
+    "pinnedSteps": "{done} de {total} passos",
+    "pinnedNoSteps": "Sem passos ainda",
+    "levelValue": "nível {level}"
   },
   "Goals": {
     "title": "Objetivos",
@@ -264,9 +324,9 @@
     "previous": "Anterior",
     "next": "Próxima",
     "status": {
-      "collected": "Coletada",
-      "not_collected": "Não obtida",
-      "unknown": "Desconhecido"
+      "collected": "Tenho",
+      "not_collected": "Falta",
+      "unknown": "Desconhecida"
     },
     "statusHelp": {
       "unknown": "Conecte a Battle.net, importe o addon Companion ou marque você mesmo para saber.",
@@ -303,7 +363,15 @@
     "attemptsSource": "Pela Battle.net, atualizado {when}. É a contagem de mortes do chefe, não de saques.",
     "attemptsNone": "Nenhuma morte deste chefe nos seus personagens da Battle.net.",
     "categoryLabel": "Tipo",
-    "categoryAll": "Qualquer tipo"
+    "categoryAll": "Qualquer tipo",
+    "filterMissing": "Faltam",
+    "filterOwned": "Tenho",
+    "filterGroup": "Filtros",
+    "journeyLabel": "Sua jornada com este item",
+    "stepChosen": "Escolhida",
+    "stepTrying": "Tentando",
+    "stepGot": "Conseguiu",
+    "hoverHint": "Passe o mouse para girar"
   },
   "Settings": {
     "metaTitle": "Configurações",
@@ -783,12 +851,16 @@
       "notFound": "Este brinquedo não está no catálogo.",
       "back": "Voltar aos brinquedos",
       "blizzardId": "ID do brinquedo na Blizzard {id}"
-    }
+    },
+    "statTotal": "No jogo",
+    "statOwned": "Você tem",
+    "statMissing": "Faltam",
+    "statsLabel": "Números da coleção"
   },
   "Community": {
     "metaTitle": "Comunidade BR",
-    "eyebrow": "Comunidade BR",
-    "title": "Quem faz WoW no Brasil",
+    "eyebrow": "Feita por brasileiros",
+    "title": "Comunidade BR",
     "intro": "Criadores brasileiros de World of Warcraft, escolhidos a dedo. Veja quem está ao vivo, o que saiu de novo e encontre gente que fala de WoW em português.",
     "curated": "Lista curada pela equipe do WoWHelp. Ninguém paga para aparecer aqui.",
     "liveNow": "Ao vivo agora",
@@ -798,7 +870,7 @@
     "viewers": "{count, plural, one {# espectador} other {# espectadores}}",
     "featured": "Destaque",
     "latest": "Novidades",
-    "directory": "Criadores",
+    "directory": "Todos os criadores",
     "joinCta": "Você cria conteúdo de WoW? Peça para entrar",
     "allTags": "Todos",
     "tagsLabel": "Assuntos",
@@ -853,7 +925,19 @@
         "quota": "Você já tem 3 pedidos em aberto. Espere a resposta antes de mandar outro.",
         "storage": "Não foi possível enviar agora. Tente de novo."
       }
-    }
+    },
+    "platformLabel": "Plataforma",
+    "allPlatforms": "Todos",
+    "liveCount": "{count} ao vivo",
+    "searchCreators": "Procurar criador",
+    "searchCreatorsPlaceholder": "Procurar criador…",
+    "colCreator": "Criador",
+    "colPlatforms": "Plataformas",
+    "colTopics": "Assuntos",
+    "colStatus": "Situação",
+    "statusNew": "Vídeo novo",
+    "statusOffline": "Offline",
+    "seeChannel": "Ver canal"
   },
   "Ads": {
     "label": "Publicidade",
@@ -888,7 +972,7 @@
     "yearly": "Anual",
     "perMonth": "por mês",
     "perYear": "por ano",
-    "yearlySaving": "Equivale a {months, plural, one {# mês grátis} other {# meses grátis}}",
+    "yearlySaving": "{months, plural, one {# mês grátis} other {# meses grátis}}",
     "subscribeMonthly": "Assinar o mensal",
     "subscribeYearly": "Assinar o anual",
     "opening": "Abrindo o pagamento…",
@@ -913,6 +997,15 @@
       "processando": "Pagamento em processamento. O selo de apoiador aparece em alguns minutos.",
       "cancelado": "Pagamento não concluído. Nada foi cobrado.",
       "erro": "Não deu para abrir o pagamento agora. Tente de novo em alguns minutos."
-    }
+    },
+    "planNoAds": "Site sem anúncios",
+    "planBadge": "Selo de apoiador",
+    "planCancel": "Cancele quando quiser",
+    "benefitNoAdsTitle": "Sem anúncios",
+    "benefitNoAdsBody": "Em todas as páginas, enquanto a assinatura estiver ativa.",
+    "benefitBadgeTitle": "Selo de apoiador",
+    "benefitBadgeBody": "Aparece no cabeçalho da sua conta.",
+    "benefitThanksTitle": "WoWHelp no ar",
+    "benefitThanksBody": "Em português e com novidades."
   }
 }

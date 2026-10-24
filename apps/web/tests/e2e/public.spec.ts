@@ -24,14 +24,14 @@ test.describe('páginas públicas', () => {
     await page.goto('/en');
     await page.getByText('Collect mounts', { exact: true }).click();
     await page.getByText('Organize weekly tasks', { exact: true }).click();
-    await page.getByRole('button', { name: 'Continue' }).filter({ visible: true }).first().click();
+    await page.getByRole('button', { name: 'Create a free account' }).filter({ visible: true }).first().click();
     await expect(page).toHaveURL(/\/en\/signup\?focus=mounts,weekly$/);
     await expect(page.getByText(/Collect mounts, Organize weekly tasks/)).toBeVisible();
   });
 
   test('catálogo credita a Blizzard e nunca mostra dado inventado', async ({ page }) => {
     await page.goto('/pt-br/mounts');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Catálogo de montarias');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Montarias');
     await expect(page.getByText('fornecidos pela Blizzard Entertainment', { exact: false })).toBeVisible();
     // Ou a lista oficial importada, ou o aviso de importação: nunca uma lista de exemplo.
     await expect(

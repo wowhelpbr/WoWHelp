@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import { CalendarCheck, FileUp, LayoutDashboard, Settings, Users, type LucideIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { MountGlyph } from '@/components/brand/mount-glyph';
@@ -23,51 +24,55 @@ const ITEMS: Item[] = [
 ];
 
 /** Menu lateral da área logada (só desktop; no celular a navegação é a barra de abas). */
-export function AccountSidebar() {
+/** children: conteúdo extra abaixo do menu (ex.: objetivos ativos no painel). */
+export function AccountSidebar({ children }: { children?: ReactNode }) {
   const t = useTranslations('Nav');
   const pathname = usePathname();
 
   return (
     <nav aria-label={t('accountNav')} className="hidden border-r border-border-soft bg-sidebar lg:block">
-      <ul className="sticky top-16 flex flex-col gap-1 p-3.5 pt-6">
-        {ITEMS.map((item) => {
-          const Icon = item.icon;
-          if ('phase' in item) {
+      <div className="sticky top-16 flex flex-col gap-6 p-3.5 pt-6">
+        <ul className="flex flex-col gap-1">
+          {ITEMS.map((item) => {
+            const Icon = item.icon;
+            if ('phase' in item) {
+              return (
+                <li key={item.key}>
+                  <span
+                    aria-disabled="true"
+                    className="flex min-h-10 items-center gap-3 rounded-sm px-3 font-display text-[0.6875rem] font-bold tracking-[0.08em] text-faint uppercase"
+                  >
+                    <Icon aria-hidden className="size-4" />
+                    <span className="flex-1">{t(item.key)}</span>
+                    <span className="rounded-sm border border-border px-1.5 text-[0.68rem] font-semibold tracking-wider uppercase">
+                      {t('phaseShort', { phase: item.phase })}
+                    </span>
+                  </span>
+                </li>
+              );
+            }
+            const active = pathname === item.href;
             return (
               <li key={item.key}>
-                <span
-                  aria-disabled="true"
-                  className="flex min-h-10 items-center gap-3 rounded-sm px-3 font-display text-[0.6875rem] font-bold tracking-[0.08em] text-faint uppercase"
+                <Link
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  className={cn(
+                    'flex min-h-10 items-center gap-3 rounded-sm px-3 font-display text-[0.6875rem] font-bold tracking-[0.08em] uppercase transition-colors',
+                    active
+                      ? 'bg-card-raised text-foreground [&>svg]:text-primary'
+                      : 'text-faint hover:bg-white/[0.03] hover:text-muted-foreground',
+                  )}
                 >
                   <Icon aria-hidden className="size-4" />
-                  <span className="flex-1">{t(item.key)}</span>
-                  <span className="rounded-sm border border-border px-1.5 text-[0.68rem] font-semibold tracking-wider uppercase">
-                    {t('phaseShort', { phase: item.phase })}
-                  </span>
-                </span>
+                  {t(item.key)}
+                </Link>
               </li>
             );
-          }
-          const active = pathname === item.href;
-          return (
-            <li key={item.key}>
-              <Link
-                href={item.href}
-                aria-current={active ? 'page' : undefined}
-                className={cn(
-                  'flex min-h-10 items-center gap-3 rounded-sm px-3 font-display text-[0.6875rem] font-bold tracking-[0.08em] uppercase transition-colors',
-                  active
-                    ? 'bg-card-raised text-foreground [&>svg]:text-primary'
-                    : 'text-faint hover:bg-white/[0.03] hover:text-muted-foreground',
-                )}
-              >
-                <Icon aria-hidden className="size-4" />
-                {t(item.key)}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+          })}
+        </ul>
+        {children}
+      </div>
     </nav>
   );
 }
