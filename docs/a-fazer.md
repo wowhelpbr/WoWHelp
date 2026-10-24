@@ -42,6 +42,7 @@ Atualizado na madrugada de 24/10/2026. Tarefas de até ~4 horas, com resultado v
 
 - [x] Addon Lua WoWHelp Companion (.toc 120105, SavedVariables, /wowhelp) com download no site
 - [x] Importação segura do arquivo no site (sem executar Lua), com prévia, confirmação, histórico e exclusão
+- [x] Simulação do addon fora do jogo (Lua de verdade + WoW de mentira, 8 cenários)
 - [!] Teste dentro do jogo (roteiro em docs/fase-5/relatorio-fase-5.md)
 - [ ] Usar o horário de reset que o addon grava para confirmar o reset das Américas
 - [ ] Publicar no CurseForge/Wago (depois do teste e da decisão sobre o nome)
