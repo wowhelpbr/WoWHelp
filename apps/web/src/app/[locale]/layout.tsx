@@ -2,10 +2,12 @@ import type { Metadata, Viewport } from 'next';
 import { Chakra_Petch } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
+import { Suspense } from 'react';
 import { getTranslations } from 'next-intl/server';
 import { MobileTabBar } from '@/components/layout/mobile-tab-bar';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { AdsLoader, ConsentBanner } from '@/features/ads/ads';
+import { AdsGate } from '@/features/billing/ads-gate';
 import { SiteHeader } from '@/components/layout/site-header';
 import { ServiceWorkerRegister } from '@/components/pwa/service-worker-register';
 import { LOCALE_PREFIX, routing } from '@/i18n/routing';
@@ -75,6 +77,9 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
           <SiteFooter />
           <MobileTabBar />
           <ServiceWorkerRegister />
+          <Suspense fallback={null}>
+            <AdsGate />
+          </Suspense>
           <ConsentBanner />
           <AdsLoader />
         </NextIntlClientProvider>

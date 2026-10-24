@@ -35,7 +35,8 @@ const contentSecurityPolicy = [
   "manifest-src 'self'",
   "frame-ancestors 'none'",
   "base-uri 'self'",
-  "form-action 'self'",
+  // Assinar ou gerenciar a assinatura leva às páginas do Stripe (mesmo sem JavaScript).
+  "form-action 'self' https://checkout.stripe.com https://billing.stripe.com",
   "object-src 'none'",
 ].join('; ');
 

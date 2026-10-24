@@ -11,7 +11,13 @@ export type ProductEvent =
   | 'addon_import_succeeded'
   | 'addon_import_failed'
   | 'account_exported'
-  | 'account_deleted';
+  | 'account_deleted'
+  | 'supporter_checkout_started'
+  | 'supporter_checkout_failed'
+  | 'supporter_portal_failed'
+  | 'supporter_synced'
+  | 'supporter_webhook_failed'
+  | 'supporter_cancel_failed';
 
 type Fields = Record<string, string | number | boolean | null>;
 

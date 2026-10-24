@@ -9,6 +9,7 @@ import { ButtonLink } from '@/components/ui/button';
 import { AccountData } from '@/features/account/account-data';
 import { getAdminUser } from '@/features/admin/session';
 import { getCurrentUser } from '@/features/auth/session';
+import { SupporterPanel } from '@/features/billing/supporter-panel';
 import { getMyProfile } from '@/features/profile/queries';
 import { SettingsForm } from '@/features/profile/settings-form';
 import { Link, redirect } from '@/i18n/navigation';
@@ -52,6 +53,7 @@ async function AccountSettings() {
       <div className="frame p-4 sm:p-5">
         <SettingsForm locale={profile?.locale ?? 'en-US'} region={profile?.preferredGameRegion ?? null} />
       </div>
+      <SupporterPanel />
       <Panel title={t('privacyTitle')} titleId="privacy">
         <div className="flex flex-col gap-5">
           <p className="text-sm text-muted-foreground">

@@ -1,8 +1,9 @@
-import { LogOut, UserRound } from 'lucide-react';
+import { Gem, LogOut, UserRound } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { ButtonLink } from '@/components/ui/button';
 import { signOutAction } from '@/features/auth/actions';
 import { getCurrentUser } from '@/features/auth/session';
+import { getMySupport } from '@/features/billing/queries';
 import { Link } from '@/i18n/navigation';
 
 /**
@@ -25,8 +26,18 @@ export async function AccountSlot() {
     );
   }
 
+  const support = await getMySupport();
   return (
     <div className="flex items-center gap-1">
+      {support?.active && (
+        <Link
+          href="/supporter"
+          className="inline-flex min-h-8 items-center gap-1.5 rounded-sm border border-primary/50 bg-primary/10 px-2 text-xs font-semibold tracking-wide text-primary uppercase hover:bg-primary/20"
+        >
+          <Gem aria-hidden className="size-3.5" />
+          <span className="max-sm:sr-only">{t('supporterBadge')}</span>
+        </Link>
+      )}
       <Link
         href="/settings"
         className="hidden min-h-10 items-center gap-2 rounded-sm px-2 text-sm text-muted-foreground hover:bg-white/5 hover:text-foreground md:inline-flex"

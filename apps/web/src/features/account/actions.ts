@@ -3,18 +3,21 @@
 import { localeSchema } from '@wowhelp/shared';
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/features/auth/session';
+import { cancelAllSubscriptions } from '@/features/billing/sync';
 import { LOCALE_PREFIX, routing } from '@/i18n/routing';
 import { createAdminClient, isAdminConfigured } from '@/lib/supabase/admin';
 import { logEvent } from '@/lib/log';
+import { getStripe } from '@/lib/stripe/client';
 import { createClient } from '@/lib/supabase/server';
 
 export type DeleteAccountState =
-  { status: 'idle' } | { status: 'error'; code: 'mismatch' | 'failed' | 'not_configured' };
+  { status: 'idle' } | { status: 'error'; code: 'mismatch' | 'failed' | 'not_configured' | 'billing' };
 
 /**
  * Exclui a conta e, em cascata no banco, todos os dados dela (perfil,
  * objetivos, planejador, Battle.net, addon). Pede o e-mail da conta digitado
- * como confirmação. Não tem volta.
+ * como confirmação. Não tem volta. Antes, cancela no Stripe a assinatura
+ * Apoiador (sem isso, a cobrança continuaria sem conta).
  */
 export async function deleteAccountAction(_prev: DeleteAccountState, formData: FormData): Promise<DeleteAccountState> {
   const user = await getCurrentUser();
@@ -25,6 +28,11 @@ export async function deleteAccountAction(_prev: DeleteAccountState, formData: F
     .trim()
     .toLowerCase();
   if (!user.email || typed !== user.email.toLowerCase()) return { status: 'error', code: 'mismatch' };
+
+  if (!(await cancelAllSubscriptions(getStripe(), user.id))) {
+    logEvent('supporter_cancel_failed');
+    return { status: 'error', code: 'billing' };
+  }
 
   const { error } = await createAdminClient().auth.admin.deleteUser(user.id);
   if (error) return { status: 'error', code: 'failed' };

@@ -54,6 +54,10 @@ export default defineConfig({
         KICK_CLIENT_ID: 'test-kick',
         KICK_CLIENT_SECRET: 'test-kick-secret',
         KICK_TEST_BASE_URL: 'http://127.0.0.1:4010',
+        // Stripe falso (assinatura Apoiador).
+        STRIPE_SECRET_KEY: 'sk_test_e2e',
+        STRIPE_WEBHOOK_SECRET: 'whsec_e2e',
+        STRIPE_TEST_BASE_URL: 'http://127.0.0.1:4010',
       },
     },
   ],
