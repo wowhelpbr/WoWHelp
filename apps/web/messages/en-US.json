@@ -652,7 +652,10 @@
         "slug_taken": "There is already a creator with this address.",
         "channel_taken": "This {platform} channel is already on the list under another creator.",
         "storage": "We couldn't save right now. Try again."
-      }
+      },
+      "publish": "Publish",
+      "hide": "Hide",
+      "editShort": "Edit"
     }
   },
   "Catalog": {
