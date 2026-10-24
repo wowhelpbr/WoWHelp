@@ -1,0 +1,43 @@
+# Confere de hora em hora se o site está de pé (só leitura, sem criar conta).
+# Se algo falhar, o GitHub manda e-mail para quem cuida do repositório.
+name: Saúde do site
+
+on:
+  schedule:
+    - cron: '7 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  conferir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SITE: https://wowhelp.vercel.app
+    steps:
+      - name: Páginas e rotas principais
+        run: |
+          falhas=0
+          confere() {
+            # uso: confere <caminho> <status esperado> [texto que precisa aparecer]
+            status=$(curl -sS -o /tmp/pagina -w '%{http_code}' --max-time 30 "$SITE$1" || echo 000)
+            if [ "$status" != "$2" ]; then
+              echo "::error::$1 respondeu $status (esperado $2)"; falhas=$((falhas + 1)); return
+            fi
+            if [ -n "$3" ] && ! grep -q "$3" /tmp/pagina; then
+              echo "::error::$1 não mostrou \"$3\""; falhas=$((falhas + 1)); return
+            fi
+            echo "ok $1 ($status)"
+          }
+          confere /en 200 "What do you want to do today"
+          confere /pt-br/mounts 200 "tilt-card"
+          confere /pt-br/pets 200 "tilt-card"
+          confere /pt-br/toys 200 "tilt-card"
+          confere /pt-br/community 200 "Quem faz WoW no Brasil"
+          confere /pt-br/privacy 200 "Política de privacidade"
+          confere /downloads/WoWHelpCompanion-0.1.0.zip 200
+          confere /api/account/export 401
+          confere /en/dashboard 307
+          if [ "$falhas" -gt 0 ]; then echo "$falhas falha(s)"; exit 1; fi
