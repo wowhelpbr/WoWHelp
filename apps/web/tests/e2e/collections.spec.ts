@@ -36,7 +36,10 @@ test('abas entre os catálogos e mascotes com tipo, imagem e janela', async ({ p
   await expect(one.locator('img')).toHaveAttribute('src', /catalog-media\/pets\/39\.webp/);
 
   // Filtro por tipo.
-  await page.getByRole('navigation', { name: 'Filters' }).getByRole('link', { name: /Critter/ }).click();
+  await page
+    .getByRole('navigation', { name: 'Filters' })
+    .getByRole('link', { name: /Critter/ })
+    .click();
   await expect(page).toHaveURL(/category=CRITTER/);
   await expect(page.getByRole('link', { name: /Test Pet Two/ })).toBeVisible();
   await expect(page.getByRole('link', { name: /Test Pet One/ })).toHaveCount(0);
