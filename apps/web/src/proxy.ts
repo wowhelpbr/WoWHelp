@@ -1,6 +1,7 @@
 import createMiddleware from 'next-intl/middleware';
 import { NextResponse, type NextRequest } from 'next/server';
 import { LOCALE_PREFIX, routing } from './i18n/routing';
+import { GATE_COOKIE, gateToken, getGateSettings, isMonitor, sameText } from './lib/site-gate';
 import { refreshSession } from './lib/supabase/proxy';
 
 const handleI18nRouting = createMiddleware(routing);
@@ -10,10 +11,22 @@ const handleI18nRouting = createMiddleware(routing);
 const PROTECTED_PATHS = ['/dashboard', '/characters', '/planner', '/import', '/settings', '/admin'];
 
 export default async function proxy(request: NextRequest) {
-  const session = await refreshSession(request);
-
   const { pathname } = request.nextUrl;
   const prefix = Object.values(LOCALE_PREFIX).find((p) => pathname === p || pathname.startsWith(`${p}/`));
+
+  // Site fechado com senha (fase de testes): sem o cookie certo, vai para a página da senha.
+  const gate = prefix && pathname !== `${prefix}/gate` ? await getGateSettings() : null;
+  if (gate?.private && gate.passwordHash && !isMonitor(request.headers.get('authorization'))) {
+    const cookie = request.cookies.get(GATE_COOKIE)?.value ?? '';
+    if (!sameText(cookie, await gateToken(gate.passwordHash))) {
+      const url = request.nextUrl.clone();
+      url.pathname = `${prefix}/gate`;
+      url.search = `?next=${encodeURIComponent(`${pathname}${request.nextUrl.search}`)}`;
+      return NextResponse.redirect(url);
+    }
+  }
+
+  const session = await refreshSession(request);
   if (prefix && !session.userId) {
     const rest = pathname.slice(prefix.length) || '/';
     if (PROTECTED_PATHS.some((p) => rest === p || rest.startsWith(`${p}/`))) {

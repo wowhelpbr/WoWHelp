@@ -656,6 +656,35 @@
       "publish": "Publish",
       "hide": "Hide",
       "editShort": "Edit"
+    },
+    "siteTitle": "Private site",
+    "siteBody": "Close the site with a password during testing, or open it to the public.",
+    "site": {
+      "title": "Private site",
+      "back": "Back to admin",
+      "intro": "With a private site, anyone needs the password to see any page. Use it during testing and turn it off at launch (Google AdSense does not approve closed sites).",
+      "statusPrivate": "Now: private (password)",
+      "statusPublic": "Now: open to the public",
+      "privateLabel": "Private site",
+      "privateHint": "Asks for the password on every page. Anyone who typed it keeps access for 30 days, until you change the password.",
+      "setPassword": "Set the password",
+      "changePassword": "Change the password",
+      "password": "New password",
+      "confirm": "Repeat the password",
+      "minHint": "At least 8 characters.",
+      "keepHint": "Leave empty to keep the current password. Changing it removes everyone's access.",
+      "save": "Save",
+      "saving": "Saving…",
+      "savedPrivate": "Saved: the site is private. This browser already has access. It can take up to 30 seconds to apply everywhere.",
+      "savedPublic": "Saved: the site is open to the public. It can take up to 30 seconds to apply everywhere.",
+      "note": "The password is stored only as a scrambled code (hash); nobody can read it from the database.",
+      "errors": {
+        "forbidden": "Your account is not an admin.",
+        "needs_password": "To make the site private, set a password.",
+        "too_short": "The password needs at least 8 characters.",
+        "mismatch": "The two passwords do not match.",
+        "storage": "We could not save right now. Try again."
+      }
     }
   },
   "Catalog": {
@@ -781,5 +810,13 @@
     "acceptAll": "Accept personalized ads",
     "essentialOnly": "Essentials only",
     "preferences": "Cookie preferences"
+  },
+  "Gate": {
+    "metaTitle": "Restricted access",
+    "title": "WoWHelp in testing",
+    "body": "The site is still closed for testing. If you received the password, type it below.",
+    "password": "Password",
+    "enter": "Enter",
+    "wrong": "Wrong password. Try again."
   }
 }
