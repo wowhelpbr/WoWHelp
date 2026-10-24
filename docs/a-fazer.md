@@ -84,5 +84,5 @@ Atualizado em 24/10/2026. Tarefas de até ~4 horas, com resultado visível. `[x]
 ## Visual e experiência
 
 - [x] Proposta do layout neon aprovada pelo Bruno (docs/design/proposta-layout-neon.html)
-- [ ] Aplicar o layout neon no site inteiro e publicar
+- [x] Aplicar o layout neon no site inteiro e publicar (24/10/2026)
 - [ ] Gamificar o site com motion.dev (próxima tarefa, pedida pelo Bruno em 24/10/2026): definir antes quais tipos de diversão servir
