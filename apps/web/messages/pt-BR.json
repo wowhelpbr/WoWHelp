@@ -772,5 +772,14 @@
         "storage": "Não foi possível enviar agora. Tente de novo."
       }
     }
+  },
+  "Ads": {
+    "label": "Publicidade",
+    "bannerTitle": "Cookies e anúncios",
+    "bannerBody": "O WoWHelp é grátis e se mantém com anúncios do Google. Você escolhe: anúncios personalizados (com cookies de publicidade) ou só o necessário (anúncios não personalizados). Você pode mudar quando quiser no rodapé.",
+    "privacyLink": "Política de privacidade",
+    "acceptAll": "Aceitar anúncios personalizados",
+    "essentialOnly": "Só o necessário",
+    "preferences": "Preferências de cookies"
   }
 }

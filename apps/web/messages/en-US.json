@@ -772,5 +772,14 @@
         "storage": "We couldn't send it right now. Try again."
       }
     }
+  },
+  "Ads": {
+    "label": "Advertisement",
+    "bannerTitle": "Cookies and ads",
+    "bannerBody": "WoWHelp is free and supported by Google ads. You choose: personalized ads (with advertising cookies) or essentials only (non-personalized ads). You can change this anytime in the footer.",
+    "privacyLink": "Privacy policy",
+    "acceptAll": "Accept personalized ads",
+    "essentialOnly": "Essentials only",
+    "preferences": "Cookie preferences"
   }
 }

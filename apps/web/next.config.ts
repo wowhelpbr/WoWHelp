@@ -12,17 +12,25 @@ const supabaseOrigin = (() => {
   }
 })();
 
+// Anúncios (AdSense) só entram na CSP quando configurados (ver features/ads).
+const adsEnabled = /^ca-pub-\d{16}$/.test(process.env.NEXT_PUBLIC_ADSENSE_CLIENT ?? '');
+const ADS = adsEnabled
+  ? ' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.doubleclick.net https://*.google.com https://*.gstatic.com https://*.adtrafficquality.google https://*.googleadservices.com'
+  : '';
+
 // CSP sem nonce: nonce exigiria renderização dinâmica de todas as páginas
 // (incompatível com o shell estático do Cache Components). Ver docs/decisoes.
 const contentSecurityPolicy = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}${ADS}`,
   "style-src 'self' 'unsafe-inline'",
   // Imagens do catálogo vêm do Storage do Supabase (cópia própria das imagens oficiais).
   // + fotos e miniaturas oficiais da Twitch, do YouTube e da Kick (Comunidade BR).
-  `img-src 'self' data: blob: ${supabaseOrigin} https://static-cdn.jtvnw.net https://yt3.ggpht.com https://yt3.googleusercontent.com https://i.ytimg.com https://images.kick.com https://files.kick.com`.trim(),
+  `img-src 'self' data: blob: ${supabaseOrigin} https://static-cdn.jtvnw.net https://yt3.ggpht.com https://yt3.googleusercontent.com https://i.ytimg.com https://images.kick.com https://files.kick.com${adsEnabled ? ' https:' : ''}`.trim(),
   "font-src 'self'",
-  `connect-src 'self' ${supabaseOrigin}`.trim(),
+  `connect-src 'self' ${supabaseOrigin}${ADS}`.trim(),
+  // Os anúncios do AdSense são desenhados dentro de iframes do Google.
+  `frame-src 'self'${ADS}`,
   "worker-src 'self'",
   "manifest-src 'self'",
   "frame-ancestors 'none'",

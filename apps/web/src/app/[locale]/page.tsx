@@ -5,6 +5,7 @@ import { getTranslations } from 'next-intl/server';
 import { ClassArt } from '@/components/brand/class-art';
 import { Container } from '@/components/ui/container';
 import { DataStateBadge } from '@/components/ui/data-state';
+import { AdSlot } from '@/features/ads/ads';
 import { FocusPicker } from '@/features/onboarding/focus-picker';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -63,6 +64,7 @@ export default function HomePage() {
           <p className="text-sm text-muted-foreground">{t('pickerHint')}</p>
         </div>
         <FocusPicker />
+        <AdSlot placement="home" className="mt-8" />
       </Container>
 
       <Container className="grid gap-10 pb-10 lg:grid-cols-2 lg:gap-16">

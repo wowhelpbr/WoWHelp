@@ -1,4 +1,8 @@
 import type { Locale } from '@wowhelp/shared';
+import { ADSENSE_CLIENT } from '@/features/ads/config';
+
+// O texto sobre cookies e anúncios acompanha o que está ligado no site.
+const ADS_ON = ADSENSE_CLIENT !== null;
 
 // Rascunhos de política de privacidade e termos de uso. Descrevem o que o
 // código faz HOJE (tabelas, retenção, operadores). Precisam de revisão
@@ -45,7 +49,9 @@ const privacy: Record<Locale, LegalDocument> = {
           'Se você importar o arquivo do addon WoWHelp Companion: personagens e montarias que estão no arquivo, a versão do addon, o horário da leitura no jogo, contagens e uma impressão digital (hash) do arquivo para não importar o mesmo duas vezes. O arquivo em si não é guardado.',
           'Marcações manuais de coleção ("já tenho" / "ainda não tenho").',
           'Se você pedir para entrar ou sair da Comunidade BR: o nome, os links e a mensagem que você mandou.',
-          'Cookies necessários: sessão de login e idioma escolhido. Não usamos cookies de analytics nem de publicidade.',
+          ADS_ON
+            ? 'Cookies: os necessários (sessão de login, idioma e a sua escolha de cookies) e, só se você aceitar anúncios personalizados, os cookies de publicidade do Google. Não usamos cookies de analytics.'
+            : 'Cookies necessários: sessão de login e idioma escolhido. Não usamos cookies de analytics nem de publicidade.',
           'Registros técnicos dos provedores de hospedagem (como endereço IP e navegador), mantidos por eles por tempo limitado para segurança e diagnóstico.',
         ],
         paragraphs: [
@@ -80,6 +86,16 @@ const privacy: Record<Locale, LegalDocument> = {
           'Por isso há transferência internacional de dados para os Estados Unidos (LGPD, art. 33). Não vendemos nem alugamos dados.',
         ],
       },
+      ...(ADS_ON
+        ? [
+            {
+              heading: 'Anúncios',
+              paragraphs: [
+                'O WoWHelp mostra anúncios do Google AdSense para se manter grátis. Na primeira visita você escolhe: anúncios personalizados (o Google usa cookies de publicidade, com base no seu consentimento, LGPD art. 7º, I) ou só o necessário (anúncios não personalizados). Dá para mudar a escolha a qualquer momento em "Preferências de cookies", no rodapé. Nenhum dado da sua conta, dos seus personagens ou da Battle.net é enviado para anunciantes. Mais sobre como o Google usa dados: https://policies.google.com/technologies/partner-sites',
+              ],
+            },
+          ]
+        : []),
       {
         heading: 'Criadores na Comunidade BR',
         paragraphs: [
@@ -139,7 +155,9 @@ const privacy: Record<Locale, LegalDocument> = {
           'If you import the WoWHelp Companion addon file: characters and mounts in the file, addon version, in-game read time, counts and a fingerprint (hash) of the file so the same file is not imported twice. The file itself is not kept.',
           'Manual collection marks ("I have it" / "I don\'t have it yet").',
           'If you ask to join or leave the Brazilian community: the name, links and message you sent.',
-          'Necessary cookies: sign-in session and chosen language. We use no analytics or advertising cookies.',
+          ADS_ON
+            ? 'Cookies: the necessary ones (sign-in session, language and your cookie choice) and, only if you accept personalized ads, Google advertising cookies. We use no analytics cookies.'
+            : 'Necessary cookies: sign-in session and chosen language. We use no analytics or advertising cookies.',
           'Technical logs kept by our hosting providers (such as IP address and browser) for a limited time for security and troubleshooting.',
         ],
         paragraphs: [
@@ -174,6 +192,16 @@ const privacy: Record<Locale, LegalDocument> = {
           'This means data is transferred internationally to the United States (LGPD, art. 33). We do not sell or rent data.',
         ],
       },
+      ...(ADS_ON
+        ? [
+            {
+              heading: 'Ads',
+              paragraphs: [
+                'WoWHelp shows Google AdSense ads to stay free. On your first visit you choose: personalized ads (Google uses advertising cookies, based on your consent, LGPD art. 7, I) or essentials only (non-personalized ads). You can change this anytime in "Cookie preferences" in the footer. No data from your account, characters or Battle.net is sent to advertisers. How Google uses data: https://policies.google.com/technologies/partner-sites',
+              ],
+            },
+          ]
+        : []),
       {
         heading: 'Creators in the Brazilian community',
         paragraphs: [

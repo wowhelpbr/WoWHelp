@@ -6,6 +6,7 @@ import { buttonClasses } from '@/components/ui/button';
 import { DataStateBadge, StateNotice } from '@/components/ui/data-state';
 import { inputClasses } from '@/components/ui/field';
 import { getCurrentUser } from '@/features/auth/session';
+import { AdSlot } from '@/features/ads/ads';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
 import { CollectibleCard } from './collectible-card';
@@ -187,6 +188,8 @@ export async function CatalogView({ kind, searchParams }: { kind: CatalogKind; s
           </Link>
         </div>
       </form>
+
+      <AdSlot placement="catalog" />
 
       <p className="text-sm text-muted-foreground" aria-live="polite">
         {tk('results', { count: filtered.length })}
