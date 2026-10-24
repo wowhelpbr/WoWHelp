@@ -19,6 +19,7 @@ Os textos estão no site como **rascunho** ([/pt-br/privacy](https://wowhelp.ver
 - [ ] Termos da API da Blizzard (Blizzard Developer API Terms of Use): crédito, cache de no máximo 30 dias e o que é permitido em uso comercial (anúncios, assinatura). Hoje o WoWHelp é gratuito e sem anúncios.
 - [ ] Contrato das ilustrações (Elianai dos Santos): cessão cobre site, app e addon, inclusive uso comercial futuro.
 - [ ] Aviso de não afiliação com a Blizzard (rodapé de todas as páginas).
+- [ ] Assinatura WoWHelp Apoiador (Stripe): seção nos termos (renovação, cancelamento, arrependimento de 7 dias do CDC art. 49, mudança de preço), Stripe como operador na política de privacidade, nota fiscal/tributação da receita e se "assinar para tirar anúncio" cabe nos termos da API da Blizzard. Detalhes em docs/operacao/stripe.md.
 
 ## Já implementado (pode testar)
 

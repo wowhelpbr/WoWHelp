@@ -39,7 +39,7 @@ O WoWHelp usa a API oficial da Blizzard; os termos da API (resumo em `docs/fase-
 
 Proposta para ficar dentro das regras: **"WoWHelp Apoiador"**, que tira os anúncios e dá só benefícios sem dados da Blizzard: selo de apoiador no perfil e na Comunidade BR, cargo no Discord, cor do nome, prioridade no suporte. Nada que use a API (rastreador, planejador, coleção) fica atrás de pagamento. Mesmo assim, "assinar para tirar anúncio" é zona cinzenta nos termos e vale passar pelo jurídico antes de cobrar.
 
-Forma de pagamento (decisão do Bruno): Mercado Pago (aceita CPF, Pix e cartão) ou Stripe (cartão, Pix; normalmente pede CNPJ no Brasil).
+Forma de pagamento: **Stripe** (decisão do Bruno, 24/10/2026). Já feito em modo de teste: R$ 9,90 por mês ou R$ 99,00 por ano (preços provisórios), site sem anúncios e selo de apoiador; a venda abre e fecha em Administração > Assinaturas. O que está configurado e o passo a passo para cobrar de verdade: [operacao/stripe.md](operacao/stripe.md).
 
 ## Outras opções sem conflito
 
