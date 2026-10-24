@@ -1,5 +1,7 @@
 # Identidade visual e pesquisa de layout
 
+> **Versão 2 (24/10/2026):** o site passou para o sistema **neon** (skill `neon-creator-design-system`): fundo grafite-azulado, limão para ação, ciano para dado em destaque e roxo para o botão de marca. Proposta aprovada pelo Bruno em [proposta-layout-neon.html](proposta-layout-neon.html); tokens em `apps/web/src/app/globals.css`. O texto abaixo é a versão 1 (HUD azul e ouro), mantido como histórico.
+
 Versão 1 (23/10/2026). Direção pedida pelo Bruno: sistema **HUD escuro** (skill `hud-dark-design-system`) com as cores do WoWHelp, na linha do **Heroes of the Storm**: azul com amarelo.
 
 ## Pesquisa de referências (23/10/2026)
