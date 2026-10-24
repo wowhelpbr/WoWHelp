@@ -2,6 +2,7 @@ import type { CreatorPlatform } from '@wowhelp/shared';
 import { Eye } from 'lucide-react';
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
+import { RevealItem } from '@/features/gamification/motion';
 import { cn } from '@/lib/cn';
 import type { ChannelView, CreatorView } from './queries';
 
@@ -37,7 +38,7 @@ export function CreatorAvatar({ creator, className }: { creator: CreatorView; cl
 export async function LiveCard({ creator, channel }: { creator: CreatorView; channel: ChannelView }) {
   const t = await getTranslations('Community');
   return (
-    <li>
+    <RevealItem>
       <a
         href={channel.liveUrl ?? channel.url}
         target="_blank"
@@ -82,7 +83,7 @@ export async function LiveCard({ creator, channel }: { creator: CreatorView; cha
           </span>
         </span>
       </a>
-    </li>
+    </RevealItem>
   );
 }
 
@@ -97,7 +98,7 @@ export async function LatestCard({
   when: string;
 }) {
   return (
-    <li>
+    <RevealItem>
       <a
         href={channel.latestUrl!}
         target="_blank"
@@ -128,6 +129,6 @@ export async function LatestCard({
           </span>
         </span>
       </a>
-    </li>
+    </RevealItem>
   );
 }

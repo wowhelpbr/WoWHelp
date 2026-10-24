@@ -1007,5 +1007,92 @@
     "benefitBadgeBody": "Shows up in your account header.",
     "benefitThanksTitle": "WoWHelp online",
     "benefitThanksBody": "In Portuguese and with new features."
+  },
+  "Gamification": {
+    "levelShort": "Lv",
+    "badgeLabel": "Level {level}, {title}: {current} of {needed} XP to the next level",
+    "badgeLabelMax": "Level {level}, {title}: max level",
+    "journeyTitle": "Your journey",
+    "level": "Level {level}",
+    "xpToNext": "{current} / {needed} XP to level {next}",
+    "xpMax": "Max level. You made it!",
+    "totalXp": "{xp} XP in total",
+    "streak": "{count, plural, =0 {No weeks in a row yet} one {# week in a row} other {# weeks in a row}}",
+    "streakHint": "Do at least one weekly task each week to keep the streak.",
+    "achievementsTitle": "Achievements",
+    "achievementsCount": "{unlocked} of {total}",
+    "locked": "Locked",
+    "unlocked": "Unlocked",
+    "progress": "{current} of {target}",
+    "howXp": "Step done +{step} · Goal +{goal} · Weekly +{weekly} · Daily +{daily} · Marking \"I have it\" +{mark}",
+    "howXpNote": "Mounts, pets and toys from Battle.net count toward collection achievements, but give no XP.",
+    "toastXp": "+{xp} XP",
+    "toastLevel": "Level {level} reached!",
+    "toastTitle": "You are now a {title}.",
+    "toastGoal": "Goal completed!",
+    "toastAchievement": "Achievement unlocked",
+    "titles": {
+      "recruit": "Recruit",
+      "adventurer": "Traveler",
+      "veteran": "Strategist",
+      "champion": "Combatant",
+      "hero": "Icon",
+      "legend": "Legend",
+      "mythic": "Myth"
+    },
+    "achievements": {
+      "first_step": {
+        "name": "First step",
+        "description": "Complete the first step of a goal."
+      },
+      "steps_50": {
+        "name": "Step by step",
+        "description": "Complete 50 steps."
+      },
+      "first_goal": {
+        "name": "Mission accomplished",
+        "description": "Complete a goal."
+      },
+      "goals_10": {
+        "name": "Goal hunt",
+        "description": "Complete 10 goals."
+      },
+      "streak_4": {
+        "name": "Hero's routine",
+        "description": "Do weekly tasks 4 weeks in a row."
+      },
+      "streak_12": {
+        "name": "Unshakable",
+        "description": "Do weekly tasks 12 weeks in a row."
+      },
+      "mounts_100": {
+        "name": "Full stable",
+        "description": "Own 100 mounts."
+      },
+      "mounts_300": {
+        "name": "Legendary collection",
+        "description": "Own 300 mounts."
+      },
+      "pets_100": {
+        "name": "Animal friends",
+        "description": "Own 100 pets."
+      },
+      "toys_100": {
+        "name": "Toy box",
+        "description": "Own 100 toys."
+      },
+      "battlenet": {
+        "name": "Connected",
+        "description": "Connect Battle.net."
+      },
+      "addon": {
+        "name": "Travel companion",
+        "description": "Import the Companion addon file."
+      },
+      "supporter": {
+        "name": "WoWHelp supporter",
+        "description": "Become a WoWHelp supporter."
+      }
+    }
   }
 }

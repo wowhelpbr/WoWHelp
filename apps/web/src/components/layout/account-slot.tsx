@@ -4,6 +4,9 @@ import { ButtonLink } from '@/components/ui/button';
 import { signOutAction } from '@/features/auth/actions';
 import { getCurrentUser } from '@/features/auth/session';
 import { getMySupport } from '@/features/billing/queries';
+import { Celebrations } from '@/features/gamification/celebrations';
+import { getMyGamification } from '@/features/gamification/queries';
+import { XpBadge } from '@/features/gamification/xp-badge';
 import { Link } from '@/i18n/navigation';
 
 /**
@@ -26,9 +29,28 @@ export async function AccountSlot() {
     );
   }
 
-  const support = await getMySupport();
+  const [support, game, tg] = await Promise.all([getMySupport(), getMyGamification(), getTranslations('Gamification')]);
   return (
     <div className="flex items-center gap-1.5">
+      {game && (
+        <>
+          <XpBadge
+            level={game.level.level}
+            ratio={game.level.ratio}
+            label={
+              game.level.needed === 0
+                ? tg('badgeLabelMax', { level: game.level.level, title: tg(`titles.${game.title}`) })
+                : tg('badgeLabel', {
+                    level: game.level.level,
+                    title: tg(`titles.${game.title}`),
+                    current: game.level.current,
+                    needed: game.level.needed,
+                  })
+            }
+          />
+          <Celebrations userId={game.userId} snapshot={game.snapshot} />
+        </>
+      )}
       {support?.active && (
         <Link
           href="/supporter"

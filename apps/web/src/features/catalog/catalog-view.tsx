@@ -5,6 +5,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { buttonClasses } from '@/components/ui/button';
 import { StateNotice } from '@/components/ui/data-state';
 import { AdSlot } from '@/features/ads/ads';
+import { RevealItem } from '@/features/gamification/motion';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
 import { CollectibleCard } from './collectible-card';
@@ -198,8 +199,8 @@ export async function CatalogView({ kind, searchParams }: { kind: CatalogKind; s
         </StateNotice>
       ) : (
         <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-[repeat(auto-fill,minmax(13.5rem,1fr))]">
-          {visible.map((item) => (
-            <li key={item.id}>
+          {visible.map((item, i) => (
+            <RevealItem key={item.id} index={i}>
               <CollectibleCard
                 href={`${path}/${item.externalId}`}
                 name={item.name}
@@ -224,7 +225,7 @@ export async function CatalogView({ kind, searchParams }: { kind: CatalogKind; s
                   ) : undefined
                 }
               />
-            </li>
+            </RevealItem>
           ))}
         </ul>
       )}

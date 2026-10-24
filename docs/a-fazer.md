@@ -85,4 +85,6 @@ Atualizado em 24/10/2026. Tarefas de até ~4 horas, com resultado visível. `[x]
 
 - [x] Proposta do layout neon aprovada pelo Bruno (docs/design/proposta-layout-neon.html)
 - [x] Aplicar o layout neon no site inteiro e publicar (24/10/2026)
-- [ ] Gamificar o site com motion.dev (próxima tarefa, pedida pelo Bruno em 24/10/2026): definir antes quais tipos de diversão servir
+- [x] Telas iguais à proposta neon (correção pedida pelo Bruno, 24/10/2026)
+- [x] Gamificação com motion.dev: XP, nível e título, sequência de semanas, 13 conquistas e comemoração (docs/design/gamificacao.md)
+- [ ] Conquistas raras curadas pelo Bruno (montarias com chance de drop muito baixa)

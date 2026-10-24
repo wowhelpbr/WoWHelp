@@ -1007,5 +1007,92 @@
     "benefitBadgeBody": "Aparece no cabeçalho da sua conta.",
     "benefitThanksTitle": "WoWHelp no ar",
     "benefitThanksBody": "Em português e com novidades."
+  },
+  "Gamification": {
+    "levelShort": "Nv",
+    "badgeLabel": "Nível {level}, {title}: {current} de {needed} XP para o próximo nível",
+    "badgeLabelMax": "Nível {level}, {title}: nível máximo",
+    "journeyTitle": "Sua jornada",
+    "level": "Nível {level}",
+    "xpToNext": "{current} / {needed} XP para o nível {next}",
+    "xpMax": "Nível máximo. Você chegou lá!",
+    "totalXp": "{xp} XP no total",
+    "streak": "{count, plural, =0 {Nenhuma semana seguida ainda} one {# semana seguida} other {# semanas seguidas}}",
+    "streakHint": "Faça pelo menos uma semanal por semana para manter a sequência.",
+    "achievementsTitle": "Conquistas",
+    "achievementsCount": "{unlocked} de {total}",
+    "locked": "Bloqueada",
+    "unlocked": "Desbloqueada",
+    "progress": "{current} de {target}",
+    "howXp": "Passo concluído +{step} · Objetivo +{goal} · Semanal +{weekly} · Diária +{daily} · Marcar \"já tenho\" +{mark}",
+    "howXpNote": "Montarias, mascotes e brinquedos da Battle.net contam para as conquistas de coleção, mas não dão XP.",
+    "toastXp": "+{xp} XP",
+    "toastLevel": "Subiu para o nível {level}!",
+    "toastTitle": "Agora você é {title}.",
+    "toastGoal": "Objetivo concluído!",
+    "toastAchievement": "Conquista desbloqueada",
+    "titles": {
+      "recruit": "Recruta",
+      "adventurer": "Viajante",
+      "veteran": "Estrategista",
+      "champion": "Combatente",
+      "hero": "Ícone",
+      "legend": "Lenda",
+      "mythic": "Mito"
+    },
+    "achievements": {
+      "first_step": {
+        "name": "Primeiro passo",
+        "description": "Conclua o primeiro passo de um objetivo."
+      },
+      "steps_50": {
+        "name": "Passo a passo",
+        "description": "Conclua 50 passos."
+      },
+      "first_goal": {
+        "name": "Missão cumprida",
+        "description": "Conclua um objetivo."
+      },
+      "goals_10": {
+        "name": "Caçada de objetivos",
+        "description": "Conclua 10 objetivos."
+      },
+      "streak_4": {
+        "name": "Rotina de herói",
+        "description": "Faça semanais 4 semanas seguidas."
+      },
+      "streak_12": {
+        "name": "Inabalável",
+        "description": "Faça semanais 12 semanas seguidas."
+      },
+      "mounts_100": {
+        "name": "Estábulo cheio",
+        "description": "Tenha 100 montarias."
+      },
+      "mounts_300": {
+        "name": "Coleção lendária",
+        "description": "Tenha 300 montarias."
+      },
+      "pets_100": {
+        "name": "Amizade animal",
+        "description": "Tenha 100 mascotes."
+      },
+      "toys_100": {
+        "name": "Caixa de brinquedos",
+        "description": "Tenha 100 brinquedos."
+      },
+      "battlenet": {
+        "name": "Conexão feita",
+        "description": "Conecte a Battle.net."
+      },
+      "addon": {
+        "name": "Companhia de viagem",
+        "description": "Importe o arquivo do addon Companion."
+      },
+      "supporter": {
+        "name": "Apoio ao WoWHelp",
+        "description": "Seja apoiador do WoWHelp."
+      }
+    }
   }
 }

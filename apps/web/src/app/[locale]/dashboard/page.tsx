@@ -23,6 +23,7 @@ import { getMyBattlenetData } from '@/features/battlenet/queries';
 import { GoalComposer } from '@/features/goals/goal-composer';
 import { GoalList } from '@/features/goals/goal-list';
 import { getMyGoals, type GoalView } from '@/features/goals/queries';
+import { JourneyPanel } from '@/features/gamification/journey-panel';
 import { FocusEditor } from '@/features/onboarding/focus-editor';
 import { getPlannerData } from '@/features/planner/queries';
 import { getMyProfile } from '@/features/profile/queries';
@@ -200,6 +201,8 @@ async function Dashboard() {
           </div>
         ))}
       </dl>
+
+      <JourneyPanel />
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         <div className="flex flex-col gap-6">
