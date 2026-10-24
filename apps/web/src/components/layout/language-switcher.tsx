@@ -28,7 +28,7 @@ function LanguageSwitcherView({ pathname }: { pathname: string }) {
       href={pathname}
       locale={other}
       hrefLang={other}
-      className="inline-flex min-h-10 items-center gap-1.5 rounded-sm px-2.5 text-sm text-muted-foreground hover:bg-white/5 hover:text-foreground"
+      className="inline-flex min-h-10 items-center gap-1.5 rounded-sm px-2.5 font-display text-[0.6875rem] font-bold tracking-[0.08em] text-faint uppercase hover:bg-white/5 hover:text-foreground"
     >
       <Languages aria-hidden className="size-4" />
       <span className="hidden sm:inline">{t('switchTo')}</span>

@@ -44,7 +44,7 @@ export function DataStateBadge({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-sm border px-2 py-0.5 text-xs font-medium whitespace-nowrap',
+        'inline-flex items-center gap-1.5 rounded-[3px] border px-2 py-0.5 font-display text-[0.6875rem] font-bold tracking-[0.06em] whitespace-nowrap uppercase',
         tone,
         className,
       )}
@@ -70,7 +70,7 @@ export function StateNotice({
 }) {
   return (
     <div
-      className="flex flex-col gap-3 rounded-sm border border-dashed border-border bg-sidebar/60 p-4"
+      className="flex flex-col gap-3 rounded-lg border border-dashed border-border bg-sidebar/60 p-4"
       data-state={state}
     >
       <div className="flex flex-wrap items-center gap-2">

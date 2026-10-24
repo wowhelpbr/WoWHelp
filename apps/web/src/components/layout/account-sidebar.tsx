@@ -28,8 +28,8 @@ export function AccountSidebar() {
   const pathname = usePathname();
 
   return (
-    <nav aria-label={t('accountNav')} className="hidden border-r border-border bg-sidebar/70 lg:block">
-      <ul className="sticky top-16 flex flex-col gap-0.5 p-3 pt-6">
+    <nav aria-label={t('accountNav')} className="hidden border-r border-border-soft bg-sidebar lg:block">
+      <ul className="sticky top-16 flex flex-col gap-1 p-3.5 pt-6">
         {ITEMS.map((item) => {
           const Icon = item.icon;
           if ('phase' in item) {
@@ -37,7 +37,7 @@ export function AccountSidebar() {
               <li key={item.key}>
                 <span
                   aria-disabled="true"
-                  className="flex min-h-10 items-center gap-2.5 rounded-sm px-2.5 text-sm text-muted-foreground"
+                  className="flex min-h-10 items-center gap-3 rounded-sm px-3 font-display text-[0.6875rem] font-bold tracking-[0.08em] text-faint uppercase"
                 >
                   <Icon aria-hidden className="size-4" />
                   <span className="flex-1">{t(item.key)}</span>
@@ -55,8 +55,10 @@ export function AccountSidebar() {
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'flex min-h-10 items-center gap-2.5 rounded-sm px-2.5 text-sm font-semibold transition-colors',
-                  active ? 'bg-primary/10 text-primary' : 'text-foreground hover:bg-white/5',
+                  'flex min-h-10 items-center gap-3 rounded-sm px-3 font-display text-[0.6875rem] font-bold tracking-[0.08em] uppercase transition-colors',
+                  active
+                    ? 'bg-card-raised text-foreground [&>svg]:text-primary'
+                    : 'text-faint hover:bg-white/[0.03] hover:text-muted-foreground',
                 )}
               >
                 <Icon aria-hidden className="size-4" />

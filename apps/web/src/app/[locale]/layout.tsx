@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Chakra_Petch } from 'next/font/google';
+import { Chakra_Petch, Urbanist } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { Suspense } from 'react';
@@ -14,11 +14,18 @@ import { LOCALE_PREFIX, routing } from '@/i18n/routing';
 import '../globals.css';
 import { getSiteUrl } from '@/lib/site-url';
 
-// Chakra Petch: geométrica e angular (sistema HUD), com acentos do português.
+// Chakra Petch: títulos, rótulos, números e botões (caixa alta). Urbanist: texto corrido.
 const chakra = Chakra_Petch({
-  weight: ['400', '500', '600', '700'],
+  weight: ['500', '600', '700'],
+  style: ['normal', 'italic'],
   subsets: ['latin'],
   variable: '--font-chakra',
+  display: 'swap',
+});
+const urbanist = Urbanist({
+  weight: ['400', '500', '600', '700', '800'],
+  subsets: ['latin'],
+  variable: '--font-urbanist',
   display: 'swap',
 });
 
@@ -48,7 +55,7 @@ export async function generateMetadata({ params }: LayoutProps<'/[locale]'>): Pr
 }
 
 export const viewport: Viewport = {
-  themeColor: '#090e22',
+  themeColor: '#0b1015',
   colorScheme: 'dark',
   width: 'device-width',
   initialScale: 1,
@@ -61,7 +68,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
   const t = await getTranslations({ locale, namespace: 'Nav' });
 
   return (
-    <html lang={locale} className={chakra.variable}>
+    <html lang={locale} className={`${chakra.variable} ${urbanist.variable}`}>
       <body className="flex min-h-dvh flex-col antialiased">
         <NextIntlClientProvider>
           <a

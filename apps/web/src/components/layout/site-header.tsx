@@ -12,7 +12,7 @@ import { NavLinks } from './nav-links';
 export function SiteHeader() {
   const t = useTranslations('Nav');
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-sidebar/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-border-soft bg-sidebar/80 backdrop-blur-md">
       <div className={cn('flex h-16 items-center justify-between gap-3', gutter)}>
         <div className="flex h-full min-w-0 items-center gap-5 lg:gap-8">
           <Link href="/" className="flex shrink-0 items-center">

@@ -16,10 +16,10 @@ export async function AccountSlot() {
   if (!user) {
     return (
       <div className="flex items-center gap-1">
-        <ButtonLink href="/login" variant="ghost" size="sm">
+        <ButtonLink href="/login" variant="secondary" size="sm">
           {t('signIn')}
         </ButtonLink>
-        <ButtonLink href="/signup" size="sm" className="max-sm:hidden">
+        <ButtonLink href="/signup" variant="brand" size="sm" className="max-sm:hidden">
           {t('signUp')}
         </ButtonLink>
       </div>
@@ -32,7 +32,7 @@ export async function AccountSlot() {
       {support?.active && (
         <Link
           href="/supporter"
-          className="inline-flex min-h-8 items-center gap-1.5 rounded-sm border border-primary/50 bg-primary/10 px-2 text-xs font-semibold tracking-wide text-primary uppercase hover:bg-primary/20"
+          className="inline-flex min-h-8 items-center gap-1.5 rounded-sm bg-purple/20 px-2.5 font-display text-[0.6875rem] font-bold tracking-[0.08em] text-purple-soft uppercase shadow-[inset_0_0_0_1px_rgb(122_20_248/0.5)] hover:bg-purple/30"
         >
           <Gem aria-hidden className="size-3.5" />
           <span className="max-sm:sr-only">{t('supporterBadge')}</span>
@@ -40,7 +40,7 @@ export async function AccountSlot() {
       )}
       <Link
         href="/settings"
-        className="hidden min-h-10 items-center gap-2 rounded-sm px-2 text-sm text-muted-foreground hover:bg-white/5 hover:text-foreground md:inline-flex"
+        className="hidden min-h-10 items-center gap-2 rounded-sm px-2.5 font-display text-[0.6875rem] font-bold tracking-[0.08em] text-faint uppercase hover:bg-white/5 hover:text-foreground md:inline-flex"
       >
         <UserRound aria-hidden className="size-4" />
         {t('account')}
@@ -49,7 +49,7 @@ export async function AccountSlot() {
         <input type="hidden" name="locale" value={locale} />
         <button
           type="submit"
-          className="inline-flex min-h-10 items-center gap-1.5 rounded-sm px-2.5 text-sm text-muted-foreground hover:bg-white/5 hover:text-foreground"
+          className="inline-flex min-h-10 items-center gap-1.5 rounded-sm px-2.5 font-display text-[0.6875rem] font-bold tracking-[0.08em] text-faint uppercase hover:bg-white/5 hover:text-foreground"
         >
           <LogOut aria-hidden className="size-4" />
           <span className="hidden sm:inline">{t('signOut')}</span>
