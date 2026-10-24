@@ -53,6 +53,7 @@ const privacy: Record<Locale, LegalDocument> = {
           ADS_ON
             ? 'Cookies: os necessários (sessão de login, idioma e a sua escolha de cookies) e, só se você aceitar anúncios personalizados, os cookies de publicidade do Google. Não usamos cookies de analytics.'
             : 'Cookies necessários: sessão de login e idioma escolhido. Não usamos cookies de analytics nem de publicidade.',
+          'No seu navegador (não sai do aparelho): o último nível, XP e conquistas que você já viu, para comemorar só o que é novo.',
           'Registros técnicos dos provedores de hospedagem (como endereço IP e navegador), mantidos por eles por tempo limitado para segurança e diagnóstico.',
         ],
         paragraphs: [
@@ -163,6 +164,7 @@ const privacy: Record<Locale, LegalDocument> = {
           ADS_ON
             ? 'Cookies: the necessary ones (sign-in session, language and your cookie choice) and, only if you accept personalized ads, Google advertising cookies. We use no analytics cookies.'
             : 'Necessary cookies: sign-in session and chosen language. We use no analytics or advertising cookies.',
+          'In your browser (it never leaves your device): the last level, XP and achievements you saw, so only new ones are celebrated.',
           'Technical logs kept by our hosting providers (such as IP address and browser) for a limited time for security and troubleshooting.',
         ],
         paragraphs: ['We do not keep card data, precise location, contacts, chat, friends, guild or combat data.'],

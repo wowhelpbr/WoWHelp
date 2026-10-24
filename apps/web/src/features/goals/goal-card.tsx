@@ -5,6 +5,7 @@ import { Check, Pause, Play, Plus, RotateCcw, Trash2, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useActionState, useEffect, useOptimistic, useRef, useTransition } from 'react';
 import { inputClasses } from '@/components/ui/field';
+import { Pop, ProgressBar } from '@/features/gamification/motion';
 import { cn } from '@/lib/cn';
 import {
   addStepAction,
@@ -39,7 +40,9 @@ function StepRow({ step, onToggle }: { step: StepView; onToggle: (step: StepView
             : 'border-border-strong bg-card hover:border-primary',
         )}
       >
-        {done && <Check aria-hidden className="size-4" />}
+        <Pop show={done}>
+          <Check aria-hidden className="size-4" strokeWidth={3} />
+        </Pop>
       </button>
       <span
         className={cn('min-w-0 flex-1 text-[0.95rem]', done ? 'text-muted-foreground line-through' : 'text-foreground')}
@@ -167,21 +170,7 @@ export function GoalCard({ goal }: { goal: GoalView }) {
         </div>
       </header>
 
-      {total > 0 && (
-        <div
-          className="mt-3 h-1.5 overflow-hidden rounded-full bg-card-raised"
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={total}
-          aria-valuenow={done}
-          aria-label={t('progress', { done, total })}
-        >
-          <div
-            className="h-full rounded-full bg-primary shadow-[0_0_12px_rgb(197_251_20/0.6)] transition-[width] duration-500"
-            style={{ width: `${(done / total) * 100}%` }}
-          />
-        </div>
-      )}
+      {total > 0 && <ProgressBar ratio={done / total} label={t('progress', { done, total })} className="mt-3 h-1.5" />}
 
       {steps.length > 0 && (
         <ul className="mt-3 flex flex-col gap-1.5 border-l border-primary/30 pl-3">

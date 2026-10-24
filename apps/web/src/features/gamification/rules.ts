@@ -96,7 +96,10 @@ const dayNumber = (iso: string) => Math.round(Date.parse(`${iso}T00:00:00Z`) / D
  * semana feita foi esta ou a anterior (a semana atual ainda pode ser feita).
  */
 export function weeklyStreak(cycles: readonly string[], now: Date = new Date()): number {
-  const days = [...new Set(cycles)].map(dayNumber).filter(Number.isFinite).sort((a, b) => b - a);
+  const days = [...new Set(cycles)]
+    .map(dayNumber)
+    .filter(Number.isFinite)
+    .sort((a, b) => b - a);
   if (days.length === 0) return 0;
   const today = Math.floor(now.getTime() / DAY);
   if (today - days[0]! > 13) return 0;

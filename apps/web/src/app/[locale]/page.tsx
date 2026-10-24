@@ -8,6 +8,7 @@ import { MountGlyph } from '@/components/brand/mount-glyph';
 import { ButtonLink } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { AdSlot } from '@/features/ads/ads';
+import { RevealItem } from '@/features/gamification/motion';
 import { HomeCta, HomeFloatingStat, HomeLive, getCatalogCounts } from '@/features/home/home-parts';
 import { ContinueButton, FocusPicker } from '@/features/onboarding/focus-picker';
 
@@ -148,8 +149,8 @@ export default async function HomePage() {
           </h2>
           {/* É uma sequência de verdade, então a lista é numerada. */}
           <ol className="mt-8 grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
-            {features.map(([key, Icon]) => (
-              <li key={key} className="flex flex-col gap-2.5">
+            {features.map(([key, Icon], i) => (
+              <RevealItem key={key} index={i} className="flex flex-col gap-2.5">
                 <span className="grid size-10 place-items-center rounded-md bg-foreground text-background" aria-hidden>
                   <Icon className="size-5" />
                 </span>
@@ -157,7 +158,7 @@ export default async function HomePage() {
                   {t(`features.${key}.title`)}
                 </h3>
                 <p className="text-sm text-faint">{t(`features.${key}.body`)}</p>
-              </li>
+              </RevealItem>
             ))}
           </ol>
         </section>

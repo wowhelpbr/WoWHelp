@@ -8,6 +8,7 @@ import { MobileTabBar } from '@/components/layout/mobile-tab-bar';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { AdsLoader, ConsentBanner } from '@/features/ads/ads';
 import { AdsGate } from '@/features/billing/ads-gate';
+import { MotionProvider } from '@/features/gamification/motion';
 import { SiteHeader } from '@/components/layout/site-header';
 import { ServiceWorkerRegister } from '@/components/pwa/service-worker-register';
 import { LOCALE_PREFIX, routing } from '@/i18n/routing';
@@ -71,24 +72,26 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
     <html lang={locale} className={`${chakra.variable} ${urbanist.variable}`}>
       <body className="flex min-h-dvh flex-col antialiased">
         <NextIntlClientProvider>
-          <a
-            href="#main"
-            className="sr-only z-50 bg-primary px-4 py-2 font-semibold text-primary-foreground focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
-          >
-            {t('skipToContent')}
-          </a>
-          <SiteHeader />
-          <main id="main" className="flex-1">
-            {children}
-          </main>
-          <SiteFooter />
-          <MobileTabBar />
-          <ServiceWorkerRegister />
-          <Suspense fallback={null}>
-            <AdsGate />
-          </Suspense>
-          <ConsentBanner />
-          <AdsLoader />
+          <MotionProvider>
+            <a
+              href="#main"
+              className="sr-only z-50 bg-primary px-4 py-2 font-semibold text-primary-foreground focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+            >
+              {t('skipToContent')}
+            </a>
+            <SiteHeader />
+            <main id="main" className="flex-1">
+              {children}
+            </main>
+            <SiteFooter />
+            <MobileTabBar />
+            <ServiceWorkerRegister />
+            <Suspense fallback={null}>
+              <AdsGate />
+            </Suspense>
+            <ConsentBanner />
+            <AdsLoader />
+          </MotionProvider>
         </NextIntlClientProvider>
       </body>
     </html>
