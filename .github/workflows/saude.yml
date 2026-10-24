@@ -16,13 +16,15 @@ jobs:
     timeout-minutes: 5
     env:
       SITE: https://wowhelp.vercel.app
+      CRON_SECRET: ${{ secrets.CRON_SECRET }}
     steps:
       - name: Páginas e rotas principais
         run: |
           falhas=0
           confere() {
             # uso: confere <caminho> <status esperado> [texto que precisa aparecer]
-            status=$(curl -sS -o /tmp/pagina -w '%{http_code}' --max-time 30 "$SITE$1" || echo 000)
+            # O CRON_SECRET passa pela senha do site (fase de testes).
+            status=$(curl -sS -o /tmp/pagina -w '%{http_code}' --max-time 30 -H "Authorization: Bearer $CRON_SECRET" "$SITE$1" || echo 000)
             if [ "$status" != "$2" ]; then
               echo "::error::$1 respondeu $status (esperado $2)"; falhas=$((falhas + 1)); return
             fi

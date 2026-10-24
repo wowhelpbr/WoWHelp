@@ -656,6 +656,35 @@
       "publish": "Publicar",
       "hide": "Ocultar",
       "editShort": "Editar"
+    },
+    "siteTitle": "Site privado",
+    "siteBody": "Fechar o site com senha durante os testes, ou abrir ao público.",
+    "site": {
+      "title": "Site privado",
+      "back": "Voltar à administração",
+      "intro": "Com o site privado, qualquer pessoa precisa da senha para ver qualquer página. Use durante os testes e desligue no lançamento (o Google AdSense não aprova site fechado).",
+      "statusPrivate": "Agora: privado (com senha)",
+      "statusPublic": "Agora: aberto ao público",
+      "privateLabel": "Site privado",
+      "privateHint": "Pede a senha em todas as páginas. Quem já digitou a senha continua entrando por 30 dias, até você trocar a senha.",
+      "setPassword": "Definir a senha",
+      "changePassword": "Trocar a senha",
+      "password": "Nova senha",
+      "confirm": "Repita a senha",
+      "minHint": "Pelo menos 8 caracteres.",
+      "keepHint": "Deixe em branco para manter a senha atual. Trocar a senha tira o acesso de todo mundo.",
+      "save": "Salvar",
+      "saving": "Salvando…",
+      "savedPrivate": "Salvo: o site está privado. Este navegador já tem acesso. Pode levar até 30 segundos para valer em tudo.",
+      "savedPublic": "Salvo: o site está aberto ao público. Pode levar até 30 segundos para valer em tudo.",
+      "note": "A senha fica guardada só como código embaralhado (hash); ninguém consegue ler a senha no banco.",
+      "errors": {
+        "forbidden": "Sua conta não é de administrador.",
+        "needs_password": "Para deixar o site privado, defina uma senha.",
+        "too_short": "A senha precisa de pelo menos 8 caracteres.",
+        "mismatch": "As duas senhas não são iguais.",
+        "storage": "Não foi possível salvar agora. Tente de novo."
+      }
     }
   },
   "Catalog": {
@@ -781,5 +810,13 @@
     "acceptAll": "Aceitar anúncios personalizados",
     "essentialOnly": "Só o necessário",
     "preferences": "Preferências de cookies"
+  },
+  "Gate": {
+    "metaTitle": "Acesso restrito",
+    "title": "WoWHelp em testes",
+    "body": "O site ainda está fechado para testes. Se você recebeu a senha, digite abaixo.",
+    "password": "Senha",
+    "enter": "Entrar",
+    "wrong": "Senha errada. Tente de novo."
   }
 }

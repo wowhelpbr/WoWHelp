@@ -1,5 +1,5 @@
 <#
-  Cadastra uma chave da Comunidade BR na Vercel (conta wowhelpbrasil, projeto
+  Cadastra uma chave (Comunidade BR, Stripe) na Vercel (conta wowhelpbrasil, projeto
   wowhelp), em Production e Preview, como "Sensitive". O valor é pedido escondido,
   não aparece na tela, não vai para arquivo nem para o chat.
 
@@ -8,7 +8,7 @@
 #>
 param(
   [Parameter(Mandatory = $true)]
-  [ValidateSet('YOUTUBE_API_KEY', 'TWITCH_CLIENT_ID', 'TWITCH_CLIENT_SECRET', 'KICK_CLIENT_ID', 'KICK_CLIENT_SECRET')]
+  [ValidateSet('YOUTUBE_API_KEY', 'TWITCH_CLIENT_ID', 'TWITCH_CLIENT_SECRET', 'KICK_CLIENT_ID', 'KICK_CLIENT_SECRET', 'STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET')]
   [string]$Nome
 )
 $ErrorActionPreference = 'Stop'
