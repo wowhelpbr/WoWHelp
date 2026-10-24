@@ -1,5 +1,5 @@
 // "Ao vivo agora" da Comunidade BR: leitura das respostas oficiais da Twitch
-// (Helix) e do YouTube (Data API v3 e feed público do canal). Só aceita
+// (Helix), do YouTube (Data API v3 e feed público do canal) e da Kick (Public API). Só aceita
 // endereços de imagem dos domínios das próprias plataformas.
 
 type Json = unknown;
@@ -7,7 +7,15 @@ const isObj = (v: Json): v is Record<string, Json> => typeof v === 'object' && v
 const str = (v: Json, max: number): string | null =>
   typeof v === 'string' && v.trim() ? v.trim().slice(0, max) : null;
 
-const IMAGE_HOSTS = ['static-cdn.jtvnw.net', 'yt3.ggpht.com', 'yt3.googleusercontent.com', 'i.ytimg.com'];
+// Kick: domínios de imagem vistos nas miniaturas públicas; outro domínio vira "sem miniatura".
+const IMAGE_HOSTS = [
+  'static-cdn.jtvnw.net',
+  'yt3.ggpht.com',
+  'yt3.googleusercontent.com',
+  'i.ytimg.com',
+  'images.kick.com',
+  'files.kick.com',
+];
 
 /** URL https de imagem num domínio da Twitch ou do YouTube; `allow` libera um host extra em teste local. */
 export function safeImageUrl(v: Json, allow?: (url: string) => boolean): string | null {
@@ -151,6 +159,35 @@ export function normalizeYouTubeLive(json: Json, allow?: (url: string) => boolea
       startedAt: details ? isoOrNull(details.actualStartTime) : null,
       url: `https://www.youtube.com/watch?v=${id}`,
       thumbnailUrl: thumb ? safeImageUrl(thumb.url, allow) : null,
+    });
+  }
+  return out;
+}
+
+/**
+ * Kick, GET /public/v1/channels?slug=...: slug → live (ou null se fora do ar).
+ * Campos da documentação oficial: stream.is_live, stream.viewer_count,
+ * stream.thumbnail, stream.start_time, stream_title e category.name.
+ */
+export function normalizeKickChannels(json: Json, allow?: (url: string) => boolean): Map<string, LiveInfo | null> {
+  const out = new Map<string, LiveInfo | null>();
+  if (!isObj(json) || !Array.isArray(json.data)) return out;
+  for (const c of json.data.filter(isObj)) {
+    const slug = str(c.slug, 25)?.toLowerCase();
+    if (!slug || !/^[a-z0-9_-]{3,25}$/.test(slug)) continue;
+    const stream = isObj(c.stream) ? c.stream : null;
+    if (!stream || stream.is_live !== true) {
+      out.set(slug, null);
+      continue;
+    }
+    out.set(slug, {
+      title: str(c.stream_title, 200),
+      game: isObj(c.category) ? str(c.category.name, 100) : null,
+      viewers:
+        typeof stream.viewer_count === 'number' && stream.viewer_count >= 0 ? Math.floor(stream.viewer_count) : null,
+      startedAt: isoOrNull(stream.start_time),
+      url: `https://kick.com/${slug}`,
+      thumbnailUrl: safeImageUrl(stream.thumbnail, allow),
     });
   }
   return out;
