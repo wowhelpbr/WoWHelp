@@ -26,6 +26,12 @@ Data: 24/10/2026 (madrugada). Gate (planning/docs/02): addon leve, sem automaç�
 
 O leitor recusava o arquivo inteiro quando faltava um horário opcional (o addon deixa vazio quando o jogo não informa o reset semanal). Corrigido e coberto por teste.
 
+## Simulação fora do jogo (24/10/2026)
+
+O código de verdade do addon roda num Lua de verdade (fengari, Lua 5.3 em JavaScript) com um WoW de mentira que imita as funções usadas (`packages/shared/src/addon/wow-mock.lua`). O arquivo gravado é lido pelo mesmo leitor do site. Cenários cobertos (`addon-sim.test.ts`): primeiro login; segundo personagem em outra sessão (o arquivo anterior é carregado antes, como no jogo); login em combate (espera sair do combate); montaria nova; jogo sem a API de montarias e sem o reset semanal (coleção desconhecida); arquivo de versão futura ou corrompido; limite de 60 personagens; comando `/wowhelp`.
+
+Limites: o WoW usa Lua 5.1 e a simulação usa 5.3; e o WoW de mentira só tem o que o addon chama. Não substitui o teste no jogo, mas tira do caminho os erros de lógica e de formato.
+
 ## Roteiro de teste no jogo (para o Bruno)
 
 1. No site, entre na conta e abra **Importar addon**. Clique em **Baixar o addon 0.1.0**.
