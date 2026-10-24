@@ -2,6 +2,7 @@ import 'server-only';
 import {
   normalizeCollectionIndex,
   normalizeCreatureDisplayId,
+  normalizeItemUseText,
   normalizePetDetail,
   normalizeToyDetail,
   type CollectibleDetail,
@@ -35,6 +36,14 @@ async function detailFor(
     kind === 'pet' && detail.creatureId
       ? normalizeCreatureDisplayId(await fetchGameData('us', `/creature/${detail.creatureId}`).catch(() => null))
       : null;
+  // Brinquedo: a descrição útil é o efeito de "Usar" do item (falhou = sem descrição).
+  if (kind === 'toy' && detail.itemId) {
+    const use = normalizeItemUseText(await fetchGameData('us', `/item/${detail.itemId}`).catch(() => null));
+    detail.descriptions = {
+      'en-US': use['en-US']?.slice(0, 500) ?? null,
+      'pt-BR': use['pt-BR']?.slice(0, 500) ?? null,
+    };
+  }
   return { detail, displayId };
 }
 
