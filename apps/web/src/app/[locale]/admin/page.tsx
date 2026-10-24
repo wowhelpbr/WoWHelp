@@ -1,4 +1,4 @@
-import { Gift, Lock, PawPrint, Users } from 'lucide-react';
+import { Gem, Gift, Lock, PawPrint, Users } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { Suspense } from 'react';
@@ -56,6 +56,15 @@ async function AdminHub() {
             <span>
               <span className="block font-display text-xl text-foreground">{t('siteTitle')}</span>
               <span className="mt-1 block text-sm text-muted-foreground">{t('siteBody')}</span>
+            </span>
+          </Link>
+        </li>
+        <li>
+          <Link href="/admin/supporters" className="frame flex h-full items-start gap-4 p-5 hover:border-neon/60">
+            <Gem aria-hidden className="size-8 shrink-0 text-primary" />
+            <span>
+              <span className="block font-display text-xl text-foreground">{t('supportersTitle')}</span>
+              <span className="mt-1 block text-sm text-muted-foreground">{t('supportersBody')}</span>
             </span>
           </Link>
         </li>

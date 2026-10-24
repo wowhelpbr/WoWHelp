@@ -49,13 +49,14 @@ const privacy: Record<Locale, LegalDocument> = {
           'Se você importar o arquivo do addon WoWHelp Companion: personagens e montarias que estão no arquivo, a versão do addon, o horário da leitura no jogo, contagens e uma impressão digital (hash) do arquivo para não importar o mesmo duas vezes. O arquivo em si não é guardado.',
           'Marcações manuais de coleção ("já tenho" / "ainda não tenho").',
           'Se você pedir para entrar ou sair da Comunidade BR: o nome, os links e a mensagem que você mandou.',
+          'Se você assinar o WoWHelp Apoiador: o código do seu cadastro no Stripe e a situação da assinatura (plano, se está ativa, data de renovação ou de fim). Os dados do cartão ficam só com o Stripe; o WoWHelp nunca vê nem guarda.',
           ADS_ON
             ? 'Cookies: os necessários (sessão de login, idioma e a sua escolha de cookies) e, só se você aceitar anúncios personalizados, os cookies de publicidade do Google. Não usamos cookies de analytics.'
             : 'Cookies necessários: sessão de login e idioma escolhido. Não usamos cookies de analytics nem de publicidade.',
           'Registros técnicos dos provedores de hospedagem (como endereço IP e navegador), mantidos por eles por tempo limitado para segurança e diagnóstico.',
         ],
         paragraphs: [
-          'Não coletamos dados de pagamento, localização precisa, contatos, chat, amigos, guilda nem dados de combate.',
+          'Não guardamos dados de cartão, localização precisa, contatos, chat, amigos, guilda nem dados de combate.',
         ],
       },
       {
@@ -63,6 +64,7 @@ const privacy: Record<Locale, LegalDocument> = {
         items: [
           'Manter sua conta, seus objetivos e o planejador funcionando: execução do serviço que você pediu (LGPD, art. 7º, V).',
           'Conectar a Battle.net e importar o arquivo do addon: seu consentimento (art. 7º, I), que você retira a qualquer momento desconectando a Battle.net ou apagando os dados do addon.',
+          'Cobrar e manter a assinatura Apoiador, se você assinar: execução do contrato (art. 7º, V).',
           'Segurança, limites de uso e prevenção de abuso: legítimo interesse (art. 7º, IX).',
         ],
       },
@@ -71,6 +73,7 @@ const privacy: Record<Locale, LegalDocument> = {
         items: [
           'Dados da Battle.net: apagados automaticamente se não forem atualizados em 30 dias, e na hora quando você desconecta.',
           'Dados do addon, objetivos e planejador: até você apagar ou excluir a conta.',
+          'Assinatura Apoiador: ao excluir a conta, cancelamos a assinatura no Stripe na hora e apagamos o registro no WoWHelp. O Stripe guarda os registros de pagamento pelo prazo que a lei fiscal exige.',
           'Ao excluir a conta, apagamos todos os dados dela do banco na hora. Cópias de segurança automáticas do provedor, quando existirem, expiram no ciclo do provedor.',
         ],
       },
@@ -81,6 +84,7 @@ const privacy: Record<Locale, LegalDocument> = {
           'Vercel: hospedagem do site, com rede global.',
           'Blizzard Entertainment: só quando você conecta a Battle.net. Você aprova o acesso no site da própria Blizzard e nós recebemos os dados listados acima.',
           'GitHub: roda a atualização automática do catálogo de montarias (sem dados de jogadores).',
+          'Stripe: só para quem assina o WoWHelp Apoiador. Cuida do pagamento com cartão, da cobrança e do cancelamento; recebe seu e-mail e os dados do cartão digitados na página dele. Servidores nos Estados Unidos e em outros países.',
         ],
         paragraphs: [
           'Por isso há transferência internacional de dados para os Estados Unidos (LGPD, art. 33). Não vendemos nem alugamos dados.',
@@ -155,20 +159,20 @@ const privacy: Record<Locale, LegalDocument> = {
           'If you import the WoWHelp Companion addon file: characters and mounts in the file, addon version, in-game read time, counts and a fingerprint (hash) of the file so the same file is not imported twice. The file itself is not kept.',
           'Manual collection marks ("I have it" / "I don\'t have it yet").',
           'If you ask to join or leave the Brazilian community: the name, links and message you sent.',
+          'If you subscribe to WoWHelp Supporter: your Stripe customer code and the subscription status (plan, whether it is active, renewal or end date). Card details stay with Stripe only; WoWHelp never sees or keeps them.',
           ADS_ON
             ? 'Cookies: the necessary ones (sign-in session, language and your cookie choice) and, only if you accept personalized ads, Google advertising cookies. We use no analytics cookies.'
             : 'Necessary cookies: sign-in session and chosen language. We use no analytics or advertising cookies.',
           'Technical logs kept by our hosting providers (such as IP address and browser) for a limited time for security and troubleshooting.',
         ],
-        paragraphs: [
-          'We do not collect payment data, precise location, contacts, chat, friends, guild or combat data.',
-        ],
+        paragraphs: ['We do not keep card data, precise location, contacts, chat, friends, guild or combat data.'],
       },
       {
         heading: 'Why we use it and the legal basis',
         items: [
           'Keeping your account, goals and planner working: performing the service you asked for (LGPD, art. 7, V).',
           'Connecting Battle.net and importing the addon file: your consent (art. 7, I), which you can withdraw at any time by disconnecting Battle.net or deleting addon data.',
+          'Charging and keeping the Supporter subscription, if you subscribe: performing the contract (art. 7, V).',
           'Security, usage limits and abuse prevention: legitimate interest (art. 7, IX).',
         ],
       },
@@ -177,6 +181,7 @@ const privacy: Record<Locale, LegalDocument> = {
         items: [
           'Battle.net data: deleted automatically if not refreshed within 30 days, and right away when you disconnect.',
           'Addon data, goals and planner: until you delete them or delete your account.',
+          'Supporter subscription: when you delete your account, we cancel the subscription on Stripe right away and delete the record on WoWHelp. Stripe keeps payment records for as long as tax law requires.',
           'When you delete your account, all of its data is removed from the database right away. Automatic provider backups, where they exist, expire on the provider schedule.',
         ],
       },
@@ -187,6 +192,7 @@ const privacy: Record<Locale, LegalDocument> = {
           'Vercel: website hosting, on a global network.',
           "Blizzard Entertainment: only when you connect Battle.net. You approve access on Blizzard's own site and we receive the data listed above.",
           'GitHub: runs the automatic mount catalog update (no player data).',
+          'Stripe: only for WoWHelp Supporter subscribers. Handles card payment, billing and cancellation; receives your email and the card details typed on its page. Servers in the United States and other countries.',
         ],
         paragraphs: [
           'This means data is transferred internationally to the United States (LGPD, art. 33). We do not sell or rent data.',
@@ -302,6 +308,16 @@ const terms: Record<Locale, LegalDocument> = {
         ],
       },
       {
+        heading: 'Assinatura WoWHelp Apoiador',
+        items: [
+          'É opcional. Dá site sem anúncios e selo de apoiador; o rastreador, o planejador e a coleção continuam grátis para todos.',
+          'O pagamento é com cartão na página do Stripe. A assinatura renova sozinha no fim de cada período (mês ou ano) até você cancelar.',
+          'Você cancela quando quiser em Configurações > Assinatura > Gerenciar assinatura. O apoio continua até o fim do período já pago e não há cobrança nova.',
+          'Direito de arrependimento: em até 7 dias da primeira cobrança, você pode desistir e receber o valor de volta (Código de Defesa do Consumidor, art. 49).',
+          'Se o preço mudar, avisamos antes; o preço novo só vale a partir da renovação seguinte.',
+        ],
+      },
+      {
         heading: 'Responsabilidade, lei e contato',
         paragraphs: [
           'Limites de responsabilidade, lei aplicável, foro e canal de contato serão definidos na revisão jurídica, respeitando o Código de Defesa do Consumidor.',
@@ -366,6 +382,16 @@ const terms: Record<Locale, LegalDocument> = {
         heading: 'Intellectual property',
         paragraphs: [
           'The WoWHelp name, logo and illustrations (by Elianai dos Santos) belong to the project. You keep ownership of what you write in your goals.',
+        ],
+      },
+      {
+        heading: 'WoWHelp Supporter subscription',
+        items: [
+          'It is optional. It gives you no ads and a supporter badge; the tracker, the planner and the collection stay free for everyone.',
+          'Payment is by card on Stripe’s page. The subscription renews automatically at the end of each period (month or year) until you cancel.',
+          'You can cancel anytime in Settings > Subscription > Manage subscription. Your support lasts until the end of the paid period and there is no new charge.',
+          'Right of withdrawal: within 7 days of the first charge, you can give up and get the amount back (Brazilian Consumer Code, art. 49).',
+          'If the price changes, we let you know in advance; the new price only applies from the next renewal.',
         ],
       },
       {

@@ -13,6 +13,8 @@ const TABLES = [
   'characters',
   'collection_states',
   'addon_imports',
+  'billing_customers',
+  'supporter_subscriptions',
 ] as const;
 
 const PAGE = 1000;

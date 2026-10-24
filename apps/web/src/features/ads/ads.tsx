@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/navigation';
 import { ADSENSE_CLIENT, AD_SLOTS, type AdPlacement } from './config';
+import { useAdsAllowed } from './ad-free';
 import { saveConsent, useConsent } from './consent';
 
 type AdsQueue = unknown[] & { requestNonPersonalizedAds?: number };
@@ -23,8 +24,9 @@ function adsQueue(): AdsQueue {
  */
 export function AdsLoader() {
   const consent = useConsent();
+  const allowed = useAdsAllowed();
   useEffect(() => {
-    if (!ADSENSE_CLIENT || !consent || document.getElementById('adsense-script')) return;
+    if (!ADSENSE_CLIENT || !allowed || !consent || document.getElementById('adsense-script')) return;
     if (consent === 'essential') adsQueue().requestNonPersonalizedAds = 1;
     const script = document.createElement('script');
     script.id = 'adsense-script';
@@ -32,7 +34,7 @@ export function AdsLoader() {
     script.crossOrigin = 'anonymous';
     script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;
     document.head.appendChild(script);
-  }, [consent]);
+  }, [allowed, consent]);
   return null;
 }
 
@@ -40,16 +42,17 @@ export function AdsLoader() {
 export function AdSlot({ placement, className }: { placement: AdPlacement; className?: string }) {
   const t = useTranslations('Ads');
   const consent = useConsent();
+  const allowed = useAdsAllowed();
   const slot = AD_SLOTS[placement];
   const ref = useRef<HTMLModElement>(null);
 
   useEffect(() => {
-    if (!ADSENSE_CLIENT || !slot || !consent || !ref.current || ref.current.dataset.pushed) return;
+    if (!ADSENSE_CLIENT || !allowed || !slot || !consent || !ref.current || ref.current.dataset.pushed) return;
     ref.current.dataset.pushed = '1';
     adsQueue().push({});
-  }, [consent, slot]);
+  }, [allowed, consent, slot]);
 
-  if (!ADSENSE_CLIENT || !slot || !consent) return null;
+  if (!ADSENSE_CLIENT || !allowed || !slot || !consent) return null;
   return (
     <aside aria-label={t('label')} className={className}>
       <p className="mb-1 text-[0.65rem] tracking-[0.2em] text-muted-foreground uppercase">{t('label')}</p>
@@ -65,11 +68,12 @@ export function AdSlot({ placement, className }: { placement: AdPlacement; class
   );
 }
 
-/** Aviso de cookies (LGPD). Só aparece se os anúncios estiverem ligados. */
+/** Aviso de cookies (LGPD). Só aparece se os anúncios estiverem ligados (e não para apoiador). */
 export function ConsentBanner() {
   const t = useTranslations('Ads');
   const consent = useConsent();
-  if (!ADSENSE_CLIENT || consent !== null) return null;
+  const allowed = useAdsAllowed();
+  if (!ADSENSE_CLIENT || !allowed || consent !== null) return null;
   return (
     <section
       aria-label={t('bannerTitle')}
@@ -97,7 +101,8 @@ export function ConsentBanner() {
 /** Link do rodapé para mudar a escolha de cookies. */
 export function ConsentReopen({ className }: { className?: string }) {
   const t = useTranslations('Ads');
-  if (!ADSENSE_CLIENT) return null;
+  const allowed = useAdsAllowed();
+  if (!ADSENSE_CLIENT || !allowed) return null;
   return (
     <button type="button" onClick={() => saveConsent(null)} className={className}>
       {t('preferences')}

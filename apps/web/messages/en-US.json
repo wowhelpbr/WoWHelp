@@ -25,7 +25,8 @@
     "planner": "Weekly planner",
     "addonImport": "Addon import",
     "phaseShort": "Phase {phase}",
-    "community": "Community"
+    "community": "Community",
+    "supporterBadge": "Supporter"
   },
   "Footer": {
     "disclaimer": "WoWHelp is a fan-made tool. It is not affiliated with or endorsed by Blizzard Entertainment. World of Warcraft and Blizzard Entertainment are trademarks or registered trademarks of Blizzard Entertainment, Inc.",
@@ -34,7 +35,8 @@
     "credits": "Logo and illustrations by Elianai dos Santos (eliz00r).",
     "privacy": "Privacy",
     "terms": "Terms of use",
-    "legalNav": "Legal documents"
+    "legalNav": "Legal documents",
+    "supporter": "Become a supporter"
   },
   "Focus": {
     "gear": {
@@ -326,7 +328,11 @@
     "installIos": "On iPhone or iPad: tap Share, then Add to Home Screen.",
     "installDone": "WoWHelp is installed on this device.",
     "installUnsupported": "Your browser doesn't offer installation here. Try Chrome or Edge on desktop or Android, or Safari on iPhone.",
-    "privacyLink": "Read the privacy policy"
+    "privacyLink": "Read the privacy policy",
+    "supporterTitle": "Subscription",
+    "supporterNone": "Support WoWHelp and browse without ads. The tracker stays free for everyone.",
+    "supporterLink": "See the plans",
+    "supporterEnded": "Your subscription has ended. Thanks for your support!"
   },
   "Offline": {
     "metaTitle": "Offline",
@@ -511,10 +517,10 @@
   },
   "Account": {
     "dataTitle": "Your data",
-    "dataBody": "Download a copy of everything WoWHelp keeps about you (profile, goals, planner, characters, collection and addon imports) as a JSON file.",
+    "dataBody": "Download a copy of everything WoWHelp keeps about you (profile, goals, planner, characters, collection, addon imports and subscription) as a JSON file.",
     "export": "Download my data",
     "deleteTitle": "Delete account",
-    "deleteBody": "Deletes the account and all of its data right away: goals, planner, Battle.net connections, characters, collection and addon imports. This cannot be undone.",
+    "deleteBody": "Deletes the account and all of its data right away: goals, planner, Battle.net connections, characters, collection and addon imports. If you are a supporter, the subscription is canceled right away. This cannot be undone.",
     "deleteStart": "Delete my account",
     "deleteLabel": "To confirm, type the account email",
     "deleteConfirm": "Delete forever",
@@ -523,7 +529,8 @@
     "errors": {
       "mismatch": "The email you typed isn't this account's email.",
       "failed": "We couldn't delete it right now. Try again in a few minutes.",
-      "not_configured": "Account deletion isn't available in this environment yet."
+      "not_configured": "Account deletion isn't available in this environment yet.",
+      "billing": "We could not cancel your Supporter subscription right now, so the account was not deleted. Please try again in a few minutes."
     },
     "deletedMetaTitle": "Account deleted",
     "deletedTitle": "Your account was deleted",
@@ -685,6 +692,50 @@
         "mismatch": "The two passwords do not match.",
         "storage": "We could not save right now. Try again."
       }
+    },
+    "supportersTitle": "Subscriptions",
+    "supportersBody": "Open or close WoWHelp Supporter sales and see who supports.",
+    "supporters": {
+      "title": "Subscriptions",
+      "back": "Back to admin",
+      "intro": "WoWHelp Supporter sales. Payment, card and cancellation all live on Stripe; here you open or close sales and follow who supports.",
+      "mode": {
+        "test": "Stripe in test mode (nothing is charged)",
+        "live": "Stripe in live mode (real charges)",
+        "off": "Stripe not configured (STRIPE_SECRET_KEY missing)"
+      },
+      "webhookOk": "Payment notifications configured",
+      "webhookMissing": "Payment notification secret missing (STRIPE_WEBHOOK_SECRET)",
+      "pricesOk": "Prices on Stripe: monthly {monthly}, yearly {yearly}",
+      "pricesMissing": "Prices not found on Stripe (apoiador_mensal and apoiador_anual)",
+      "openLabel": "Sales open to the public",
+      "openHint": "When off, only admins see the subscribe buttons (for testing).",
+      "testWarning": "Warning: in test mode anyone becomes a supporter with the test card. Only open to the public with the live key.",
+      "save": "Save",
+      "saving": "Saving…",
+      "savedOpen": "Saved: sales are open to the public.",
+      "savedClosed": "Saved: sales are closed (only admins see the buttons).",
+      "errors": {
+        "forbidden": "Your account is not an admin.",
+        "storage": "Could not save right now. Please try again."
+      },
+      "activeCount": "{count, plural, =0 {No active supporters} one {# active supporter} other {# active supporters}}",
+      "listTitle": "Latest subscriptions",
+      "empty": "No subscriptions yet.",
+      "account": "Account",
+      "plan": "Plan",
+      "status": "Status",
+      "until": "Until",
+      "statusNames": {
+        "active": "Active",
+        "trialing": "Free trial",
+        "past_due": "Past due",
+        "canceled": "Canceled",
+        "incomplete": "Incomplete payment",
+        "incomplete_expired": "Expired",
+        "unpaid": "Unpaid",
+        "paused": "Paused"
+      }
     }
   },
   "Catalog": {
@@ -818,5 +869,48 @@
     "password": "Password",
     "enter": "Enter",
     "wrong": "Wrong password. Try again."
+  },
+  "Supporter": {
+    "metaTitle": "Become a supporter",
+    "metaDescription": "Support WoWHelp, a Brazilian World of Warcraft tool: no ads and a supporter badge.",
+    "eyebrow": "WoWHelp Supporter",
+    "title": "Become a WoWHelp supporter",
+    "intro": "WoWHelp is made in Brazil, by fans, for World of Warcraft players. Supporters help pay for the servers and bring new features sooner.",
+    "benefitsTitle": "What you get",
+    "benefitNoAds": "No ads on any page.",
+    "benefitBadge": "A supporter badge on your account.",
+    "benefitThanks": "WoWHelp stays online and keeps getting better.",
+    "promise": "The tracker, the planner and the collection stay free for everyone. Nothing that comes from Blizzard is behind a paywall.",
+    "plansTitle": "Plans",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "perMonth": "per month",
+    "perYear": "per year",
+    "yearlySaving": "Same as {months, plural, one {# month free} other {# months free}}",
+    "subscribeMonthly": "Subscribe monthly",
+    "subscribeYearly": "Subscribe yearly",
+    "opening": "Opening checkout…",
+    "signInToSubscribe": "Sign in to support",
+    "soon": "Coming soon",
+    "soonBody": "Subscriptions open soon. Meanwhile, everything on WoWHelp stays free.",
+    "closedAdmin": "Sales are closed to the public: only admins see the buttons. To open, go to Admin > Subscriptions.",
+    "testMode": "Test mode: nothing is charged. Use card 4242 4242 4242 4242, any future date and any security code.",
+    "fineprint": "Card payment on Stripe’s secure page; WoWHelp never sees your card. The subscription renews automatically and you can cancel anytime in Settings: your support lasts until the end of the paid period. Changed your mind within 7 days of the first charge? We refund it (Brazilian Consumer Code, art. 49).",
+    "activeTitle": "You are a supporter. Thank you!",
+    "activePlan": "{plan} plan.",
+    "renews": "Renews on {date}.",
+    "ends": "Ends on {date}; after that, ads come back.",
+    "pastDue": "Stripe could not charge your card and will try again. Check your card in \"Manage subscription\".",
+    "manage": "Manage subscription",
+    "planNames": {
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "status": {
+      "ok": "Payment received. Thanks for supporting WoWHelp!",
+      "processando": "Payment processing. Your supporter badge shows up in a few minutes.",
+      "cancelado": "Payment not completed. Nothing was charged.",
+      "erro": "Could not open checkout right now. Please try again in a few minutes."
+    }
   }
 }

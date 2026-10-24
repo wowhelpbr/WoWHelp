@@ -17,6 +17,11 @@ export function SiteFooter() {
           <nav aria-label={t('legalNav')}>
             <ul className="flex flex-wrap gap-x-4 gap-y-1">
               <li>
+                <Link href="/supporter" className="underline underline-offset-2 hover:text-foreground">
+                  {t('supporter')}
+                </Link>
+              </li>
+              <li>
                 <Link href="/privacy" className="underline underline-offset-2 hover:text-foreground">
                   {t('privacy')}
                 </Link>

@@ -1,6 +1,7 @@
 // Servidor falso da Battle.net para os testes E2E (porta 4010).
 // Imita só o necessário do OAuth e da API, com dados de TESTE (não são do jogo).
 import http from 'node:http';
+import { stripeRoute } from './stripe-mock.mjs';
 
 const PORT = Number(process.env.BLIZZARD_MOCK_PORT ?? 4010);
 const CLIENT = Buffer.from('test-client:test-secret').toString('base64');
@@ -103,6 +104,8 @@ const toyDetails = {
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://127.0.0.1:${PORT}`);
+  // Stripe falso (tests/mocks/stripe-mock.mjs).
+  if (await stripeRoute(req, res, url, PORT)) return;
   const auth = req.headers.authorization ?? '';
 
   if (url.pathname === '/authorize') {
