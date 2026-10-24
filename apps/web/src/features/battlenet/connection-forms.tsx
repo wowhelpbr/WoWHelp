@@ -27,7 +27,10 @@ export function ConnectForm({ defaultRegion, connected }: { defaultRegion: Battl
     <form action={startBattlenetConnectionAction} className="flex flex-col gap-3 sm:flex-row sm:items-end">
       <input type="hidden" name="locale" value={locale} />
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="bnet-region" className="text-sm font-medium text-foreground">
+        <label
+          htmlFor="bnet-region"
+          className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+        >
           {t('regionLabel')}
         </label>
         <select id="bnet-region" name="region" defaultValue={defaultRegion} className={cn(inputClasses, 'sm:w-64')}>

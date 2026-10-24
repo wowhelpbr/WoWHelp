@@ -53,10 +53,10 @@ export function FocusPicker({ initial = [] }: { initial?: FocusArea[] }) {
               <li key={area}>
                 <label
                   className={cn(
-                    'group relative flex h-full cursor-pointer items-start gap-3 rounded-sm border p-4 transition-colors xl:min-h-[11rem] xl:flex-col',
+                    'group relative flex h-full cursor-pointer items-start gap-3 rounded-lg p-4 transition-[background-color,box-shadow] xl:min-h-[11rem] xl:flex-col',
                     checked
-                      ? 'corner-brackets border-primary/80 bg-primary/[0.08]'
-                      : 'border-border bg-card/70 hover:border-neon/60 hover:bg-card',
+                      ? 'bg-card-raised shadow-[inset_0_0_0_1px_rgb(197_251_20/0.55),0_0_22px_rgb(197_251_20/0.12)]'
+                      : 'bg-card hover:bg-card-raised',
                   )}
                 >
                   <input
@@ -69,16 +69,17 @@ export function FocusPicker({ initial = [] }: { initial?: FocusArea[] }) {
                   />
                   <span
                     className={cn(
-                      'grid size-11 shrink-0 place-items-center rounded-sm border bg-background/70 transition-colors',
+                      'stat-icon transition-colors',
                       'peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary',
-                      checked ? 'border-primary/70 text-primary' : 'border-border text-neon',
+                      checked &&
+                        'bg-[radial-gradient(circle,rgb(197_251_20/0.22),rgb(197_251_20/0.04)_70%)]! text-primary! shadow-[0_0_24px_rgb(197_251_20/0.2)]!',
                     )}
                     aria-hidden
                   >
                     <Icon className="size-5" />
                   </span>
                   <span className="flex min-w-0 flex-1 flex-col gap-1 xl:order-last xl:flex-none">
-                    <span className="text-[1.05rem] leading-snug font-semibold text-foreground">
+                    <span className="font-display text-sm leading-snug font-bold tracking-[0.02em] text-foreground uppercase">
                       {tf(`${area}.title`)}
                     </span>
                     <span className="text-sm text-muted-foreground">{tf(`${area}.summary`)}</span>
@@ -98,14 +99,17 @@ export function FocusPicker({ initial = [] }: { initial?: FocusArea[] }) {
       </fieldset>
 
       {/* Rastreador: no desktop fica ao lado; no celular vira barra fixa acima das abas. */}
-      <aside className="frame corner-brackets hidden p-4 lg:sticky lg:top-24 lg:block" aria-live="polite">
+      <aside className="glass corner-brackets relative hidden p-5 lg:sticky lg:top-24 lg:block" aria-live="polite">
         <h2 className="eyebrow">{t('trackerTitle')}</h2>
         {selected.length === 0 ? (
           <p className="mt-2 text-sm text-muted-foreground">{t('trackerEmpty')}</p>
         ) : (
-          <ul className="mt-3 flex flex-col gap-2 border-l-2 border-primary/60 pl-3">
+          <ul className="mt-3 flex flex-col gap-2 border-l-2 border-primary/70 pl-3 shadow-[-6px_0_12px_-8px_rgb(197_251_20/0.6)]">
             {selected.map((area) => (
-              <li key={area} className="text-[0.95rem] font-semibold text-primary">
+              <li
+                key={area}
+                className="font-display text-[0.8125rem] font-bold tracking-[0.02em] text-primary uppercase"
+              >
                 {tf(`${area}.title`)}
               </li>
             ))}
@@ -118,7 +122,7 @@ export function FocusPicker({ initial = [] }: { initial?: FocusArea[] }) {
       </aside>
 
       <div
-        className="frame-raised fixed inset-x-3 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-30 flex items-center justify-between gap-3 px-3 py-2.5 lg:hidden"
+        className="glass fixed inset-x-3 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-30 flex items-center justify-between gap-3 px-3 py-2.5 lg:hidden"
         aria-live="polite"
       >
         <p className="text-sm text-foreground">

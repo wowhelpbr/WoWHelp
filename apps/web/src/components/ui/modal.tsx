@@ -40,14 +40,14 @@ export function Modal({
         router.back();
       }}
       onClick={onClick}
-      className="m-auto max-h-[92dvh] w-[min(72rem,calc(100vw-1.5rem))] overflow-y-auto rounded-sm border border-border-strong bg-background p-0 text-foreground shadow-[0_30px_80px_rgb(0_0_0/0.6)] backdrop:bg-[rgb(4_7_20/0.78)] backdrop:backdrop-blur-sm"
+      className="m-auto max-h-[92dvh] w-[min(72rem,calc(100vw-1.5rem))] overflow-y-auto rounded-xl border border-white/10 bg-[rgb(15_21_29/0.96)] p-0 text-foreground shadow-[inset_0_1px_0_rgb(255_255_255/0.07),0_30px_80px_rgb(0_0_0/0.6)] backdrop:bg-[rgb(5_8_11/0.72)] backdrop:backdrop-blur-sm"
     >
       <div className="relative p-4 sm:p-6 lg:p-8">
         <button
           type="button"
           onClick={() => router.back()}
           aria-label={closeLabel}
-          className="absolute top-3 right-3 z-10 grid size-10 place-items-center rounded-sm border border-border bg-card text-muted-foreground hover:border-primary hover:text-primary"
+          className="absolute top-3 right-3 z-10 grid size-10 place-items-center rounded-sm bg-card-raised text-muted-foreground hover:bg-border-strong hover:text-foreground"
         >
           <X aria-hidden className="size-5" />
         </button>

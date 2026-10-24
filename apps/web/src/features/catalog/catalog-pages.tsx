@@ -17,17 +17,18 @@ type IdParams = Promise<{ id: string }>;
 async function CatalogTabs({ active }: { active: CatalogKind }) {
   const t = await getTranslations('Catalog');
   return (
-    <nav aria-label={t('tabsLabel')} className="flex flex-wrap gap-1 border-b border-border">
+    <nav aria-label={t('tabsLabel')} className="flex flex-wrap gap-x-7 border-b border-border">
       {CATALOG_KINDS.map((kind) => (
         <Link
           key={kind}
           href={CATALOG_PATH[kind]}
           aria-current={kind === active ? 'page' : undefined}
           className={cn(
-            '-mb-px border-b-2 px-4 py-2.5 text-sm font-semibold tracking-wide uppercase transition-colors',
+            'relative -mb-px py-3 font-display text-xs font-bold tracking-[0.08em] uppercase transition-colors',
+            'after:absolute after:inset-x-0 after:-bottom-px after:h-0.5 after:bg-primary after:shadow-[0_0_18px_rgb(197_251_20/0.45),0_0_2px_rgb(197_251_20/0.9)]',
             kind === active
-              ? 'border-primary text-primary'
-              : 'border-transparent text-muted-foreground hover:text-foreground',
+              ? 'text-foreground after:opacity-100'
+              : 'text-faint after:opacity-0 hover:text-muted-foreground',
           )}
         >
           {t(`${kind}.tab`)}
@@ -42,10 +43,11 @@ export async function CatalogPage({ kind, searchParams }: { kind: CatalogKind; s
   const t = await getTranslations(`Catalog.${kind}`);
   return (
     <Container className="flex flex-col gap-6 py-8 sm:py-10">
-      <header className="flex flex-col gap-2">
+      <header className="flex flex-col gap-3">
+        <p className="eyebrow">{t('tab')}</p>
         <h1 className="text-4xl text-foreground sm:text-5xl">{t('title')}</h1>
         <p className="max-w-3xl text-muted-foreground">{t('intro')}</p>
-        <p className="text-xs text-muted-foreground">{t('attribution')}</p>
+        <p className="text-xs text-faint">{t('attribution')}</p>
       </header>
       <CatalogTabs active={kind} />
       <Suspense fallback={<div className="frame h-64 animate-pulse" aria-hidden />}>

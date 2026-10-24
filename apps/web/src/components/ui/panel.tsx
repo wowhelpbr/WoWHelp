@@ -24,7 +24,7 @@ export function Panel({
           {title && (
             <h2
               id={titleId}
-              className="flex items-center gap-2.5 text-lg tracking-wide text-foreground uppercase before:size-2 before:rotate-45 before:bg-neon before:content-['']"
+              className="flex items-center gap-2.5 text-base tracking-[0.02em] text-foreground uppercase before:h-1.5 before:w-4 before:-skew-x-[25deg] before:rounded-[2px] before:bg-primary before:shadow-[0_0_12px_rgb(197_251_20/0.5)] before:content-['']"
             >
               {title}
             </h2>

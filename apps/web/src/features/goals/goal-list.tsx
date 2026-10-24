@@ -21,11 +21,7 @@ export function GoalList({ goals }: { goals: GoalView[] }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <div
-        role="group"
-        aria-label={t('filterLabel')}
-        className="flex gap-1 self-start rounded-sm border border-border/70 p-1"
-      >
+      <div role="group" aria-label={t('filterLabel')} className="flex gap-1 self-start rounded-md bg-sidebar p-1">
         {(['active', 'completed', 'all'] as const).map((value) => (
           <button
             key={value}
@@ -33,8 +29,10 @@ export function GoalList({ goals }: { goals: GoalView[] }) {
             aria-pressed={filter === value}
             onClick={() => setFilter(value)}
             className={cn(
-              'min-h-9 rounded px-3 text-sm',
-              filter === value ? 'bg-card-raised text-primary' : 'text-muted-foreground hover:text-foreground',
+              'min-h-9 rounded px-3.5 font-display text-[0.6875rem] font-bold tracking-[0.08em] uppercase transition-colors',
+              filter === value
+                ? 'glow-purple bg-purple text-white'
+                : 'bg-card-raised text-muted-foreground hover:text-foreground',
             )}
           >
             {t(`filters.${value}`)}

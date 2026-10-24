@@ -14,7 +14,7 @@ export function LegalPage({ kind, locale }: { kind: LegalKind; locale: Locale })
       <div className="grid gap-10 lg:grid-cols-[17rem_minmax(0,1fr)] xl:gap-16">
         <nav aria-label={TOC_LABEL[locale]} className="hidden lg:block">
           <div className="frame sticky top-24 p-4">
-            <p className="eyebrow mb-3">{TOC_LABEL[locale]}</p>
+            <p className="label mb-3">{TOC_LABEL[locale]}</p>
             <ol className="flex flex-col gap-1 text-sm">
               {doc.sections.map((section, i) => (
                 <li key={section.heading}>

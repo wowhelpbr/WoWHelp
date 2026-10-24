@@ -1,6 +1,6 @@
 # Quadro de tarefas (quest log)
 
-Atualizado na madrugada de 24/10/2026. Tarefas de até ~4 horas, com resultado visível. `[x]` feito, `[ ]` a fazer, `[!]` depende do Bruno.
+Atualizado em 24/10/2026. Tarefas de até ~4 horas, com resultado visível. `[x]` feito, `[ ]` a fazer, `[!]` depende do Bruno.
 
 ## Produção
 
@@ -31,7 +31,7 @@ Atualizado na madrugada de 24/10/2026. Tarefas de até ~4 horas, com resultado v
 - [x] Importação do catálogo oficial (Game Data API) rodando na Vercel, renovada antes de 30 dias
 - [x] Catálogo com busca, filtros e status coletada / não obtida / desconhecida
 - [x] Criar objetivo a partir de uma montaria
-- [ ] Imagens das montarias (cópia no Storage com crédito)
+- [x] Imagens das montarias (cópia no Storage com crédito)
 - [ ] Passo a passo editorial revisado para as montarias mais buscadas
 
 ## Fase 4: Planejador
@@ -63,18 +63,26 @@ Atualizado na madrugada de 24/10/2026. Tarefas de até ~4 horas, com resultado v
 
 - [x] Anúncios AdSense + aviso de cookies prontos (desligados até a conta do AdSense)
 - [!] Criar a conta do AdSense com wowhelp.com.br e mandar o número ca-pub (docs/monetizacao.md)
-- [!] Escolher a forma de pagamento da assinatura "Apoiador" (Mercado Pago ou Stripe) e passar pelo jurídico
-- [ ] Página "Apoie o WoWHelp" (assim que houver link de apoio)
+- [x] Site privado com senha definida em Administração > Site privado
+- [x] Assinatura "WoWHelp Apoiador" pelo Stripe em modo de teste: página Seja apoiador, sem anúncios para quem assina, selo, portal para cancelar, Administração > Assinaturas (docs/operacao/stripe.md)
+- [!] Decidir os preços (hoje R$ 9,90/mês e R$ 99/ano, provisórios)
+- [!] Ativar a conta real do Stripe (CNPJ, banco) e passar a assinatura pelo jurídico; depois eu copio tudo para a conta real
 
 ## Próximas ideias
 
 - [x] Montarias: imagem oficial, card com profundidade, janela de detalhes, curadoria (chance de drop com fonte, local, passo a passo) e tentativas pela Battle.net (docs/fase-7/relatorio-montarias.md)
 - [!] Curar as montarias mais buscadas (Bruno, em Configurações > Abrir a curadoria)
 - [x] Mascotes e brinquedos no mesmo modelo das montarias (docs/fase-7/relatorio-mascotes-brinquedos.md)
-- [ ] Descrição dos brinquedos (efeito de Usar, pela API do item)
+- [x] Descrição dos brinquedos (efeito de Usar, pela API do item)
 - [ ] Addon Companion: importar também mascotes e brinquedos
 - [x] Comunidade BR: página, curadoria, pedidos de entrada/saída, ao vivo e novidades prontos (docs/fase-7/relatorio-comunidade.md)
 - [!] Criar a chave do YouTube e os apps da Kick e da Twitch e cadastrar com scripts/cadastrar-chave-vercel.ps1 (passo a passo no relatório)
 - [!] Cadastrar os primeiros criadores (Bruno, na curadoria)
 - [x] Kick: ao vivo pela Public API oficial (falta a chave)
 - [!] Modelo 3D: só com parecer jurídico (EULA proíbe extrair dados do cliente; modelos são obra da Blizzard)
+
+## Visual e experiência
+
+- [x] Proposta do layout neon aprovada pelo Bruno (docs/design/proposta-layout-neon.html)
+- [x] Aplicar o layout neon no site inteiro e publicar (24/10/2026)
+- [ ] Gamificar o site com motion.dev (próxima tarefa, pedida pelo Bruno em 24/10/2026): definir antes quais tipos de diversão servir

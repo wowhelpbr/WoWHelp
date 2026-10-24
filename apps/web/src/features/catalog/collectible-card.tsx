@@ -55,12 +55,12 @@ export function CollectibleCard({
       scroll={false}
       onPointerMove={onMove}
       onPointerLeave={onLeave}
-      className="frame tilt-card group flex h-full flex-col hover:border-neon/60 focus-visible:border-neon"
+      className="frame tilt-card group flex h-full flex-col overflow-hidden hover:bg-card-raised focus-visible:bg-card-raised"
     >
-      <span className="tilt-stage hex-grid relative block aspect-[4/3] border-b border-border">
+      <span className="tilt-stage relative block aspect-[4/3]">
         {imageUrl && imageMode === 'icon' ? (
           <span className="tilt-art absolute inset-0 grid place-items-center">
-            <span className="relative size-20 overflow-hidden rounded-sm border-2 border-primary/70 shadow-[0_0_28px_rgb(60_200_255/0.35)]">
+            <span className="relative size-20 overflow-hidden rounded-md shadow-[0_0_0_2px_rgb(24_247_247/0.6),0_0_28px_rgb(24_247_247/0.35)]">
               <Image src={imageUrl} alt="" fill unoptimized sizes="80px" className="object-cover" />
             </span>
           </span>
@@ -80,8 +80,10 @@ export function CollectibleCard({
         )}
       </span>
       <span className="flex flex-1 flex-col gap-1.5 p-4">
-        <span className="text-lg leading-snug font-semibold text-foreground group-hover:text-primary">{name}</span>
-        <span className="text-sm text-muted-foreground">{subtitle}</span>
+        <span className="font-display text-sm leading-snug font-bold tracking-[0.02em] text-foreground uppercase group-hover:text-primary">
+          {name}
+        </span>
+        <span className="text-sm text-faint">{subtitle}</span>
         {badges && <span className="mt-auto flex flex-wrap gap-2 pt-2">{badges}</span>}
       </span>
     </Link>

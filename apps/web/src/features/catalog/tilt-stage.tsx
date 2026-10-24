@@ -46,11 +46,11 @@ export function TiltStage({
       ref={ref}
       onPointerMove={onMove}
       onPointerLeave={onLeave}
-      className={cn('frame tilt-card tilt-stage hex-grid corner-brackets relative aspect-[4/3]', className)}
+      className={cn('frame tilt-card tilt-stage relative aspect-[4/3] overflow-hidden', className)}
     >
       {imageUrl && imageMode === 'icon' ? (
         <div className="tilt-art absolute inset-0 grid place-items-center">
-          <div className="relative size-32 overflow-hidden rounded-sm border-2 border-primary/70 shadow-[0_0_40px_rgb(60_200_255/0.4)]">
+          <div className="relative size-32 overflow-hidden rounded-lg shadow-[0_0_0_2px_rgb(24_247_247/0.6),0_0_40px_rgb(24_247_247/0.4)]">
             <Image src={imageUrl} alt="" fill unoptimized priority sizes="128px" className="object-cover" />
           </div>
         </div>

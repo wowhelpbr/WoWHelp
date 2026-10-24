@@ -52,7 +52,10 @@ export function CreatorRequestForm() {
       </fieldset>
       <Field id="displayName" name="displayName" required maxLength={60} label={t('displayName')} />
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="links" className="text-sm font-medium text-foreground">
+        <label
+          htmlFor="links"
+          className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+        >
           {t('links')}
         </label>
         <textarea
@@ -67,7 +70,10 @@ export function CreatorRequestForm() {
         <p className="text-xs text-muted-foreground">{t('linksHint')}</p>
       </div>
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="message" className="text-sm font-medium text-foreground">
+        <label
+          htmlFor="message"
+          className="font-display text-[0.6875rem] font-bold tracking-[0.08em] text-muted-foreground uppercase"
+        >
           {t('message')}
         </label>
         <textarea id="message" name="message" rows={4} maxLength={1000} className={cn(inputClasses, 'w-full py-2')} />
