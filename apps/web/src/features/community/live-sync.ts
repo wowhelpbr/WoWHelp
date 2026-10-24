@@ -1,5 +1,6 @@
 import 'server-only';
 import {
+  normalizeKickChannels,
   normalizeTwitchStreams,
   normalizeTwitchUsers,
   normalizeYouTubeChannel,
@@ -8,7 +9,7 @@ import {
   type LiveInfo,
 } from '@wowhelp/shared';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { isTestPlatformUrl, twitchGet, youtubeFeed, youtubeGet } from '@/lib/platforms/client';
+import { isTestPlatformUrl, kickGet, twitchGet, youtubeFeed, youtubeGet } from '@/lib/platforms/client';
 import { liveTracking } from './live-config';
 
 // Atualiza "ao vivo agora", foto e último vídeo dos canais da Comunidade BR.
@@ -26,6 +27,7 @@ type Channel = {
 export interface LiveSyncResult {
   twitch: number;
   youtube: number;
+  kick: number;
   live: number;
   failed: number;
 }
@@ -64,7 +66,7 @@ export async function syncCommunityLive(): Promise<LiveSyncResult> {
   if (error) throw error;
   const channels = (data ?? []) as unknown as Channel[];
   const now = new Date().toISOString();
-  const result: LiveSyncResult = { twitch: 0, youtube: 0, live: 0, failed: 0 };
+  const result: LiveSyncResult = { twitch: 0, youtube: 0, kick: 0, live: 0, failed: 0 };
   const update = async (id: string, fields: Record<string, unknown>) => {
     const { error: e } = await admin
       .from('creator_channels')
@@ -154,6 +156,25 @@ export async function syncCommunityLive(): Promise<LiveSyncResult> {
         }
       } catch {
         result.failed++;
+      }
+    }
+  }
+
+  // Kick: 1 chamada por lote de 50 canais.
+  const kick = channels.filter((c) => c.platform === 'kick');
+  if (tracking.kick && kick.length > 0) {
+    for (const group of chunk(kick, 50)) {
+      try {
+        const qs = group.map((c) => `slug=${encodeURIComponent(c.handle)}`).join('&');
+        const live = normalizeKickChannels(await kickGet(`/public/v1/channels?${qs}`), isTestPlatformUrl);
+        for (const c of group) {
+          const info = live.get(c.handle.toLowerCase());
+          await update(c.id, info ? liveFields(info) : notLive);
+          result.kick++;
+          if (info) result.live++;
+        }
+      } catch {
+        result.failed += group.length;
       }
     }
   }

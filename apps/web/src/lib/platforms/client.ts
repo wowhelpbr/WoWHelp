@@ -89,3 +89,39 @@ export async function youtubeFeed(channelId: string): Promise<string> {
   const text = await res.text();
   return text.slice(0, 2_000_000);
 }
+
+const KICK_ID = () => local('KICK_TEST_BASE_URL') ?? 'https://id.kick.com';
+const KICK_API = () => (local('KICK_TEST_BASE_URL') ? `${local('KICK_TEST_BASE_URL')}/kick` : 'https://api.kick.com');
+
+let kickToken: { value: string; expiresAt: number } | null = null;
+
+/** Token do app na Kick (Client Credentials): só dados públicos, sem login do criador. */
+async function kickAppToken(): Promise<string> {
+  if (kickToken && kickToken.expiresAt > Date.now() + 60_000) return kickToken.value;
+  const body = new URLSearchParams({
+    client_id: process.env.KICK_CLIENT_ID ?? '',
+    client_secret: process.env.KICK_CLIENT_SECRET ?? '',
+    grant_type: 'client_credentials',
+  });
+  const res = await fetch(`${KICK_ID()}/oauth/token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body,
+    cache: 'no-store',
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!res.ok) throw new PlatformError('unauthorized', res.status);
+  const json = (await res.json()) as { access_token?: unknown; expires_in?: unknown };
+  if (typeof json.access_token !== 'string') throw new PlatformError('bad_response');
+  kickToken = {
+    value: json.access_token,
+    expiresAt: Date.now() + (typeof json.expires_in === 'number' ? json.expires_in : 3600) * 1000,
+  };
+  return kickToken.value;
+}
+
+/** GET na Public API da Kick (ex.: "/public/v1/channels?slug=a&slug=b"). */
+export async function kickGet(pathAndQuery: string): Promise<unknown> {
+  const token = await kickAppToken();
+  return getJson(`${KICK_API()}${pathAndQuery}`, { Authorization: `Bearer ${token}` });
+}

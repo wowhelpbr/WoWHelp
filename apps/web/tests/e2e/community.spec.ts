@@ -65,7 +65,7 @@ test('curador cadastra criador, ao vivo aparece e pedido chega', async ({ page, 
     'O canal da Kick não está num formato reconhecido.',
   );
 
-  await page.getByLabel('Kick').fill('');
+  await page.getByLabel('Kick').fill('kick.com/CanalKickTeste');
   await page.getByLabel('Twitch').fill('twitch.tv/StreamerTeste');
   await page.getByLabel('YouTube').fill('@canalteste');
   await page.getByLabel('Raide', { exact: true }).check();
@@ -81,13 +81,14 @@ test('curador cadastra criador, ao vivo aparece e pedido chega', async ({ page, 
     headers: { Authorization: 'Bearer test-cron-secret' },
   });
   expect(sync.ok()).toBe(true);
-  expect(await sync.json()).toMatchObject({ twitch: 1, youtube: 1, live: 2, failed: 0 });
+  expect(await sync.json()).toMatchObject({ twitch: 1, youtube: 1, kick: 1, live: 3, failed: 0 });
 
   await page.goto('/pt-br/community');
   const live = page.getByRole('region', { name: 'Ao vivo agora' });
   await expect(live.getByText('Raide de teste ao vivo')).toBeVisible();
   await expect(live.getByText('Live de teste no YouTube')).toBeVisible();
   await expect(live.getByText('42 espectadores')).toBeVisible();
+  await expect(live.getByText('Live de teste na Kick')).toBeVisible();
   await expect(
     page.getByRole('region', { name: 'Destaque' }).getByText('Melhor guia de raide da semana.'),
   ).toBeVisible();

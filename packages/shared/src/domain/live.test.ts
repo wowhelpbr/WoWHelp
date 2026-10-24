@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  normalizeKickChannels,
   normalizeTwitchStreams,
   normalizeTwitchUsers,
   normalizeYouTubeChannel,
@@ -112,5 +113,37 @@ describe('imagens', () => {
     expect(safeImageUrl('http://127.0.0.1:4010/a.png', (u) => u.startsWith('http://127.0.0.1:'))).toBe(
       'http://127.0.0.1:4010/a.png',
     );
+  });
+});
+
+describe('Kick (Public API)', () => {
+  it('canal ao vivo e fora do ar', () => {
+    const map = normalizeKickChannels({
+      data: [
+        {
+          slug: 'CanalKick',
+          stream_title: 'WoW na Kick',
+          category: { id: 1, name: 'World of Warcraft' },
+          stream: {
+            is_live: true,
+            viewer_count: 12,
+            start_time: '2026-10-23T22:00:00Z',
+            thumbnail: 'https://images.kick.com/video_thumbnails/x/720.webp',
+          },
+        },
+        { slug: 'offline', stream: { is_live: false } },
+        { slug: 'x y', stream: { is_live: true } },
+      ],
+    });
+    expect(map.get('canalkick')).toEqual({
+      title: 'WoW na Kick',
+      game: 'World of Warcraft',
+      viewers: 12,
+      startedAt: '2026-10-23T22:00:00.000Z',
+      url: 'https://kick.com/canalkick',
+      thumbnailUrl: 'https://images.kick.com/video_thumbnails/x/720.webp',
+    });
+    expect(map.get('offline')).toBeNull();
+    expect(map.size).toBe(2);
   });
 });

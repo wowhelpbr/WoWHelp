@@ -68,7 +68,7 @@ Atualizado na madrugada de 24/10/2026. Tarefas de até ~4 horas, com resultado v
 - [ ] Descrição dos brinquedos (efeito de Usar, pela API do item)
 - [ ] Addon Companion: importar também mascotes e brinquedos
 - [x] Comunidade BR: página, curadoria, pedidos de entrada/saída, ao vivo e novidades prontos (docs/fase-7/relatorio-comunidade.md)
-- [!] Criar app da Twitch e chave do YouTube e cadastrar na Vercel (passo a passo no relatório)
+- [!] Criar a chave do YouTube e os apps da Kick e da Twitch e cadastrar com scripts/cadastrar-chave-vercel.ps1 (passo a passo no relatório)
 - [!] Cadastrar os primeiros criadores (Bruno, na curadoria)
-- [ ] Kick: confirmar a API oficial para ao vivo
+- [x] Kick: ao vivo pela Public API oficial (falta a chave)
 - [!] Modelo 3D: só com parecer jurídico (EULA proíbe extrair dados do cliente; modelos são obra da Blizzard)
