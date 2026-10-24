@@ -54,7 +54,7 @@ test('venda fechada: visitante vê os preços e "Em breve", sem botão de assina
   await page.goto('/pt-br/supporter');
   await expect(page.getByRole('heading', { level: 1, name: 'Seja apoiador do WoWHelp' })).toBeVisible();
   await expect(page.getByText('R$ 9,90')).toBeVisible();
-  await expect(page.getByText('Equivale a 2 meses grátis')).toBeVisible();
+  await expect(page.getByText('2 meses grátis')).toBeVisible();
   await expect(page.getByText('A assinatura abre em breve.', { exact: false })).toBeVisible();
   await expect(page.getByRole('button', { name: /Assinar/ })).toHaveCount(0);
   await expect(page.locator('html')).toHaveAttribute('data-ads', 'on');

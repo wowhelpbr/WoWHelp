@@ -26,7 +26,8 @@
     "addonImport": "Addon import",
     "phaseShort": "Phase {phase}",
     "community": "Community",
-    "supporterBadge": "Supporter"
+    "supporterBadge": "Supporter",
+    "dashboardShort": "Goals"
   },
   "Footer": {
     "disclaimer": "WoWHelp is a fan-made tool. It is not affiliated with or endorsed by Blizzard Entertainment. World of Warcraft and Blizzard Entertainment are trademarks or registered trademarks of Blizzard Entertainment, Inc.",
@@ -109,7 +110,45 @@
     "pickerTitle": "Pick your goals",
     "pickerHint": "Choose as many as you like. You can change them later.",
     "browseCollections": "Browse collections",
-    "shortcutsTitle": "Explore"
+    "shortcutsTitle": "Explore",
+    "ctaVisitor": "Create a free account",
+    "trackerChosen": "Chosen",
+    "trackerTrying": "Trying",
+    "trackerDone": "Got it",
+    "cursorYou": "You",
+    "floatingLabel": "Mounts in the catalog",
+    "statsLabel": "WoWHelp in numbers",
+    "statMounts": "Mounts in the catalog",
+    "statPets": "Pets",
+    "statToys": "Toys",
+    "statForYou": "For you",
+    "statFree": "Free",
+    "featuresEyebrow": "In four steps",
+    "features": {
+      "choose": {
+        "title": "Choose what you want",
+        "body": "Mounts, weeklies, alts: you set the goal and it becomes a list of short steps."
+      },
+      "connect": {
+        "title": "Connect Battle.net",
+        "body": "Your characters and what you already collected come in on their own, with the date they were checked."
+      },
+      "follow": {
+        "title": "Follow and check off",
+        "body": "The next step is always on top. Check it off and the next one comes up."
+      },
+      "addon": {
+        "title": "Import the addon",
+        "body": "WoWHelp Companion reads what the game shows and you import the file on the site."
+      }
+    },
+    "communityEyebrow": "Brazilian community",
+    "liveTitle": "Live now",
+    "latestTitle": "Latest from the community",
+    "seeCreators": "See all creators",
+    "supporterTitle": "Become a WoWHelp supporter",
+    "supporterBody": "No ads and a supporter badge. The tracker stays free for everyone.",
+    "supporterCta": "See the plans"
   },
   "Availability": {
     "available": "Available",
@@ -189,7 +228,28 @@
     "charactersConnect": "Connect Battle.net",
     "notConnected": "Not connected",
     "charactersMore": "{count, plural, one {+# more character} other {+# more characters}}",
-    "addonNever": "No imports yet"
+    "addonNever": "No imports yet",
+    "newGoal": "New goal",
+    "statWeekly": "Weeklies",
+    "colGoal": "Goal",
+    "colNext": "Next step",
+    "colStatus": "Status",
+    "colProgress": "Progress",
+    "rowInProgress": "In progress",
+    "rowStarted": "Started",
+    "rowDraft": "Draft",
+    "rowPaused": "Paused",
+    "weekTitle": "This week",
+    "weekResets": "resets {day}",
+    "weekEmpty": "No weekly tasks yet.",
+    "weekDone": "done",
+    "weekPending": "to do",
+    "weekOpenPlanner": "Open the planner",
+    "battlenetOk": "Battle.net ok",
+    "pinnedTitle": "Active goals",
+    "pinnedSteps": "{done} of {total} steps",
+    "pinnedNoSteps": "No steps yet",
+    "levelValue": "level {level}"
   },
   "Goals": {
     "title": "Goals",
@@ -303,7 +363,15 @@
     "attemptsSource": "From Battle.net, updated {when}. This counts boss kills, not loot rolls.",
     "attemptsNone": "No kills of this boss on your Battle.net characters.",
     "categoryLabel": "Family",
-    "categoryAll": "Any family"
+    "categoryAll": "Any family",
+    "filterMissing": "Missing",
+    "filterOwned": "Owned",
+    "filterGroup": "Filters",
+    "journeyLabel": "Your journey with this item",
+    "stepChosen": "Chosen",
+    "stepTrying": "Trying",
+    "stepGot": "Got it",
+    "hoverHint": "Hover to tilt"
   },
   "Settings": {
     "metaTitle": "Settings",
@@ -783,12 +851,16 @@
       "notFound": "This toy is not in the catalog.",
       "back": "Back to toys",
       "blizzardId": "Blizzard toy ID {id}"
-    }
+    },
+    "statTotal": "In the game",
+    "statOwned": "You have",
+    "statMissing": "Missing",
+    "statsLabel": "Collection numbers"
   },
   "Community": {
     "metaTitle": "Brazilian community",
-    "eyebrow": "Brazilian community",
-    "title": "Who makes WoW content in Brazil",
+    "eyebrow": "Made by Brazilians",
+    "title": "Brazilian community",
     "intro": "Hand-picked Brazilian World of Warcraft creators. See who is live, what just came out and find people talking WoW in Portuguese.",
     "curated": "List curated by the WoWHelp team. Nobody pays to be here.",
     "liveNow": "Live now",
@@ -798,7 +870,7 @@
     "viewers": "{count, plural, one {# viewer} other {# viewers}}",
     "featured": "Featured",
     "latest": "Latest",
-    "directory": "Creators",
+    "directory": "All creators",
     "joinCta": "Do you make WoW content? Ask to join",
     "allTags": "All",
     "tagsLabel": "Topics",
@@ -853,7 +925,19 @@
         "quota": "You already have 3 open requests. Wait for an answer before sending another.",
         "storage": "We couldn't send it right now. Try again."
       }
-    }
+    },
+    "platformLabel": "Platform",
+    "allPlatforms": "All",
+    "liveCount": "{count} live",
+    "searchCreators": "Search creators",
+    "searchCreatorsPlaceholder": "Search creators…",
+    "colCreator": "Creator",
+    "colPlatforms": "Platforms",
+    "colTopics": "Topics",
+    "colStatus": "Status",
+    "statusNew": "New video",
+    "statusOffline": "Offline",
+    "seeChannel": "See channel"
   },
   "Ads": {
     "label": "Advertisement",
@@ -888,7 +972,7 @@
     "yearly": "Yearly",
     "perMonth": "per month",
     "perYear": "per year",
-    "yearlySaving": "Same as {months, plural, one {# month free} other {# months free}}",
+    "yearlySaving": "{months, plural, one {# month free} other {# months free}}",
     "subscribeMonthly": "Subscribe monthly",
     "subscribeYearly": "Subscribe yearly",
     "opening": "Opening checkout…",
@@ -913,6 +997,15 @@
       "processando": "Payment processing. Your supporter badge shows up in a few minutes.",
       "cancelado": "Payment not completed. Nothing was charged.",
       "erro": "Could not open checkout right now. Please try again in a few minutes."
-    }
+    },
+    "planNoAds": "No ads on the site",
+    "planBadge": "Supporter badge",
+    "planCancel": "Cancel anytime",
+    "benefitNoAdsTitle": "No ads",
+    "benefitNoAdsBody": "On every page, while your subscription is active.",
+    "benefitBadgeTitle": "Supporter badge",
+    "benefitBadgeBody": "Shows up in your account header.",
+    "benefitThanksTitle": "WoWHelp online",
+    "benefitThanksBody": "In Portuguese and with new features."
   }
 }

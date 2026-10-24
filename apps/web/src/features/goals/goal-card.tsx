@@ -35,8 +35,8 @@ function StepRow({ step, onToggle }: { step: StepView; onToggle: (step: StepView
         className={cn(
           'grid size-7 shrink-0 place-items-center rounded border transition-colors',
           done
-            ? 'border-success bg-success/20 text-success'
-            : 'border-border-strong bg-background/60 hover:border-primary',
+            ? 'border-primary bg-primary text-primary-foreground shadow-[0_0_12px_rgb(197_251_20/0.45)]'
+            : 'border-border-strong bg-card hover:border-primary',
         )}
       >
         {done && <Check aria-hidden className="size-4" />}
@@ -144,11 +144,7 @@ export function GoalCard({ goal }: { goal: GoalView }) {
   };
 
   return (
-    <article
-      className="rounded-sm border border-border/70 bg-sidebar/50 p-3 sm:p-4"
-      aria-labelledby={`goal-${goal.id}`}
-      aria-busy={saving}
-    >
+    <article className="rounded-lg bg-sidebar p-3.5 sm:p-4" aria-labelledby={`goal-${goal.id}`} aria-busy={saving}>
       <header className="flex items-start gap-3">
         <span className="quest-mark mt-0.5" data-state={completed ? 'accepted' : 'available'} aria-hidden>
           {completed ? '✓' : '!'}
@@ -173,7 +169,7 @@ export function GoalCard({ goal }: { goal: GoalView }) {
 
       {total > 0 && (
         <div
-          className="mt-3 h-1.5 overflow-hidden rounded-full bg-background"
+          className="mt-3 h-1.5 overflow-hidden rounded-full bg-card-raised"
           role="progressbar"
           aria-valuemin={0}
           aria-valuemax={total}
@@ -181,7 +177,7 @@ export function GoalCard({ goal }: { goal: GoalView }) {
           aria-label={t('progress', { done, total })}
         >
           <div
-            className="h-full rounded-full bg-primary transition-[width]"
+            className="h-full rounded-full bg-primary shadow-[0_0_12px_rgb(197_251_20/0.6)] transition-[width] duration-500"
             style={{ width: `${(done / total) * 100}%` }}
           />
         </div>

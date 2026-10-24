@@ -1,18 +1,27 @@
 import { mountStatusFor, type Locale } from '@wowhelp/shared';
-import { Check, CircleSlash, Percent, Swords, Target, X } from 'lucide-react';
+import { Check, CircleSlash, MousePointer2, Plus, X } from 'lucide-react';
 import { getFormatter, getLocale, getTranslations } from 'next-intl/server';
 import { buttonClasses } from '@/components/ui/button';
-import { DataStateBadge, StateNotice } from '@/components/ui/data-state';
+import { StateNotice } from '@/components/ui/data-state';
 import { getCurrentUser } from '@/features/auth/session';
 import { getMyEncounterAttempts } from '@/features/battlenet/attempts';
 import { getPublishedGuide } from '@/features/guides/queries';
 import { Link } from '@/i18n/navigation';
 import { LOCALE_PREFIX } from '@/i18n/routing';
+import { cn } from '@/lib/cn';
+import { createClient } from '@/lib/supabase/server';
 import { createCollectibleGoalAction, setCollectionManualAction } from './actions';
 import { CATALOG_PATH, IMAGE_MODE, type CatalogKind } from './kinds';
 import { getCatalog, getMyCollectionData } from './queries';
-import { MountStatusBadge } from './status-badge';
+import { MountStatusChip } from './status-badge';
 import { TiltStage } from './tilt-stage';
+
+/** Esta conta já transformou o item em objetivo? */
+async function hasGoalFor(collectibleId: string): Promise<boolean> {
+  const supabase = await createClient();
+  const { data } = await supabase.from('goals').select('id').eq('collectible_id', collectibleId).limit(1);
+  return Boolean(data?.length);
+}
 
 /**
  * Detalhes de um colecionável (montaria, mascote ou brinquedo): usado na
@@ -56,9 +65,10 @@ export async function CollectibleDetail({
     );
   }
 
-  const [mine, guide] = await Promise.all([
+  const [mine, guide, chosen] = await Promise.all([
     user ? getMyCollectionData(kind) : null,
     getPublishedGuide(kind, item.externalId, locale),
+    user ? hasGoalFor(item.id) : false,
   ]);
   const attempts =
     user && guide?.encounterId ? await getMyEncounterAttempts(guide.encounterId, guide.encounterDifficulty) : null;
@@ -71,167 +81,180 @@ export async function CollectibleDetail({
     : null;
   const manual = mine?.observations.find((o) => o.externalItemId === item.externalId && o.source === 'manual');
   const back = `${LOCALE_PREFIX[locale]}${path}/${item.externalId}`;
+  const got = status?.status === 'collected';
+  const trying = got || (attempts?.total ?? 0) > 0;
+  const howLines = guide?.how
+    ? guide.how
+        .split(/\n+/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+    : [];
 
   return (
-    <article aria-labelledby={titleId} className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-8">
-      <TiltStage imageUrl={item.imageUrl} imageMode={IMAGE_MODE[kind]} placeholder={kind} />
+    <article aria-labelledby={titleId} className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-8">
+      <div className="relative">
+        <TiltStage
+          imageUrl={item.imageUrl}
+          imageMode={IMAGE_MODE[kind]}
+          placeholder={kind}
+          className="lg:aspect-square"
+        />
+        <span className="chip pointer-events-none absolute bottom-4 left-1/2 hidden -translate-x-1/2 bg-black/50 md:inline-flex">
+          <MousePointer2 aria-hidden className="size-3" />
+          {t('hoverHint')}
+        </span>
+      </div>
 
       <div className="flex flex-col gap-5">
         <header className="flex flex-col gap-3">
-          <p className="eyebrow">
-            {[item.categoryName, item.sourceName ?? t('sourceUnknown')].filter(Boolean).join(' · ')}
-          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {status && <MountStatusChip status={status.status} />}
+            {item.categoryName && <span className="chip">{item.categoryName}</span>}
+            <span className="chip">{item.sourceName ?? t('sourceUnknown')}</span>
+            {item.faction && (
+              <span className="chip chip-cyan">{t('factionOnly', { faction: t(`factions.${item.faction}`) })}</span>
+            )}
+          </div>
           <h1 id={titleId} className="text-4xl text-foreground sm:text-5xl">
             {item.name}
           </h1>
-          <div className="flex flex-wrap gap-2">
-            {status && <MountStatusBadge status={status.status} />}
-            {item.faction && (
-              <DataStateBadge state="ok" label={t('factionOnly', { faction: t(`factions.${item.faction}`) })} />
-            )}
-          </div>
+          {item.summary && <p className="max-w-prose text-muted-foreground sm:text-lg">{item.summary}</p>}
         </header>
 
-        {item.summary && <p className="max-w-prose text-lg text-foreground">{item.summary}</p>}
-
-        <dl className="grid gap-3 sm:grid-cols-2">
-          <div className="frame p-4">
+        {/* Números da proposta: chance de drop, suas tentativas (ciano) e onde. */}
+        <div className={cn('grid gap-2', guide?.encounterId ? 'sm:grid-cols-3' : 'sm:grid-cols-2')}>
+          <dl className="rounded-lg bg-sidebar p-4">
             <dt className="label">{t('dropChance')}</dt>
             {guide?.dropChancePercent ? (
-              <dd className="mt-1.5 flex flex-col gap-1">
-                <span className="font-display text-3xl text-primary tabular-nums">
+              <dd className="mt-2 flex flex-col gap-1">
+                <span className="font-display text-2xl leading-none font-bold tabular-nums">
                   {format.number(guide.dropChancePercent / 100, { style: 'percent', maximumFractionDigits: 3 })}
                 </span>
-                {guide.chanceNote && <span className="text-sm text-foreground">{guide.chanceNote}</span>}
+                {guide.chanceNote && <span className="text-xs text-muted-foreground">{guide.chanceNote}</span>}
               </dd>
             ) : (
-              <dd className="mt-1.5 flex items-center gap-2 text-muted-foreground">
-                <Percent aria-hidden className="size-4 shrink-0" />
-                {t('dropChanceUnknown')}
-              </dd>
+              <dd className="mt-2 text-sm text-muted-foreground">{t('dropChanceUnknown')}</dd>
             )}
-          </div>
-          <div className="frame p-4">
+          </dl>
+
+          {guide?.encounterId && (
+            <section
+              aria-labelledby={`${titleId}-attempts`}
+              className={cn(
+                'flex flex-col gap-2 rounded-lg p-4',
+                attempts?.connected ? 'glow-cyan bg-neon text-primary-foreground' : 'bg-sidebar',
+              )}
+            >
+              <h2
+                id={`${titleId}-attempts`}
+                className={cn('label', attempts?.connected && 'text-primary-foreground/75')}
+              >
+                {t('attemptsTitle')}
+              </h2>
+              {!user ? (
+                <p className="text-sm text-muted-foreground">{t('attemptsSignIn')}</p>
+              ) : !attempts?.connected ? (
+                <p className="text-sm text-muted-foreground">
+                  {t('attemptsConnect')}{' '}
+                  <Link href="/characters" className="text-neon underline underline-offset-2">
+                    {t('attemptsConnectLink')}
+                  </Link>
+                </p>
+              ) : (
+                <>
+                  <p className="flex flex-col gap-1">
+                    <span className="font-display text-2xl leading-none font-bold tabular-nums">{attempts.total}</span>
+                    <span className="text-xs font-semibold">
+                      {t('attemptsKills', {
+                        count: attempts.total,
+                        characters: attempts.characters.length,
+                        difficulty: guide.encounterDifficulty ?? 'any',
+                      })}
+                    </span>
+                  </p>
+                  {attempts.characters.length > 0 && (
+                    <ul className="flex flex-col gap-0.5 text-xs">
+                      {attempts.characters.slice(0, 6).map((c) => (
+                        <li key={`${c.name}-${c.realm}`} className="flex justify-between gap-3">
+                          <span>
+                            {c.name}
+                            {c.realm && <span className="opacity-70"> · {c.realm}</span>}
+                          </span>
+                          <span className="tabular-nums">{c.count}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              )}
+            </section>
+          )}
+
+          <dl className="rounded-lg bg-sidebar p-4">
             <dt className="label">{t('where')}</dt>
-            <dd className={guide?.location ? 'mt-1.5 text-foreground' : 'mt-1.5 text-muted-foreground'}>
+            <dd className={cn('mt-2 text-sm', guide?.location ? 'text-foreground' : 'text-muted-foreground')}>
               {guide?.location ?? t('whereUnknown')}
             </dd>
-          </div>
-          <div className="frame p-4 sm:col-span-2">
-            <dt className="label">{t('howToGet')}</dt>
-            {guide?.how ? (
-              <dd className="mt-1.5 flex flex-col gap-2 text-foreground">
-                {guide.how
-                  .split(/\n+/)
-                  .filter((line) => line.trim())
-                  .map((line, i) => (
-                    <p key={i}>{line}</p>
-                  ))}
-              </dd>
-            ) : (
-              <dd className="mt-1.5 text-foreground">{item.sourceName ?? t('sourceUnknown')}</dd>
-            )}
-          </div>
-        </dl>
+          </dl>
+        </div>
 
-        {guide && (guide.sourceUrl || guide.reviewedAt) && (
-          <p className="text-xs text-muted-foreground">
-            {guide.sourceUrl && (
-              <>
-                {t('sourcePrefix')}{' '}
-                <a
-                  href={guide.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  className="text-neon underline underline-offset-2"
-                >
-                  {guide.sourceLabel ?? new URL(guide.sourceUrl).hostname}
-                </a>
-                {guide.reviewedAt ? ' · ' : ''}
-              </>
-            )}
-            {guide.reviewedAt &&
-              t('reviewedOn', { date: format.dateTime(new Date(guide.reviewedAt), { dateStyle: 'medium' }) })}
-          </p>
+        {user && (
+          <ol aria-label={t('journeyLabel')} className="steps cyan">
+            <li className={chosen || trying ? 'on' : undefined}>{t('stepChosen')}</li>
+            <li className={trying ? 'on' : undefined}>{t('stepTrying')}</li>
+            <li className={got ? 'on' : undefined}>{t('stepGot')}</li>
+          </ol>
         )}
 
-        {guide?.encounterId && (
-          <section aria-labelledby={`${titleId}-attempts`} className="frame corner-brackets flex flex-col gap-3 p-4">
-            <h2 id={`${titleId}-attempts`} className="label">
-              {t('attemptsTitle')}
-            </h2>
-            {!user ? (
-              <p className="text-sm text-muted-foreground">{t('attemptsSignIn')}</p>
-            ) : !attempts?.connected ? (
-              <p className="text-sm text-muted-foreground">
-                {t('attemptsConnect')}{' '}
-                <Link href="/characters" className="text-neon underline underline-offset-2">
-                  {t('attemptsConnectLink')}
-                </Link>
-              </p>
-            ) : (
-              <>
-                <p className="flex items-baseline gap-2">
-                  <Swords aria-hidden className="size-5 shrink-0 self-center text-neon" />
-                  <span className="font-display text-3xl text-neon tabular-nums [text-shadow:0_0_18px_rgb(24_247_247/0.45)]">
-                    {attempts.total}
-                  </span>
-                  <span className="text-foreground">
-                    {t('attemptsKills', {
-                      count: attempts.total,
-                      characters: attempts.characters.length,
-                      difficulty: guide.encounterDifficulty ?? 'any',
-                    })}
-                  </span>
-                </p>
-                {attempts.characters.length > 0 && (
-                  <ul className="flex flex-col gap-1 text-sm">
-                    {attempts.characters.slice(0, 6).map((c) => (
-                      <li key={`${c.name}-${c.realm}`} className="flex justify-between gap-3">
-                        <span className="text-foreground">
-                          {c.name}
-                          {c.realm && <span className="text-muted-foreground"> · {c.realm}</span>}
-                        </span>
-                        <span className="text-muted-foreground tabular-nums">{c.count}</span>
-                      </li>
-                    ))}
-                  </ul>
+        <section aria-labelledby={`${titleId}-how`} className="flex flex-col gap-2">
+          <h2 id={`${titleId}-how`} className="label">
+            {t('howToGet')}
+          </h2>
+          <ol className="flex flex-col gap-1.5">
+            {(howLines.length ? howLines : [item.sourceName ?? t('sourceUnknown')]).map((line, i) => (
+              <li
+                key={i}
+                className={cn(
+                  'grid grid-cols-[1.75rem_1fr] items-start gap-3 rounded-md px-3.5 py-3 text-sm font-semibold',
+                  howLines.length
+                    ? 'bg-primary text-primary-foreground shadow-[0_0_14px_rgb(197_251_20/0.25)]'
+                    : 'bg-sidebar text-foreground',
                 )}
-                <p className="text-xs text-muted-foreground">
-                  {attempts.fetchedAt
-                    ? t('attemptsSource', {
-                        when: format.relativeTime(new Date(attempts.fetchedAt), new Date()),
-                      })
-                    : t('attemptsNone')}
-                </p>
-              </>
-            )}
-          </section>
-        )}
+              >
+                <span
+                  aria-hidden
+                  className={cn(
+                    'grid size-7 place-items-center rounded font-display text-xs font-bold',
+                    howLines.length ? 'bg-black/15' : 'bg-card-raised text-muted-foreground',
+                  )}
+                >
+                  {i + 1}
+                </span>
+                <span className="pt-1">{line}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
 
-        <div className="frame-raised flex flex-col gap-4 p-4">
-          <form action={createCollectibleGoalAction}>
-            <input type="hidden" name="locale" value={locale} />
-            <input type="hidden" name="kind" value={kind} />
-            <input type="hidden" name="collectibleId" value={item.id} />
-            <input type="hidden" name="back" value={back} />
-            <button type="submit" className={buttonClasses('primary', 'md', 'w-full sm:w-auto')}>
-              <Target aria-hidden className="size-4" />
-              {t('createGoal')}
-            </button>
-          </form>
-
-          {user ? (
-            <div className="flex flex-col gap-2">
-              <p className="text-sm text-muted-foreground">
-                {status?.source ? t(`statusHelp.${status.source}`) : t('statusHelp.unknown')}
-              </p>
-              <div className="flex flex-wrap gap-2">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap gap-2">
+            <form action={createCollectibleGoalAction}>
+              <input type="hidden" name="locale" value={locale} />
+              <input type="hidden" name="kind" value={kind} />
+              <input type="hidden" name="collectibleId" value={item.id} />
+              <input type="hidden" name="back" value={back} />
+              <button type="submit" className={buttonClasses('primary', 'md', undefined, 'cut')}>
+                <Plus aria-hidden className="size-4" />
+                {t('createGoal')}
+              </button>
+            </form>
+            {user && (
+              <>
                 <form action={setCollectionManualAction}>
                   <input type="hidden" name="kind" value={kind} />
                   <input type="hidden" name="externalId" value={item.externalId} />
                   <input type="hidden" name="status" value="collected" />
-                  <button type="submit" className={buttonClasses('secondary', 'sm')}>
+                  <button type="submit" className={buttonClasses('secondary', 'md')}>
                     <Check aria-hidden className="size-4" />
                     {t('markCollected')}
                   </button>
@@ -240,7 +263,7 @@ export async function CollectibleDetail({
                   <input type="hidden" name="kind" value={kind} />
                   <input type="hidden" name="externalId" value={item.externalId} />
                   <input type="hidden" name="status" value="not_collected" />
-                  <button type="submit" className={buttonClasses('ghost', 'sm')}>
+                  <button type="submit" className={buttonClasses('ghost', 'md')}>
                     <CircleSlash aria-hidden className="size-4" />
                     {t('markNotCollected')}
                   </button>
@@ -250,25 +273,62 @@ export async function CollectibleDetail({
                     <input type="hidden" name="kind" value={kind} />
                     <input type="hidden" name="externalId" value={item.externalId} />
                     <input type="hidden" name="status" value="clear" />
-                    <button type="submit" className={buttonClasses('ghost', 'sm')}>
+                    <button type="submit" className={buttonClasses('ghost', 'md')}>
                       <X aria-hidden className="size-4" />
                       {t('clearManual')}
                     </button>
                   </form>
                 )}
-              </div>
-            </div>
-          ) : (
-            <p className="text-sm text-muted-foreground">{t('signInForStatus')}</p>
-          )}
+              </>
+            )}
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {user
+              ? status?.source
+                ? t(`statusHelp.${status.source}`)
+                : t('statusHelp.unknown')
+              : t('signInForStatus')}
+          </p>
         </div>
 
-        <p className="text-xs text-muted-foreground">
-          {tk('attribution')} {tk('blizzardId', { id: item.externalId })}
-          {item.fetchedAt
-            ? ` · ${t('updated', { when: format.relativeTime(new Date(item.fetchedAt), new Date()) })}`
-            : ''}
-        </p>
+        <div className="flex flex-col gap-1 text-xs text-faint">
+          {guide && (guide.sourceUrl || guide.reviewedAt) && (
+            <p className="flex items-center gap-1.5">
+              <Check aria-hidden className="size-3.5 shrink-0 text-neon" />
+              <span>
+                {guide.sourceUrl && (
+                  <>
+                    {t('sourcePrefix')}{' '}
+                    <a
+                      href={guide.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      className="text-neon underline underline-offset-2"
+                    >
+                      {guide.sourceLabel ?? new URL(guide.sourceUrl).hostname}
+                    </a>
+                    {guide.reviewedAt ? ' · ' : ''}
+                  </>
+                )}
+                {guide.reviewedAt &&
+                  t('reviewedOn', { date: format.dateTime(new Date(guide.reviewedAt), { dateStyle: 'medium' }) })}
+              </span>
+            </p>
+          )}
+          {attempts?.connected && (
+            <p>
+              {attempts.fetchedAt
+                ? t('attemptsSource', { when: format.relativeTime(new Date(attempts.fetchedAt), new Date()) })
+                : t('attemptsNone')}
+            </p>
+          )}
+          <p>
+            {tk('attribution')} {tk('blizzardId', { id: item.externalId })}
+            {item.fetchedAt
+              ? ` · ${t('updated', { when: format.relativeTime(new Date(item.fetchedAt), new Date()) })}`
+              : ''}
+          </p>
+        </div>
       </div>
     </article>
   );

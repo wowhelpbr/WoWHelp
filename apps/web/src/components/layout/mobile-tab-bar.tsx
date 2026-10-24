@@ -27,8 +27,9 @@ function MobileTabBarView({ pathname }: { pathname: string | null }) {
       aria-label={t('main')}
       className="fixed inset-x-0 bottom-0 z-40 border-t border-border-soft bg-sidebar/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
     >
-      <ul className="grid grid-cols-5">
-        {NAV_ITEMS.map((item) => {
+      <ul className="grid grid-cols-4">
+        {/* Quatro abas (proposta neon); as configurações ficam no quadrado da conta, no topo. */}
+        {NAV_ITEMS.filter((item) => item.key !== 'settings').map((item) => {
           const active = isActive(pathname, item.href, 'also' in item ? item.also : []);
           const Icon = item.icon ?? MountGlyph;
           return (
@@ -45,7 +46,7 @@ function MobileTabBarView({ pathname }: { pathname: string | null }) {
                 )}
               >
                 <Icon aria-hidden className="size-5" />
-                {t(item.key)}
+                {item.key === 'dashboard' ? t('dashboardShort') : t(item.key)}
               </Link>
             </li>
           );

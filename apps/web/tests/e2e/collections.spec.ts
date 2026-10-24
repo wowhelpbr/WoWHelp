@@ -28,7 +28,7 @@ test('abas entre os catálogos e mascotes com tipo, imagem e janela', async ({ p
   const tabs = page.getByRole('navigation', { name: 'Collection types' });
   await tabs.getByRole('link', { name: 'Pets' }).click();
   await expect(page).toHaveURL(/\/en\/pets$/);
-  await expect(page.getByRole('heading', { level: 1, name: 'Pet catalog' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'Pets' })).toBeVisible();
   await expect(tabs.getByRole('link', { name: 'Pets' })).toHaveAttribute('aria-current', 'page');
 
   const one = page.getByRole('link', { name: /Test Pet One/ });
@@ -36,8 +36,8 @@ test('abas entre os catálogos e mascotes com tipo, imagem e janela', async ({ p
   await expect(one.locator('img')).toHaveAttribute('src', /catalog-media\/pets\/39\.webp/);
 
   // Filtro por tipo.
-  await page.getByLabel('Family').selectOption('CRITTER');
-  await page.getByRole('button', { name: 'Apply' }).click();
+  await page.getByRole('navigation', { name: 'Filters' }).getByRole('link', { name: /Critter/ }).click();
+  await expect(page).toHaveURL(/category=CRITTER/);
   await expect(page.getByRole('link', { name: /Test Pet Two/ })).toBeVisible();
   await expect(page.getByRole('link', { name: /Test Pet One/ })).toHaveCount(0);
 
@@ -52,7 +52,7 @@ test('abas entre os catálogos e mascotes com tipo, imagem e janela', async ({ p
   await page.goto('/pt-br/toys/1131');
   await expect(page.getByText('Uso: Invoca um balão de teste.')).toBeVisible();
   await page.goto('/pt-br/toys');
-  await expect(page.getByRole('heading', { level: 1, name: 'Catálogo de brinquedos' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'Brinquedos' })).toBeVisible();
   await expect(page.getByRole('link', { name: /Brinquedo de Teste Um/ }).locator('img')).toHaveAttribute(
     'src',
     /catalog-media\/toys\/1131\.webp/,

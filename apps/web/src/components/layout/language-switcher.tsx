@@ -1,6 +1,5 @@
 'use client';
 
-import { Languages } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Suspense } from 'react';
 import { Link, usePathname } from '@/i18n/navigation';
@@ -30,12 +29,8 @@ function LanguageSwitcherView({ pathname }: { pathname: string }) {
       hrefLang={other}
       className="inline-flex min-h-10 items-center gap-1.5 rounded-sm px-2.5 font-display text-[0.6875rem] font-bold tracking-[0.08em] text-faint uppercase hover:bg-white/5 hover:text-foreground"
     >
-      <Languages aria-hidden className="size-4" />
-      <span className="hidden sm:inline">{t('switchTo')}</span>
-      <span className="sm:hidden" aria-hidden>
-        {t('switchToShort')}
-      </span>
-      <span className="sr-only sm:hidden">{t('switchTo')}</span>
+      <span aria-hidden>{t('switchToShort')}</span>
+      <span className="sr-only">{t('switchTo')}</span>
     </Link>
   );
 }
