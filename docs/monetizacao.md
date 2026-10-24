@@ -1,31 +1,47 @@
 # Monetização
 
-Pedido do Bruno (25/10/2026): seguir o modelo do Wowhead (site grátis com anúncios + assinatura Premium sem anúncios e com extras).
+Pedido do Bruno: monetizar desde o dia zero, copiando o modelo do Wowhead (site grátis com anúncios + assinatura Premium sem anúncios), adaptado ao WoW e ao público brasileiro.
 
-## O conflito
+## O modelo do Wowhead (pesquisado em 24/10/2026)
 
-O WoWHelp usa a API oficial da Blizzard (catálogo, Battle.net). Os termos da API (Blizzard Developer API Terms of Use, 01/10/2019, resumidos em `docs/fase-0/cobertura-de-dados-battlenet-e-addon.md`, A8) **proíbem**:
+Fontes: [Wowhead Premium](https://www.wowhead.com/premium), [anúncio dos novos planos](https://www.wowhead.com/news/wowhead-premium-update-new-look-additional-tiers-yearly-legendary-gift-more-354945), [Wikipedia](https://en.wikipedia.org/wiki/Wowhead).
 
-- versão "Premium" com recursos pagos, e cobrar pelo acesso ao app ou a serviços ligados a ele quando os recursos usam a API;
-- tela de pedido de doação antes de liberar um recurso;
-- obrigar a ver anúncio em vídeo antes de um recurso;
-- usar os dados da API em publicidade ou para direcionar anúncios.
+- **Grátis com anúncios:** banners e vídeo em todo o site para quem não assina.
+- **Premium em três planos**, todos sem nenhum anúncio para quem está logado:
+  - **Rare** (US$ 2/mês, US$ 9/ano): sem anúncios, layout melhor, página inicial personalizada, filtros de notícias.
+  - **Epic** (US$ 5/mês, US$ 30/ano): o do Rare + imagens do visualizador sem marca d'água + suporte prioritário.
+  - **Legendary** (US$ 99/ano): tudo + presente físico anual.
+  - Todos: cargo no Discord, identificação no site (cor do nome, avatar), mais perfis de personagem acompanhados.
 
-As diretrizes de marca da Blizzard também limitam fan sites a uso, em geral, sem fins comerciais.
+## O que já está pronto no WoWHelp
 
-Boa parte do conteúdo do Wowhead vem do próprio jogo e de contribuição da comunidade, não da API, por isso o modelo dele não se aplica direto ao WoWHelp. Copiar o Premium do Wowhead aqui arrisca o bloqueio do cliente da API (e com ele o login Battle.net e o catálogo).
+| Parte | Situação |
+| --- | --- |
+| Anúncios do Google AdSense | **Pronto, desligado.** Três lugares: página inicial (abaixo da escolha de objetivos), catálogos (acima da lista) e Comunidade BR. Sempre identificados como "Publicidade" |
+| Aviso de cookies (LGPD) | **Pronto, desligado.** Só aparece quando os anúncios ligam. "Aceitar anúncios personalizados" ou "Só o necessário" (anúncios não personalizados). O AdSense só carrega depois da escolha. "Preferências de cookies" no rodapé |
+| `ads.txt` | Pronto: sai sozinho com o número do AdSense |
+| Política de privacidade | Ganha a seção "Anúncios" e o texto de cookies muda sozinho quando os anúncios ligam |
+| Assinatura | **Falta decidir** a forma de pagamento (abaixo) |
 
-## O que dá para fazer (pendente de revisão jurídica)
+Para ligar os anúncios: cadastrar `NEXT_PUBLIC_ADSENSE_CLIENT` (o número `ca-pub-...`) e os blocos `NEXT_PUBLIC_ADSENSE_SLOT_HOME`, `NEXT_PUBLIC_ADSENSE_SLOT_CATALOG` e `NEXT_PUBLIC_ADSENSE_SLOT_COMMUNITY` na Vercel e publicar de novo. Não são segredos (aparecem na página).
 
-| Opção | Situação | O que o Bruno precisa |
-| --- | --- | --- |
-| **Apoio voluntário** (Apoia.se, Patreon, Ko-fi, Pix) com página "Apoie o WoWHelp", sem bloquear nada e sem tela antes de recurso | Compatível com os termos, pelo texto | Criar a conta de apoio e mandar o link |
-| **Anúncios de display** comuns, fora das áreas com dados da Blizzard e sem segmentar por dados do jogador | Zona cinzenta: os termos não proíbem anúncio em si, mas proíbem dados da API em anúncio; exige banner de cookies (LGPD) e mudar a política de privacidade | Revisão jurídica, conta numa rede de anúncios (ex.: Google AdSense) |
-| **Premium só sem anúncios** (nenhum recurso pago) | Zona cinzenta: pode ser lido como "versão Premium" | Revisão jurídica antes de qualquer cobrança |
-| **Premium com recursos que não usam a API** (ex.: Comunidade BR, temas, perfil público) | Precisa de análise caso a caso | Revisão jurídica |
-| **Patrocínio da área Comunidade BR** (criadores, eventos) | Não envolve dados da Blizzard | Definir regras de patrocínio e transparência |
-| Premium que libera rastreador, planejador, coleção etc. | **Proibido** (usa a API) | — |
+## O que o Bruno precisa fazer (anúncios)
 
-## Decisão
+1. Deixar o site no ar em **wowhelp.com.br** (passo a passo em `docs/operacao/dominio.md`). O AdSense não aceita endereço `vercel.app`.
+2. Criar a conta em https://adsense.google.com com a conta Google do WoWHelp, informando o site `wowhelp.com.br`. Para receber em reais, o Google pede CPF ou CNPJ e dados de pagamento.
+3. O Google pede para colocar um código no site e confere o `ads.txt`: me mande o número `ca-pub-...` (não é segredo) e eu ligo.
+4. A aprovação do Google costuma levar de alguns dias a algumas semanas e exige conteúdo próprio e política de privacidade (já temos).
+5. No painel do AdSense, crie três blocos de anúncio "Display" (Início, Catálogo, Comunidade) e me passe os números.
 
-Pendente do Bruno e da revisão jurídica. Nada de cobrança ou anúncio entra no site antes disso.
+## Assinatura: as regras que pesam
+
+O WoWHelp usa a API oficial da Blizzard; os termos da API (resumo em `docs/fase-0/cobertura-de-dados-battlenet-e-addon.md`, A8) **proíbem** versão "Premium" com recursos pagos e cobrar pelo acesso a recursos que usam a API. O Wowhead não depende da API (os dados dele vêm do próprio jogo), por isso pode.
+
+Proposta para ficar dentro das regras: **"WoWHelp Apoiador"**, que tira os anúncios e dá só benefícios sem dados da Blizzard: selo de apoiador no perfil e na Comunidade BR, cargo no Discord, cor do nome, prioridade no suporte. Nada que use a API (rastreador, planejador, coleção) fica atrás de pagamento. Mesmo assim, "assinar para tirar anúncio" é zona cinzenta nos termos e vale passar pelo jurídico antes de cobrar.
+
+Forma de pagamento (decisão do Bruno): Mercado Pago (aceita CPF, Pix e cartão) ou Stripe (cartão, Pix; normalmente pede CNPJ no Brasil).
+
+## Outras opções sem conflito
+
+- Apoio voluntário (Apoia.se, Ko-fi, Pix) numa página "Apoie", sem bloquear nada.
+- Patrocínio da Comunidade BR (criadores, eventos), com transparência.

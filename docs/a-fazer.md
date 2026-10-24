@@ -4,6 +4,9 @@ Atualizado na madrugada de 24/10/2026. Tarefas de até ~4 horas, com resultado v
 
 ## Produção
 
+- [!] Apontar o DNS de wowhelp.com.br na Hostinger (docs/operacao/dominio.md); domínio já está no projeto da Vercel
+- [!] Adicionar o retorno da Battle.net com o domínio novo
+
 - [x] Repositório público wowhelpbr/WoWHelp com CI
 - [x] Banco "wowhelp site" com tabelas e RLS (migrations aplicadas)
 - [x] Login do Supabase apontando para wowhelp.vercel.app (confirmação de e-mail desligada até haver SMTP)
@@ -58,7 +61,9 @@ Atualizado na madrugada de 24/10/2026. Tarefas de até ~4 horas, com resultado v
 
 ## Monetização (ver docs/monetizacao.md)
 
-- [!] Escolher o caminho com o jurídico: apoio voluntário, anúncios, Premium só sem anúncios ou Premium sem dados da API
+- [x] Anúncios AdSense + aviso de cookies prontos (desligados até a conta do AdSense)
+- [!] Criar a conta do AdSense com wowhelp.com.br e mandar o número ca-pub (docs/monetizacao.md)
+- [!] Escolher a forma de pagamento da assinatura "Apoiador" (Mercado Pago ou Stripe) e passar pelo jurídico
 - [ ] Página "Apoie o WoWHelp" (assim que houver link de apoio)
 
 ## Próximas ideias
