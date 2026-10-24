@@ -108,6 +108,17 @@ test('curador cadastra criador, ao vivo aparece e pedido chega', async ({ page, 
   await expect(page.getByRole('region', { name: 'Criadores' }).getByText('Criador E2E')).toBeVisible();
 
   // Pedido de entrada chega ao curador.
+  // Ocultar e publicar direto da lista da curadoria.
+  await page.goto('/pt-br/admin/community');
+  const row = page.getByRole('listitem').filter({ hasText: 'Criador E2E' });
+  await row.getByRole('button', { name: 'Ocultar' }).click();
+  await expect(row.getByText('Oculto')).toBeVisible();
+  await page.goto('/pt-br/community');
+  await expect(page.getByRole('region', { name: 'Criadores' }).getByText('Criador E2E')).toHaveCount(0);
+  await page.goto('/pt-br/admin/community');
+  await page.getByRole('listitem').filter({ hasText: 'Criador E2E' }).getByRole('button', { name: 'Publicar' }).click();
+  await expect(page.getByRole('listitem').filter({ hasText: 'Criador E2E' }).getByText('Publicado')).toBeVisible();
+
   await page.goto('/pt-br/community/join');
   await page.getByLabel('Nome do canal ou como você é conhecido').fill('Canal Pedido E2E');
   await page.getByLabel('Links dos seus canais').fill('https://www.twitch.tv/pedidoe2e');

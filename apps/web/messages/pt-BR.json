@@ -652,7 +652,10 @@
         "slug_taken": "Já existe um criador com esse endereço.",
         "channel_taken": "Esse canal da {platform} já está na lista em outro criador.",
         "storage": "Não foi possível salvar agora. Tente de novo."
-      }
+      },
+      "publish": "Publicar",
+      "hide": "Ocultar",
+      "editShort": "Editar"
     }
   },
   "Catalog": {

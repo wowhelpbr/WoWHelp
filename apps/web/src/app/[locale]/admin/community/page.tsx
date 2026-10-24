@@ -6,7 +6,7 @@ import { Container } from '@/components/ui/container';
 import { DataStateBadge } from '@/components/ui/data-state';
 import { Panel } from '@/components/ui/panel';
 import { requireAdmin } from '@/features/admin/session';
-import { setRequestStatusAction } from '@/features/community/actions';
+import { setCreatorStatusAction, setRequestStatusAction } from '@/features/community/actions';
 import { getAllCreators, getCreatorRequests } from '@/features/community/queries';
 import { Link } from '@/i18n/navigation';
 
@@ -97,23 +97,54 @@ async function AdminCommunity() {
 
       <ul className="grid gap-2 md:grid-cols-2 2xl:grid-cols-3">
         {creators.map((c) => (
-          <li key={c.id}>
-            <Link
-              href={`/admin/community/${c.id}`}
-              className="frame flex items-center justify-between gap-3 px-4 py-3 hover:border-neon/60"
-            >
-              <span className="min-w-0">
+          <li key={c.id} className="frame flex flex-col gap-2 px-4 py-3">
+            <div className="flex items-start justify-between gap-3">
+              <Link href={`/admin/community/${c.id}`} className="min-w-0 hover:text-primary">
                 <span className="block truncate font-semibold text-foreground">{c.name}</span>
-                <span className="text-xs text-muted-foreground">
-                  {c.channels.map((ch) => tc(`platforms.${ch.platform}`)).join(' · ')}
-                  {c.featured ? ` · ${t('featuredShort')}` : ''}
-                </span>
-              </span>
+              </Link>
               <DataStateBadge
                 state={c.status === 'published' ? 'ok' : c.status === 'draft' ? 'stale' : 'empty'}
                 label={t(`statusShort.${c.status}`)}
               />
-            </Link>
+            </div>
+            {c.bioPt && <p className="line-clamp-2 text-xs text-muted-foreground">{c.bioPt}</p>}
+            <div className="flex flex-wrap items-center gap-2 text-xs">
+              {c.channels.map((ch) => (
+                <a
+                  key={ch.id}
+                  href={ch.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neon underline underline-offset-2"
+                >
+                  {tc(`platforms.${ch.platform}`)}
+                </a>
+              ))}
+              {c.featured && <span className="text-primary">{t('featuredShort')}</span>}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {c.status !== 'published' && (
+                <form action={setCreatorStatusAction}>
+                  <input type="hidden" name="id" value={c.id} />
+                  <input type="hidden" name="status" value="published" />
+                  <button type="submit" className={buttonClasses('secondary', 'sm')}>
+                    {t('publish')}
+                  </button>
+                </form>
+              )}
+              {c.status !== 'hidden' && (
+                <form action={setCreatorStatusAction}>
+                  <input type="hidden" name="id" value={c.id} />
+                  <input type="hidden" name="status" value="hidden" />
+                  <button type="submit" className={buttonClasses('ghost', 'sm')}>
+                    {t('hide')}
+                  </button>
+                </form>
+              )}
+              <Link href={`/admin/community/${c.id}`} className={buttonClasses('ghost', 'sm')}>
+                {t('editShort')}
+              </Link>
+            </div>
           </li>
         ))}
       </ul>

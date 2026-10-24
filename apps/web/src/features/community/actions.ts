@@ -8,7 +8,7 @@ import {
   uuidSchema,
   type CreatorPlatform,
 } from '@wowhelp/shared';
-import { revalidateTag } from 'next/cache';
+import { refresh, revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { getAdminUser } from '@/features/admin/session';
@@ -176,6 +176,18 @@ export async function deleteCreatorAction(formData: FormData): Promise<void> {
   revalidateTag('community', { expire: 0 });
   const locale = z.enum(routing.locales).safeParse(formData.get('locale'));
   redirect(`${LOCALE_PREFIX[locale.success ? locale.data : routing.defaultLocale]}/admin/community`);
+}
+
+/** Publica ou oculta um criador direto da lista. Só curador. */
+export async function setCreatorStatusAction(formData: FormData): Promise<void> {
+  const admin = await getAdminUser();
+  if (!admin) return;
+  const id = uuidSchema.safeParse(formData.get('id'));
+  const status = z.enum(['published', 'hidden', 'draft']).safeParse(formData.get('status'));
+  if (!id.success || !status.success) return;
+  await createAdminClient().from('creators').update({ status: status.data }).eq('id', id.data);
+  revalidateTag('community', { expire: 0 });
+  refresh();
 }
 
 /** Marca um pedido como atendido ou recusado. Só curador. */
