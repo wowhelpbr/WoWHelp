@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { Container } from '@/components/ui/container';
 import { LogoMark } from '@/components/brand/logo';
+import { ConsentReopen } from '@/features/ads/ads';
 import { Link } from '@/i18n/navigation';
 
 export function SiteFooter() {
@@ -24,6 +25,9 @@ export function SiteFooter() {
                 <Link href="/terms" className="underline underline-offset-2 hover:text-foreground">
                   {t('terms')}
                 </Link>
+              </li>
+              <li>
+                <ConsentReopen className="underline underline-offset-2 hover:text-foreground" />
               </li>
             </ul>
           </nav>

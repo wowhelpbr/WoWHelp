@@ -5,6 +5,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import { MobileTabBar } from '@/components/layout/mobile-tab-bar';
 import { SiteFooter } from '@/components/layout/site-footer';
+import { AdsLoader, ConsentBanner } from '@/features/ads/ads';
 import { SiteHeader } from '@/components/layout/site-header';
 import { ServiceWorkerRegister } from '@/components/pwa/service-worker-register';
 import { LOCALE_PREFIX, routing } from '@/i18n/routing';
@@ -74,6 +75,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
           <SiteFooter />
           <MobileTabBar />
           <ServiceWorkerRegister />
+          <ConsentBanner />
+          <AdsLoader />
         </NextIntlClientProvider>
       </body>
     </html>

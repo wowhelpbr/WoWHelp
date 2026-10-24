@@ -5,6 +5,7 @@ import { connection } from 'next/server';
 import { getFormatter, getLocale, getTranslations } from 'next-intl/server';
 import { buttonClasses } from '@/components/ui/button';
 import { StateNotice } from '@/components/ui/data-state';
+import { AdSlot } from '@/features/ads/ads';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
 import { liveTracking } from './live-config';
@@ -223,6 +224,8 @@ export async function CommunityView({ searchParams }: { searchParams: SearchPara
           </ul>
         </section>
       )}
+
+      <AdSlot placement="community" />
 
       {latest.length > 0 && (
         <section aria-labelledby="latest" className="flex flex-col gap-4">
