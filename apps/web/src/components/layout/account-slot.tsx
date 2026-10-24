@@ -1,4 +1,4 @@
-import { Gem, LogOut, UserRound } from 'lucide-react';
+import { Gem, LogOut } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { ButtonLink } from '@/components/ui/button';
 import { signOutAction } from '@/features/auth/actions';
@@ -28,7 +28,7 @@ export async function AccountSlot() {
 
   const support = await getMySupport();
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1.5">
       {support?.active && (
         <Link
           href="/supporter"
@@ -38,22 +38,24 @@ export async function AccountSlot() {
           <span className="max-sm:sr-only">{t('supporterBadge')}</span>
         </Link>
       )}
+      {/* Quadrado com a inicial (proposta neon): leva às configurações da conta. */}
       <Link
         href="/settings"
-        className="hidden min-h-10 items-center gap-2 rounded-sm px-2.5 font-display text-[0.6875rem] font-bold tracking-[0.08em] text-faint uppercase hover:bg-white/5 hover:text-foreground md:inline-flex"
+        aria-label={t('account')}
+        title={t('account')}
+        className="grid size-9 place-items-center rounded-md bg-gradient-to-br from-chip to-card-raised font-display text-sm font-bold text-primary uppercase hover:shadow-[0_0_0_1px_rgb(197_251_20/0.6)]"
       >
-        <UserRound aria-hidden className="size-4" />
-        {t('account')}
+        {(user.email ?? '?').slice(0, 1)}
       </Link>
       <form action={signOutAction}>
         <input type="hidden" name="locale" value={locale} />
         <button
           type="submit"
-          className="inline-flex min-h-10 items-center gap-1.5 rounded-sm px-2.5 font-display text-[0.6875rem] font-bold tracking-[0.08em] text-faint uppercase hover:bg-white/5 hover:text-foreground"
+          title={t('signOut')}
+          className="grid size-9 place-items-center rounded-md text-faint hover:bg-white/5 hover:text-foreground"
         >
           <LogOut aria-hidden className="size-4" />
-          <span className="hidden sm:inline">{t('signOut')}</span>
-          <span className="sr-only sm:hidden">{t('signOut')}</span>
+          <span className="sr-only">{t('signOut')}</span>
         </button>
       </form>
     </div>

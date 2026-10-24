@@ -1,4 +1,4 @@
-import { CircleCheck, Gem, TriangleAlert } from 'lucide-react';
+import { Check, CircleCheck, Gem, TriangleAlert } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { ButtonLink } from '@/components/ui/button';
 import { getAdminUser } from '@/features/admin/session';
@@ -51,33 +51,44 @@ export async function SupporterPlans({
             </Notice>
           )}
           {prices && (
-            <ul className="grid gap-4 md:grid-cols-2">
+            <ul className="grid max-w-5xl gap-3.5 md:grid-cols-2">
               {SUPPORTER_PLANS.map((plan) => {
                 const price = prices[plan];
                 const saved = plan === 'yearly' ? monthsSaved(prices.monthly.amount, prices.yearly.amount) : 0;
+                const featured = plan === 'yearly';
                 return (
                   <li
                     key={plan}
                     className={cn(
-                      'frame flex flex-col gap-4 p-5',
-                      plan === 'yearly' && 'corner-brackets border-primary/60',
+                      'flex flex-col gap-4 rounded-xl border p-6',
+                      featured
+                        ? 'border-[#2d3b4a] bg-gradient-to-b from-[#1d2a36] to-[#16212c] shadow-[0_20px_60px_rgb(0_0_0/0.4),0_0_0_1px_rgb(24_247_247/0.25)]'
+                        : 'border-border bg-card/60',
                     )}
                   >
-                    <div>
-                      <h3 className="font-display text-2xl text-foreground">{t(plan)}</h3>
-                      <p className="mt-2">
-                        <span className="font-display text-4xl text-primary">
-                          {formatPrice(price.amount, price.currency, locale)}
-                        </span>{' '}
-                        <span className="text-sm text-muted-foreground">
-                          {plan === 'monthly' ? t('perMonth') : t('perYear')}
-                        </span>
-                      </p>
-                      {saved > 0 && <p className="mt-1 text-sm text-neon">{t('yearlySaving', { months: saved })}</p>}
+                    <div className="flex items-center justify-between gap-3">
+                      <h3 className="text-2xl text-foreground">{t(plan)}</h3>
+                      {saved > 0 && <span className="chip chip-lime">{t('yearlySaving', { months: saved })}</span>}
                     </div>
-                    <div className="mt-auto">
+                    <p>
+                      <span className="font-display text-5xl leading-none font-bold tabular-nums">
+                        {formatPrice(price.amount, price.currency, locale)}
+                      </span>
+                      <span className="ml-2 text-sm font-semibold text-faint">
+                        {plan === 'monthly' ? t('perMonth') : t('perYear')}
+                      </span>
+                    </p>
+                    <ul className="flex flex-col gap-2.5">
+                      {(['planNoAds', 'planBadge', 'planCancel'] as const).map((k) => (
+                        <li key={k} className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                          <Check aria-hidden className={cn('size-4 shrink-0', featured ? 'text-neon' : 'text-faint')} />
+                          {t(k)}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="mt-auto pt-1">
                       {!canBuy ? (
-                        <span className="inline-flex min-h-11 items-center rounded-sm border border-border px-4 text-sm text-muted-foreground uppercase">
+                        <span className="inline-flex min-h-12 items-center rounded-sm border border-border px-5 font-display text-xs font-bold tracking-[0.08em] text-muted-foreground uppercase">
                           {t('soon')}
                         </span>
                       ) : user ? (
@@ -86,7 +97,9 @@ export async function SupporterPlans({
                           <input type="hidden" name="plan" value={plan} />
                           <SubmitButton
                             pendingLabel={t('opening')}
-                            variant={plan === 'yearly' ? 'primary' : 'secondary'}
+                            variant={featured ? 'cyan' : 'secondary'}
+                            size="lg"
+                            shape="skew"
                             className="w-full"
                           >
                             {plan === 'monthly' ? t('subscribeMonthly') : t('subscribeYearly')}
@@ -95,7 +108,9 @@ export async function SupporterPlans({
                       ) : (
                         <ButtonLink
                           href={`/login?next=${encodeURIComponent(`${LOCALE_PREFIX[locale as AppLocale]}/supporter`)}`}
-                          variant={plan === 'yearly' ? 'primary' : 'secondary'}
+                          variant={featured ? 'cyan' : 'secondary'}
+                          size="lg"
+                          shape="skew"
                           className="w-full"
                         >
                           {t('signInToSubscribe')}

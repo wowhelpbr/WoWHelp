@@ -6,7 +6,7 @@ import { Container } from '@/components/ui/container';
 import { Modal } from '@/components/ui/modal';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/cn';
-import { CatalogView } from './catalog-view';
+import { CatalogStats, CatalogView } from './catalog-view';
 import { CollectibleDetail } from './collectible-detail';
 import { CATALOG_KINDS, CATALOG_PATH, type CatalogKind } from './kinds';
 
@@ -40,14 +40,19 @@ async function CatalogTabs({ active }: { active: CatalogKind }) {
 
 /** Página de catálogo: cabeçalho, abas e a lista (em streaming). */
 export async function CatalogPage({ kind, searchParams }: { kind: CatalogKind; searchParams: SearchParams }) {
-  const t = await getTranslations(`Catalog.${kind}`);
+  const [t, tn] = await Promise.all([getTranslations(`Catalog.${kind}`), getTranslations('Nav')]);
   return (
-    <Container className="flex flex-col gap-6 py-8 sm:py-10">
-      <header className="flex flex-col gap-3">
-        <p className="eyebrow">{t('tab')}</p>
-        <h1 className="text-4xl text-foreground sm:text-5xl">{t('title')}</h1>
-        <p className="max-w-3xl text-muted-foreground">{t('intro')}</p>
-        <p className="text-xs text-faint">{t('attribution')}</p>
+    <Container className="flex flex-col gap-5 py-8 sm:py-10">
+      <header className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-3">
+          <p className="eyebrow">{tn('mounts')}</p>
+          <h1 className="text-4xl text-foreground sm:text-5xl">{t('tab')}</h1>
+          <p className="max-w-3xl text-muted-foreground">{t('intro')}</p>
+          <p className="text-xs text-faint">{t('attribution')}</p>
+        </div>
+        <Suspense fallback={<div className="h-[4.5rem] w-full rounded-lg bg-sidebar lg:w-[34rem]" aria-hidden />}>
+          <CatalogStats kind={kind} />
+        </Suspense>
       </header>
       <CatalogTabs active={kind} />
       <Suspense fallback={<div className="frame h-64 animate-pulse" aria-hidden />}>

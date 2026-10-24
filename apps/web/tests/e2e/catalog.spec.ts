@@ -33,7 +33,7 @@ test('catálogo público em inglês e português, com busca e crédito à Blizza
   await expect(page.getByText('Mount data provided by Blizzard Entertainment', { exact: false })).toBeVisible();
 
   await page.getByLabel('Search mounts').fill('two');
-  await page.getByRole('button', { name: 'Apply' }).click();
+  await page.getByLabel('Search mounts').press('Enter');
   await expect(page).toHaveURL(/q=two/);
   await expect(page.getByRole('link', { name: /Test Mount Two/ })).toBeVisible();
   await expect(page.getByRole('link', { name: /Test Mount One/ })).toHaveCount(0);
@@ -60,8 +60,8 @@ test('status cruza com a Battle.net e a montaria vira objetivo', async ({ page }
   await expect(page.getByRole('link', { name: /Test Mount Two/ }).getByText('Not collected')).toBeVisible();
 
   // Filtro por status.
-  await page.getByLabel('My collection').selectOption('not_collected');
-  await page.getByRole('button', { name: 'Apply' }).click();
+  await page.getByRole('navigation', { name: 'My collection' }).getByRole('link', { name: 'Missing' }).click();
+  await expect(page).toHaveURL(/status=not_collected/);
   await expect(page.getByRole('link', { name: /Test Mount One/ })).toHaveCount(0);
 
   // Detalhe → objetivo.
