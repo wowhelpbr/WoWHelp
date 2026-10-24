@@ -8,6 +8,7 @@ import {
   normalizeCollectionIndex,
   normalizeCreatureDisplayId,
   normalizeItemIcon,
+  normalizeItemUseText,
   normalizePetDetail,
   normalizeToyDetail,
   normalizeCharacterEncounters,
@@ -345,5 +346,21 @@ describe('isPlaceholderName', () => {
     for (const name of ['Fuzzy', 'Swift Razzashi Raptor', 'Big Blizzard Bear', null]) {
       expect(isPlaceholderName(name)).toBe(false);
     }
+  });
+});
+
+describe('efeito de Usar do item', () => {
+  it('lê a descrição do efeito nos dois idiomas', () => {
+    expect(
+      normalizeItemUseText({
+        preview_item: {
+          spells: [
+            { spell: { id: 1 }, description: { en_US: 'Use: Summons a test.', pt_BR: 'Uso: Invoca um teste.' } },
+          ],
+        },
+      }),
+    ).toEqual({ 'en-US': 'Use: Summons a test.', 'pt-BR': 'Uso: Invoca um teste.' });
+    expect(normalizeItemUseText({ preview_item: {} })).toEqual({ 'en-US': null, 'pt-BR': null });
+    expect(normalizeItemUseText(null)).toEqual({ 'en-US': null, 'pt-BR': null });
   });
 });

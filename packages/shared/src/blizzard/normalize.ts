@@ -207,6 +207,8 @@ export interface CollectibleDetail {
   creatureId: number | null;
   /** Brinquedo: documento de mídia do item (ícone). */
   mediaRef: number | null;
+  /** Brinquedo: item que ensina o brinquedo (para ler o efeito de "Usar"). */
+  itemId: number | null;
 }
 
 function sourceOf(json: Record<string, Json>) {
@@ -237,6 +239,7 @@ export function normalizePetDetail(json: Json): CollectibleDetail | null {
     categoryNames: type ? texts(type.name) : { 'en-US': null, 'pt-BR': null },
     creatureId: isObj(json.creature) ? int(json.creature.id) : null,
     mediaRef: null,
+    itemId: null,
   };
 }
 
@@ -258,6 +261,7 @@ export function normalizeToyDetail(json: Json): CollectibleDetail | null {
     categoryNames: { 'en-US': null, 'pt-BR': null },
     creatureId: null,
     mediaRef: isObj(json.media) ? int(json.media.id) : null,
+    itemId: int(item.id),
   };
 }
 
@@ -374,4 +378,15 @@ export function apiLocaleFor(region: BattlenetRegion, appLocale: 'en-US' | 'pt-B
  */
 export function isPlaceholderName(name: string | null | undefined): boolean {
   return typeof name === 'string' && /\[(PH|DNT|DND|NYI)\]/i.test(name);
+}
+
+/**
+ * /data/wow/item/{id} pedido sem locale: texto do efeito de "Usar"
+ * (preview_item.spells[].description), que é a descrição útil de um brinquedo.
+ */
+export function normalizeItemUseText(json: Json): Texts {
+  const empty = { 'en-US': null, 'pt-BR': null };
+  if (!isObj(json) || !isObj(json.preview_item) || !Array.isArray(json.preview_item.spells)) return empty;
+  const spell = json.preview_item.spells.find((sp) => isObj(sp) && sp.description);
+  return isObj(spell) ? texts(spell.description) : empty;
 }

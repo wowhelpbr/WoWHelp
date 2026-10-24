@@ -49,6 +49,8 @@ test('abas entre os catálogos e mascotes com tipo, imagem e janela', async ({ p
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).toHaveCount(0);
 
+  await page.goto('/pt-br/toys/1131');
+  await expect(page.getByText('Uso: Invoca um balão de teste.')).toBeVisible();
   await page.goto('/pt-br/toys');
   await expect(page.getByRole('heading', { level: 1, name: 'Catálogo de brinquedos' })).toBeVisible();
   await expect(page.getByRole('link', { name: /Brinquedo de Teste Um/ }).locator('img')).toHaveAttribute(

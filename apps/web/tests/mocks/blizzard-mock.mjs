@@ -279,6 +279,20 @@ const server = http.createServer(async (req, res) => {
     const toy = toyDetails[toyMatch[1]];
     return toy ? json(res, 200, toy) : json(res, 404, {});
   }
+  if (url.pathname === '/data/wow/item/54452') {
+    if (!appOk) return json(res, 401, {});
+    return json(res, 200, {
+      id: 54452,
+      preview_item: {
+        spells: [
+          {
+            spell: { id: 1 },
+            description: { en_US: 'Use: Summons a test balloon.', pt_BR: 'Uso: Invoca um balão de teste.' },
+          },
+        ],
+      },
+    });
+  }
   const itemMediaMatch = url.pathname.match(/^\/data\/wow\/media\/item\/(\d+)$/);
   if (itemMediaMatch) {
     if (!appOk) return json(res, 401, {});
